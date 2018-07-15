@@ -1,0 +1,8 @@
+prefix=/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/install
+
+Name: styx
+Description: Description of styx
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/install/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/devel
+
+Name: tl_detector
+Description: Description of tl_detector
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/devel/lib 
+Requires: 

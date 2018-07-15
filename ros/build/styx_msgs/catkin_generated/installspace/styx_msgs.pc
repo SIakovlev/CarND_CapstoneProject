@@ -1,0 +1,8 @@
+prefix=/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/install
+
+Name: styx_msgs
+Description: Description of styx_msgs
+Version: 0.0.0
+Cflags: -I/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/install/include
+Libs: -L/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/install/lib 
+Requires: 
