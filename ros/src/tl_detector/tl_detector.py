@@ -190,7 +190,7 @@ class TLDetector(object):
 
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
-        #sys.stderr.write("Debug: tl_detector process_traffic_lights() pose ok=%s\n" % repr(self.pose is not None))
+        sys.stderr.write("Debug: tl_detector process_traffic_lights() pose ok=%s\n" % repr(self.pose is not None))
         if(self.pose):
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
             #sys.stderr.write("Debug: tl_detector process_traffic_lights() car_wp_idx=%d\n" % car_wp_idx)
@@ -214,7 +214,14 @@ class TLDetector(object):
                     diff = d
                     closest_light = light
                     light_wp_idx = temp_wp_idx
-
+     
+        if not closest_light and self.grab_training_images:
+            # When playing from the bag file, we don't have pose information but nevertheless
+            # we want to grab the training image so we still want to call get_light_state(),
+            # so invent one with unknown state
+            closest_light = TrafficLight()
+            closest_light.state = TrafficLight.UNKNOWN
+            light_wp_idx = -1
 
         if closest_light:
             state = self.get_light_state(closest_light)
