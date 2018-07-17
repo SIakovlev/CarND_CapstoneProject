@@ -95,6 +95,12 @@ class WaypointUpdater(object):
         return temp
 
     def get_closest_waypoint_idx(self):
+    
+        if self.pose is None or self.waypoints_tree is None:
+            # No data to work from yet (in simulator can get here before we
+            # have waypoint tree object)
+            return 0
+            
     	x = self.pose.pose.position.x
     	y = self.pose.pose.position.y
     	closest_idx = self.waypoints_tree.query([x, y], 1)[1]
