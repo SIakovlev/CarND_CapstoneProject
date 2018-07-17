@@ -26,7 +26,12 @@ class TLDetector(object):
         self.camera_image = None
         self.lights = []
         
-        self.training_image_idx = 0
+        # Some variables for development use
+        # Could make these ROS params to avoid editing code for different experiments
+        self.stub_return_ground_truth = True   # If set, cheat by just returning known state
+        self.grab_training_images = True       # If set, saving image files for classifier training
+        self.training_image_idx = 0            # For training image unique filenames
+        
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -138,34 +143,36 @@ class TLDetector(object):
 
         """
         # CW walkthrough video: for debug only get state from classifier
-        # so can return actual state
-        
-	grabbing_training_images = True # make a ROS param?
+        # so can return actual state while developing other components
 	
-	if not grabbing_training_images:
-	    # To debug rest of system, just return known light state provided
-	    # by simulator
-	    return light.state
+        light_state_known = light.state             # ground truth state when in simulator
+        light_state_inferred = TrafficLight.UNKNOWN # default: no classifier result
 	
-	# We need an image to do any image processing...
-        if(not self.has_image):
+        if not self.has_image:
+            # We cannot infer state using classifier, nor grab training images
             self.prev_light_loc = None
-            return False
+        elif self.stub_return_ground_truth and not self.grab_training_images:
+            # We have no use for the image if not faking it as we're not grabbing images right now
+            pass
+        else:
+            # Either for training data grab or real classification or both, we need an image
+            cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
-        cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+            if self.grab_training_images:
+	            # We now have an image, and a known state for it (if in simulator), so save
+	            # it as a training item with ground truth
+	            filename = "img" + str(self.training_image_idx) + "_" + str(light.state) + ".jpg"
+	            self.training_image_idx += 1
+	            cv2.imwrite(filename, cv_image)
+	            sys.stderr.write("Debug tl_detector: saved training image " + filename + "\n")
 
-	# We now have an image, and a known state for it, so save
-	# it as a training item with ground truth
-	filename = "img" + str(self.training_image_idx) + "_" + str(light.state) + ".jpg"
-	self.training_image_idx += 1
-	cv2.imwrite(filename, cv_image)
-	sys.stderr.write("Debug tl_detector: saved training image " + filename + "\n")
-	
-        #Get classification
-	# TODO once we have a classifier!
-        #return self.light_classifier.get_classification(cv_image)
+            if not self.stub_return_ground_truth:
+                # Get classification, this is not a drill!
+                # TODO will get UNKNOWN until we have a classifier!
+                light_state_inferred = self.light_classifier.get_classification(cv_image)
 
-        return light.state
+        # Return either ground truth for debug or real classifier result for production
+        return light_state_known if self.stub_return_ground_truth else light_state_inferred
 
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
@@ -183,10 +190,11 @@ class TLDetector(object):
 
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
-        sys.stderr.write("Debug: tl_detector process_traffic_lights() pose ok=%s\n" % repr(self.pose is not None))
+        #sys.stderr.write("Debug: tl_detector process_traffic_lights() pose ok=%s\n" % repr(self.pose is not None))
         if(self.pose):
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
-            sys.stderr.write("Debug: tl_detector process_traffic_lights() car_wp_idx=%d\n" % car_wp_idx)
+            #sys.stderr.write("Debug: tl_detector process_traffic_lights() car_wp_idx=%d\n" % car_wp_idx)
+            
             #TODO find the closest visible traffic light (if one exists)
             
             # CW: starting with walkthrough code suggestion; gets closest in terms of
