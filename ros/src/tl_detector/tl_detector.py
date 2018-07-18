@@ -30,7 +30,12 @@ class TLDetector(object):
         # Could make these ROS params to avoid editing code for different experiments
         self.stub_return_ground_truth = True   # If set, cheat by just returning known state
         self.grab_training_images = True       # If set, saving image files for classifier training
+        self.using_real_images = True          # True for ROS bag of real images, false for simulator
         self.training_image_idx = 0            # For training image unique filenames
+        self.sim_image_grab_max_range = 50     # Only grab image when close to traffic light
+        self.sim_image_grab_min_range = 3      # But not too close
+        self.sim_image_grab_min_spacing = 1    # Distance gap between images
+        self.real_image_grab_decimator = 20    # Only grab fraction of simulator images
         
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
@@ -159,12 +164,27 @@ class TLDetector(object):
             cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
             if self.grab_training_images:
-	            # We now have an image, and a known state for it (if in simulator), so save
-	            # it as a training item with ground truth
-	            filename = "img" + str(self.training_image_idx) + "_" + str(light.state) + ".jpg"
-	            self.training_image_idx += 1
-	            cv2.imwrite(filename, cv_image)
-	            sys.stderr.write("Debug tl_detector: saved training image " + filename + "\n")
+                # We now have an image, and a known state for it (if in simulator), so save
+                # it as a training item with ground truth
+                filename = "real" if self.using_real_images else "sim"
+                filename += "_" + str(self.training_image_idx) + "_" + str(light.state) + ".jpg"
+                filename = "../../../data/training_images/" + filename
+                if (self.using_real_images and 
+                      self.training_image_idx % self.real_image_grab_decimator != 0):
+                    # Skip this image so we don't get too many when using real data
+                    pass
+                elif (not self.using_real_images and not self.good_position_to_save_sim_image()):
+                    # In the simulator, only want to grab images close to traffic lights
+                    # and not too close to each other, skip if not suitable right now
+                    pass
+                else:
+                    # This is a good time to save a training image
+                    cv2.imwrite(filename, cv_image)
+                    sys.stderr.write("Debug tl_detector: saved training image " + filename + "\n")
+                # A bit arbitrary but incrementing the image index whether or not we used
+                # the image, so that if we change settings, we will in principle get the same
+                # index at the same point in the simulation or .bag file replay:
+                self.training_image_idx += 1
 
             if not self.stub_return_ground_truth:
                 # Get classification, this is not a drill!
@@ -174,6 +194,19 @@ class TLDetector(object):
         # Return either ground truth for debug or real classifier result for production
         return light_state_known if self.stub_return_ground_truth else light_state_inferred
 
+    def good_position_to_save_sim_image(self):
+        """Considers whether we are within the range limits before a traffic light
+           to save a training image, and also whether we have moved far enough since
+           the last one to save a new image, so that we only end up saving a reasonable
+           number of training images from the simulation and only ones that have
+           traffic lights in.
+           
+        Returns:
+           bool: True if now is a good time to save a training image"""
+           
+        # TODO implement
+        return True   
+           
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
             location and color
@@ -190,7 +223,7 @@ class TLDetector(object):
 
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
-        sys.stderr.write("Debug: tl_detector process_traffic_lights() pose ok=%s\n" % repr(self.pose is not None))
+        #sys.stderr.write("Debug: tl_detector process_traffic_lights() pose ok=%s\n" % repr(self.pose is not None))
         if(self.pose):
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
             #sys.stderr.write("Debug: tl_detector process_traffic_lights() car_wp_idx=%d\n" % car_wp_idx)
