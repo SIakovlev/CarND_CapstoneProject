@@ -33,8 +33,8 @@ class TLDetector(object):
         self.grab_training_images = True       # If set, saving image files for classifier training
         self.using_real_images = False         # True for ROS bag of real images, false for simulator
         self.training_image_idx = 0            # For training image unique filenames
-        self.sim_image_grab_max_range = 50     # Only grab image when close to traffic light
-        self.sim_image_grab_min_range = 3      # But not too close
+        self.sim_image_grab_max_range = 80     # Only grab image when close to traffic light
+        self.sim_image_grab_min_range = 2      # But not too close
         self.sim_image_grab_min_spacing = 1    # Distance gap between images
         self.image_grab_last_light = None      # Identify which light we were approaching last time
         self.image_grab_last_distance = 0      # Distance from light last time
