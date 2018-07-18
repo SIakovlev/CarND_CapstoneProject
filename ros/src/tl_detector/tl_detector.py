@@ -36,7 +36,7 @@ class TLDetector(object):
         self.sim_image_grab_max_range = 50     # Only grab image when close to traffic light
         self.sim_image_grab_min_range = 3      # But not too close
         self.sim_image_grab_min_spacing = 1    # Distance gap between images
-        self.image_grab_last_light_x = 0       # Identify which light we were approaching last time
+        self.image_grab_last_light = None      # Identify which light we were approaching last time
         self.image_grab_last_distance = 0      # Distance from light last time
         self.real_image_grab_decimator = 20    # Only grab fraction of simulator images
         
@@ -218,7 +218,11 @@ class TLDetector(object):
 
         if (self.sim_image_grab_min_range <= distance <= self.sim_image_grab_max_range):
             # We're within a suitable range of the light we're approaching
-            if closest_light.pose.pose.position.x != self.image_grab_last_light_x:
+            if (self.image_grab_last_light is None or
+                self.image_grab_last_light.state != closest_light.state):
+                # Definitely grab image if first light we've found, or it has changed colour
+                do_grab_image = True
+            elif closest_light.pose.pose.position.x != self.image_grab_last_light.pose.pose.position.x:
                 # First time we've been in range for this particular light so
                 # we definitely want to grab it (bit lazy to use exact equality of
                 # coordinate but works OK; header.seq always zero so no use)
@@ -242,7 +246,7 @@ class TLDetector(object):
             do_grab_image = False
 
         if do_grab_image:
-            self.image_grab_last_light_x = closest_light.pose.pose.position.x
+            self.image_grab_last_light = closest_light
             self.image_grab_last_distance = distance
             
         return do_grab_image
