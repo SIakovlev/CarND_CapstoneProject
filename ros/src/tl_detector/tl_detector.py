@@ -10,6 +10,7 @@ from light_classification.tl_classifier import TLClassifier
 from scipy.spatial import KDTree
 import tf
 import cv2
+import math
 import yaml
 import sys # for debug output
 
@@ -30,11 +31,13 @@ class TLDetector(object):
         # Could make these ROS params to avoid editing code for different experiments
         self.stub_return_ground_truth = True   # If set, cheat by just returning known state
         self.grab_training_images = True       # If set, saving image files for classifier training
-        self.using_real_images = True          # True for ROS bag of real images, false for simulator
+        self.using_real_images = False         # True for ROS bag of real images, false for simulator
         self.training_image_idx = 0            # For training image unique filenames
         self.sim_image_grab_max_range = 50     # Only grab image when close to traffic light
         self.sim_image_grab_min_range = 3      # But not too close
         self.sim_image_grab_min_spacing = 1    # Distance gap between images
+        self.image_grab_last_light_x = 0       # Identify which light we were approaching last time
+        self.image_grab_last_distance = 0      # Distance from light last time
         self.real_image_grab_decimator = 20    # Only grab fraction of simulator images
         
 
@@ -173,7 +176,7 @@ class TLDetector(object):
                       self.training_image_idx % self.real_image_grab_decimator != 0):
                     # Skip this image so we don't get too many when using real data
                     pass
-                elif (not self.using_real_images and not self.good_position_to_save_sim_image()):
+                elif (not self.using_real_images and not self.good_position_to_save_sim_image(light)):
                     # In the simulator, only want to grab images close to traffic lights
                     # and not too close to each other, skip if not suitable right now
                     pass
@@ -194,7 +197,7 @@ class TLDetector(object):
         # Return either ground truth for debug or real classifier result for production
         return light_state_known if self.stub_return_ground_truth else light_state_inferred
 
-    def good_position_to_save_sim_image(self):
+    def good_position_to_save_sim_image(self, closest_light):
         """Considers whether we are within the range limits before a traffic light
            to save a training image, and also whether we have moved far enough since
            the last one to save a new image, so that we only end up saving a reasonable
@@ -203,10 +206,48 @@ class TLDetector(object):
            
         Returns:
            bool: True if now is a good time to save a training image"""
-           
+          
         # TODO implement
-        return True   
-           
+        
+        # Figure out 2D Euclidean distance between us and this closest light
+        delta_x = self.pose.pose.position.x - closest_light.pose.pose.position.x
+        delta_y = self.pose.pose.position.y - closest_light.pose.pose.position.y
+        dist_sqd = delta_x * delta_x + delta_y * delta_y
+        distance = math.sqrt(dist_sqd)
+        
+
+        if (self.sim_image_grab_min_range <= distance <= self.sim_image_grab_max_range):
+            # We're within a suitable range of the light we're approaching
+            if closest_light.pose.pose.position.x != self.image_grab_last_light_x:
+                # First time we've been in range for this particular light so
+                # we definitely want to grab it (bit lazy to use exact equality of
+                # coordinate but works OK; header.seq always zero so no use)
+                #sys.stderr.write("dist=%f first time this light True\n" % distance)
+                do_grab_image = True
+            elif distance <= self.image_grab_last_distance - self.sim_image_grab_min_spacing:
+                # We have approached the light more closely than the last time we
+                # grabbed an image by enough distance for it to be worth capturing a new image
+                #sys.stderr.write("dist=%f got closer so True\n" % distance)
+                do_grab_image = True
+            else:
+                # We have not moved enough since last time, so skip this time as the
+                # image will be more or less the same as the last time
+                #sys.stderr.write("dist=%f not much closer so False\n" % distance)
+                do_grab_image = False
+        else:
+            # We're not in the right distance bracket but make sure we get first
+            # image when we do get within range
+            self.image_grab_last_light_x = 0
+            #sys.stderr.write("dist=%f outside limits so False\n" % distance)
+            do_grab_image = False
+
+        if do_grab_image:
+            self.image_grab_last_light_x = closest_light.pose.pose.position.x
+            self.image_grab_last_distance = distance
+            
+        return do_grab_image
+        
+            
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
             location and color
@@ -258,11 +299,11 @@ class TLDetector(object):
 
         if closest_light:
             state = self.get_light_state(closest_light)
-            sys.stderr.write("Debug: tl_detector process_traffic_lights() returning light_wp_idx=%d state=%d\n" % (light_wp_idx, state))
+            #sys.stderr.write("Debug: tl_detector process_traffic_lights() returning light_wp_idx=%d state=%d\n" % (light_wp_idx, state))
             return light_wp_idx, state
         else:
             # self.waypoints = None
-            sys.stderr.write("Debug: tl_detector process_traffic_lights() returning -1 as no closest_light\n")
+            #sys.stderr.write("Debug: tl_detector process_traffic_lights() returning -1 as no closest_light\n")
             return -1, TrafficLight.UNKNOWN
 
 if __name__ == '__main__':
