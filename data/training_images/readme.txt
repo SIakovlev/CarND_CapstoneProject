@@ -15,3 +15,6 @@ light state message enumeration, i.e.:
 1=YELLOW (AMBER)
 2=GREEN
 4=UNKNOWN (is that right?)
+
+The category was appended automatically when running with the simulator, but
+done by hand for the photos where the ground truth state was not provided.
