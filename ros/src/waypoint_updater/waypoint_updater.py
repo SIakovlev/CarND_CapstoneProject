@@ -25,6 +25,7 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
+DECELERATE_COEF = 0.18
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -85,7 +86,7 @@ class WaypointUpdater(object):
 
             stop_idx = max(self.stopline_wp_idx - closest_idx - 2, 0) # to make sure that car front stops before the stopline
             dist = self.distance(waypoints, i, stop_idx)
-            vel = math.sqrt(2 * abs(self.decel_limit) * dist) # check wiki about acceleration
+            vel = DECELERATE_COEF * dist
 
             if vel < 1.:
                 vel = 0.
