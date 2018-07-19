@@ -58,7 +58,7 @@ def maybe_download_pretrained_vgg(data_dir):
         os.remove(os.path.join(vgg_path, vgg_filename))
 
 
-def gen_batch_function(data_folder, image_shape):
+def gen_batch_function(data_folder, image_shape, num_classes):
     """
     Generate function to create batches of training data
     :param data_folder: Path to folder that contains all the datasets
@@ -73,55 +73,32 @@ def gen_batch_function(data_folder, image_shape):
         :param batch_size: Batch Size
         :return: Batches of training data
         """
-        # CW: Kitti dataset. Each photo has two label images.
-        #  data/data_road/image/training/image_2 = collection of .png colour photos of roads e.g. umm_000042.png
-        #  data/data_road/image/training/gt_image_2 = .png of ground truth (gt) where magenta=our lane/road,
-        #                              black=other road, red=something else
-        #      e.g. umm_road_000042.png for ground truth whole road, umm_lane_000042.png = just our lane
-        #  prefixes um_, umm_, uu_: http://www.cvlibs.net/datasets/kitti/eval_road.php
-        #       uu - urban unmarked (98/100)
-        #       um - urban marked (95/96)
-        #       umm - urban multiple marked lanes (96/94)
-
-        image_paths = glob(os.path.join(data_folder, 'image_2', '*.png')) # so raw photos
-
-        # CW: Make dictionary to look up road (not lane) ground truth image for each photo
-        #     e.g. umm_000042.png -> umm_road_000042.png
-        label_paths = {
-            re.sub(r'_(lane|road)_', '_', os.path.basename(path)): path
-            for path in glob(os.path.join(data_folder, 'gt_image_2', '*_road_*.png'))}
-
-        background_color = np.array([255, 0, 0]) # CW: red
+        image_paths = glob(os.path.join(data_folder, '*.jpg')) # all photos
 
         random.shuffle(image_paths)
+
         for batch_i in range(0, len(image_paths), batch_size): # divide full (shuffled) set into batches
             images = []
-            gt_images = []
+            true_classes_onehot = []
             for image_file in image_paths[batch_i:batch_i+batch_size]:
-                gt_image_file = label_paths[os.path.basename(image_file)]
+                image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
 
-                image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)       # real photo
-                gt_image = scipy.misc.imresize(scipy.misc.imread(gt_image_file), image_shape) # ground truth image
+                filename_with_ext = os.path.basename(image_file)          # e.g. "real_1980_4.jpg"
+                filename_wo_ext = os.path.splitext(filename_with_ext)[0]  # e.g. "real_1980_4"
+                filename_parts = filename_wo_ext.split('_')               # e.g. ["real", "1980", 4"]
+                if len(filename_parts) != 3:
+                    sys.stderr.write("Error: image filename not like real_1980_4: \n" % image_file)
+                    sys.exit(1)
+                numeric_state = int(filename_parts[2]) # or ValueException I guess if not integer
+                if numeric_state == 4:
+                    numeric_state = 3 # so we have consecutive range 0..3 for red, yellow, green, unknown
+                onehot = np.zeros(num_classes)
+                onehot[numeric_state] = 1
 
-                gt_bg = np.all(gt_image == background_color, axis=2) # CW: for each pixel, is it background (red)?
-                
-                # CW: for each pixel now in 2D array, adding a further array dimension spanning classes -- but
-                #     only have one class, for road/not road, so has size 1 to start with:
-                gt_bg = gt_bg.reshape(*gt_bg.shape, 1) # unpacks existing shape tuple as positional arguments -- adding a dimension of size 1?
-                # ... so now have 3 dimensions for each image (height, width, classes)
+                images.append(image)                # so now have 4D for data, i.e. [image, height, width, colour channels]
+                true_classes_onehot.append(onehot)  # so now have 2D for ground truth, i.e. [image, classes]
 
-                # ... then add element to each class dimension for opposite
-                gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2) # inverted so 1=non-background
-                # CW: so for each point, now have one-hot array like [0,1] (not background, is road) or
-                #                                                    [1,0] (is background, not road)
-
-                # TODO -- so network will identify 'other' roads, (black in ground truth images),
-                #         not just 'our' road (magenta in images) -- is that OK/intended?
-
-                images.append(image)
-                gt_images.append(gt_image)  # so now have 4D for ground truth, i.e. [image, height, width, classes] (or w,h, not sure)
-
-            yield np.array(images), np.array(gt_images) # return this batch
+            yield np.array(images), np.array(true_classes_onehot) # return this batch
     return get_batches_fn
 
 

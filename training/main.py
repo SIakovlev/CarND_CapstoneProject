@@ -268,19 +268,28 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 
  
 def run():
-    num_classes = 2 #  CW: just road or 'other'
+    num_classes = 4 #  CW: red, yellow, green, unknown
 
-    # CW: originals are 1242x375 so we are using shrunk and somewhat squashed versions
-    # (more extreme letterbox aspect ratio than originals). Shrinking will reduce training
-    #  workload.
-    image_shape = (160, 576)
+    # CW: both real Carla images and simulator exports are 800x600.
+    # We might find shrinking them helps with performance in terms of
+    # speed or memory, though classification quality will suffer if 
+    # we go too far. Semantic segregation project chose a size with
+    # reasonably high power-of-two factors to allow for the repeated halving
+    # of resolution going up the CNN funnel (160x576, or 2^5*5 x 2^6*9)
+    # without any awkward padding issues. 800 already divides nicely,
+    # but 600 is 2^3*3*5^2 so it can only be halved cleanly 3 times.
+    # But there is not too much happening at the bottom of any of our
+    # images, so clipping a little to 800x576 should be quite nice,
+    # maybe with a 1/2 or 1/4 shrink to speed things up.
+    # TODO clipping logic -- for now just shrinking to avoid code changes
+    image_shape = (576, 800) # Initial experiment size (heightxwidth)
 
     data_dir = './data'
     runs_dir = './runs'
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
-    epochs = 50 # Model pretty much converged after this time and no apparent overtraining
-    batch_size = 6 # Fits my Quadro P3000 device without memory allocation warning
+    epochs = 50 # To get started
+    batch_size = 2 # To get started
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 
     # Download pretrained vgg model
@@ -295,7 +304,7 @@ def run():
         vgg_path = os.path.join(data_dir, 'vgg')
 
         # Create function to get batches
-        get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
+        get_batches_fn = helper.gen_batch_function('../data/training_images', image_shape, num_classes)
 
         # OPTIONAL: Augment Images for better results
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
@@ -327,8 +336,8 @@ def run():
 
         # CW: add operations to classify each pixel by class and assess performance
         # Input label size dynamic because have odd number of images as last batch; can get away without specifying 
-        # shape in such detail (e.g. [None,None,None,num_classes] but specifying those we know to hopefully make bugs more apparent
-        correct_label = tf.placeholder(tf.float32, shape=[None,image_shape[0],image_shape[1],num_classes], name='correct_label')
+        # shape in complete detail up front but specifying those we know to hopefully make bugs more apparent
+        correct_label = tf.placeholder(tf.float32, shape=[None,num_classes], name='correct_label')
 
         # Reshape labels as one-hot matrix spanning all of the pixels from all of the images concatenated together
         flattened_label = tf.reshape(correct_label, (-1, num_classes), name='flattened_label')
