@@ -1,2 +1,0 @@
-camera_info_publisher:styx:styx_msgs:tl_detector:twist_controller:waypoint_follower:waypoint_loader:waypoint_updater
--DCATKIN_DEVEL_PREFIX=/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/devel -DCMAKE_INSTALL_PREFIX=/home/sergey/Documents/sdc/CarND_CapstoneProject/ros/install -G Unix Makefiles

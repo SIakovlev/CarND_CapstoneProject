@@ -26,6 +26,9 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
 
+MPH_TO_MPS = 0.44704
+MAX_SPEED = 5 * MPH_TO_MPS
+
 class WaypointUpdater(object):
     def __init__(self):
         rospy.init_node('waypoint_updater')
@@ -69,6 +72,10 @@ class WaypointUpdater(object):
         farthest_idx = closest_idx + LOOKAHEAD_WPS
         base_waypoints = self.base_lane.waypoints[closest_idx:farthest_idx]
 
+        # set max speed for each waypoint
+        for wp in base_waypoints:
+            wp.twist.twist.linear.x = MAX_SPEED
+
         if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx):
             lane.waypoints = base_waypoints
         else:
@@ -95,6 +102,12 @@ class WaypointUpdater(object):
         return temp
 
     def get_closest_waypoint_idx(self):
+    
+        if self.pose is None or self.waypoints_tree is None:
+            # No data to work from yet (in simulator can get here before we
+            # have waypoint tree object)
+            return 0
+            
     	x = self.pose.pose.position.x
     	y = self.pose.pose.position.y
     	closest_idx = self.waypoints_tree.query([x, y], 1)[1]
@@ -116,6 +129,7 @@ class WaypointUpdater(object):
     def waypoints_cb(self, waypoints):
         # TODO: Implement
         self.base_lane = waypoints
+
         if not self.waypoints_2d:
         	self.waypoints_2d = [[waypoint.pose.pose.position.x, waypoint.pose.pose.position.y] for waypoint in waypoints.waypoints]
         	self.waypoints_tree = KDTree(self.waypoints_2d)
