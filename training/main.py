@@ -91,89 +91,40 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     # everything works on one image at a time.
     #
     # Layer name  Details                     Output dimensions
-    # <input>     raw image                   160x576x3
-    # conv1_1     conv2d 3x3x3x64, Relu       160x576x64
-    # conv1_2     conv2d 3x3x64x64, Relu      160x576x64
-    # pool1       pool [1,2,2,1]              80x288x64
-    # conv2_1     conv2d 3x3x64x128, Relu     80x288x128
-    # conv2_2     conv2d 3x3x128x128, Relu    80x288x128
-    # pool2       pool [1,2,2,1]              40x144x128
-    # conv3_1     conv2d 3x3x128x256, Relu    40x144x256
-    # conv3_2     conv2d 3x3x256x256, Relu    40x144x256
-    # conv3_3     conv2d 3x3x256x256, Relu    40x144x256
-    # pool3       pool [1,2,2,1]              20x72x256     --> layer3_out
-    # conv4_1     conv2d 3x3x256x512, Relu    20x72x512
-    # conv4_2     conv2d 3x3x512x512, Relu    20x72x512
-    # conv4_3     conv2d 3x3x512x512, Relu    20x72x512
-    # pool4       pool [1,2,2,1]              10x36x512     --> layer4_out
-    # conv5_1     conv2d 3x3x512x512, Relu    10x36x512
-    # conv5_2     conv2d 3x3x512x512, Relu    10x36x512
-    # conv5_3     conv2d 3x3x512x512, Relu    10x36x512
-    # pool5       pool [1,2,2,1]              5x18x512
-    # fc6         conv2d 7x7x512x4096, Relu   5x18x4096
-    # dropout     dropout(keep_prob)          5x18x4096
-    # fc7         conv2d 1x1x4096x4096, Relu  5x18x4096
-    # dropout_1   dropout(keep_prob)          5x18x4096     --> layer7_out
+    # <input>     raw image                   288x384x3
+    # conv1_1     conv2d 3x3x3x64, Relu       288x384x64
+    # conv1_2     conv2d 3x3x64x64, Relu      288x384x64
+    # pool1       pool [1,2,2,1]              144x192x64
+    # conv2_1     conv2d 3x3x64x128, Relu     144x192x128
+    # conv2_2     conv2d 3x3x128x128, Relu    144x192x128
+    # pool2       pool [1,2,2,1]              72x96x128
+    # conv3_1     conv2d 3x3x128x256, Relu    72x96x256
+    # conv3_2     conv2d 3x3x256x256, Relu    72x96x256
+    # conv3_3     conv2d 3x3x256x256, Relu    72x96x256
+    # pool3       pool [1,2,2,1]              36x48x256     --> layer3_out
+    # conv4_1     conv2d 3x3x256x512, Relu    36x48x512
+    # conv4_2     conv2d 3x3x512x512, Relu    36x48x512
+    # conv4_3     conv2d 3x3x512x512, Relu    36x48x512
+    # pool4       pool [1,2,2,1]              18x24x512     --> layer4_out
+    # conv5_1     conv2d 3x3x512x512, Relu    18x24x512
+    # conv5_2     conv2d 3x3x512x512, Relu    18x24x512
+    # conv5_3     conv2d 3x3x512x512, Relu    18x24x512
+    # pool5       pool [1,2,2,1]              9x12x512
+    # fc6         conv2d 7x7x512x4096, Relu   9x12x4096
+    # dropout     dropout(keep_prob)          9x12x4096
+    # fc7         conv2d 1x1x4096x4096, Relu  9x12x4096
+    # dropout_1   dropout(keep_prob)          9x12x4096     --> layer7_out
 
+    # To get something working just go straight from final layer to fully
+    # connected with depth equal to number of classes we require
+    # Borowed from https://www.tensorflow.org/versions/r1.0/tutorials/layers
+    # _cw suffixes on layer names to avoid inadvertent links to VGG names!
+    flat_cw = tf.reshape(vgg_layer7_out, [-1,9*12*4096], name="flat_cw")
+    dense_cw = tf.layers.dense(inputs=flat_cw, units=32, activation=tf.nn.relu, name="dense_cw") # CW far fewer than example
+    dropout_cw = tf.layers.dropout(inputs=dense_cw, rate=0.4, name="dropout_cw")
+    final_layer_cw = tf.layers.dense(inputs=dropout_cw, units=num_classes, name="final_layer_cw")
 
-    # Upsample by 2. We need to work our way down from a kernel depth of 4096
-    # to just our number of classes (i.e. 2). Should we do this all in one go?
-    # Or keep more depth in as we work upwards? For now doing it all in one hit.
-    layer8 = tf.layers.conv2d_transpose(vgg_layer7_out,
-                                        num_classes, # so going down from 4096 to 2, is this a good idea yet?!
-                                        4, # kernel size taken from classroom example, might experiment
-                                        2, # stride causes upsampling
-                                        padding='same',
-                                        kernel_regularizer = tf.contrib.layers.l2_regularizer(1e-3),
-                                        name='layer8')
-
-    # Now we're at 10x36x2 so we have same pixel resolution as layer4_out. Can't directly add
-    # in layer4_out because it has filter depth of 512. (Though we could have had our transpose
-    # convolution only downsample to 512 for compatibility... might try that later)
-
-    # Squash layer4 output with 1x1 convolution so that it has compatible filter depth (i.e. num_classes)
-    layer4_squashed = tf.layers.conv2d(vgg_layer4_out,
-                                       num_classes, # new number of filters
-                                       1,    # 1x1 convolution so kernel size 1
-                                       padding='same',
-                                       kernel_regularizer = tf.contrib.layers.l2_regularizer(1e-3),
-                                       name='layer4_squashed')
-
-    # now we can add skip layer of this dimension taken from corresponding encoder layer
-    layer8_plus_layer4 = tf.add(layer8, layer4_squashed, name='layer8_plus_layer4')
-
-    # upsample by 2
-    layer9 = tf.layers.conv2d_transpose(layer8_plus_layer4,
-                                        num_classes,
-                                        4, # kernel size taken from classroom example, might experiment
-                                        2, # stride causes upsampling
-                                        padding='same',
-                                        kernel_regularizer = tf.contrib.layers.l2_regularizer(1e-3),
-                                        name='layer9')
-
-    # Now we're at 20x72x2 so same pixel resolution as layer3_out, but need to squash that from
-    # 256 filters to 2 (num_classes) before we can add it in as skip connection
-    layer3_squashed = tf.layers.conv2d(vgg_layer3_out,
-                                       num_classes, # new number of filters
-                                       1,    # 1x1 convolution so kernel size 1
-                                       padding='same',
-                                       kernel_regularizer = tf.contrib.layers.l2_regularizer(1e-3),
-                                       name='layer3_squashed')
-
-    # now we can add skip layer of this dimension taken from corresponding encoder layer
-    layer9_plus_layer3 = tf.add(layer9, layer3_squashed, name='layer9_plus_layer3')
-
-    # upsample by 8 to get back to original image size
-    layer10 = tf.layers.conv2d_transpose(layer9_plus_layer3,
-                                        num_classes,
-                                        32, # Finding quite large kernel works nicely
-                                        8, # stride causes upsampling
-                                        padding='same',
-                                        kernel_regularizer = tf.contrib.layers.l2_regularizer(1e-3),
-                                        name='layer10')
-    # so now we should be at 160x576x2, same as original image size, 2 classes
-
-    return layer10 # should be same size as image
+    return final_layer_cw # should be num images x num_classes
 
 
 
@@ -282,14 +233,14 @@ def run():
     # images, so clipping a little to 800x576 should be quite nice,
     # maybe with a 1/2 or 1/4 shrink to speed things up.
     # TODO clipping logic -- for now just shrinking to avoid code changes
-    image_shape = (576, 800) # Initial experiment size (heightxwidth)
+    image_shape = (288, 384) # Initial experiment size (heightxwidth) -- out of GPU memory trying 576*800. Multiples of 32.
 
     data_dir = './data'
     runs_dir = './runs'
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
     epochs = 50 # To get started
-    batch_size = 2 # To get started
+    batch_size = 1 # To get started
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 
     # Download pretrained vgg model
