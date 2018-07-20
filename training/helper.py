@@ -79,6 +79,8 @@ def get_numeric_light_state_from_filename(image_file):
     if numeric_state == 4:
         numeric_state = 3 # so we have consecutive range 0..3 for red, yellow, green, unknown
 
+    return numeric_state
+
 def gen_batch_function(image_paths, image_shape, num_classes):
     """
     Generate function to create batches of training data
@@ -148,6 +150,8 @@ def gen_test_output(sess, logits, keep_prob, image_pl, image_paths, image_shape)
 
         yield newname, image # just return original image so we can look at it with new filename
 
+    print("Test set complete, %d of %d correct (proportion=%f)\n" %
+             (num_correct, len(image_paths), num_correct/len(image_paths)))
 
 def save_inference_samples(runs_dir, image_paths, sess, image_shape, logits, keep_prob, input_image):
     # Make folder for current run

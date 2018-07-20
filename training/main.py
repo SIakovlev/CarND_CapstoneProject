@@ -220,7 +220,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
  
 def run():
     num_classes = 4 #  CW: red, yellow, green, unknown
-    proportion_train = 0.175 # rest validation. Don't have big enough set for separate test set really!
+    proportion_train = 0.75 # rest validation. Don't have big enough set for separate test set really!
 
     # CW: both real Carla images and simulator exports are 800x600.
     # We might find shrinking them helps with performance in terms of
@@ -240,8 +240,8 @@ def run():
     runs_dir = './runs'
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
-    epochs = 1 # To get started
-    batch_size = 1 # To get started
+    epochs = 20 # To get started
+    batch_size = 1 # Already getting memory warnings!
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 
     # Download pretrained vgg model
