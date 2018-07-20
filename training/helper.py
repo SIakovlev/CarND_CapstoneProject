@@ -57,8 +57,29 @@ def maybe_download_pretrained_vgg(data_dir):
         # Remove zip file to save space
         os.remove(os.path.join(vgg_path, vgg_filename))
 
+def get_split_image_paths(proportion_train, data_folder):
+    """Return file paths for images to use for training, and validation"""
 
-def gen_batch_function(data_folder, image_shape, num_classes):
+    image_paths = glob(os.path.join(data_folder, '*.jpg')) # all photos
+    random.shuffle(image_paths)
+    num_train = int(round(len(image_paths) * proportion_train))
+
+    return image_paths[:num_train], image_paths[num_train:]
+
+def get_numeric_light_state_from_filename(image_file):
+    """Gets 0,1,2,4 integer from end of filename and returns 0-3 integer accordingly"""
+
+    filename_with_ext = os.path.basename(image_file)          # e.g. "real_1980_4.jpg"
+    filename_wo_ext = os.path.splitext(filename_with_ext)[0]  # e.g. "real_1980_4"
+    filename_parts = filename_wo_ext.split('_')               # e.g. ["real", "1980", 4"]
+    if len(filename_parts) != 3:
+        sys.stderr.write("Error: image filename not like real_1980_4: \n" % image_file)
+        sys.exit(1)
+    numeric_state = int(filename_parts[2]) # or ValueException I guess if not integer
+    if numeric_state == 4:
+        numeric_state = 3 # so we have consecutive range 0..3 for red, yellow, green, unknown
+
+def gen_batch_function(image_paths, image_shape, num_classes):
     """
     Generate function to create batches of training data
     :param data_folder: Path to folder that contains all the datasets
@@ -73,25 +94,13 @@ def gen_batch_function(data_folder, image_shape, num_classes):
         :param batch_size: Batch Size
         :return: Batches of training data
         """
-        image_paths = glob(os.path.join(data_folder, '*.jpg')) # all photos
-
-        random.shuffle(image_paths)
 
         for batch_i in range(0, len(image_paths), batch_size): # divide full (shuffled) set into batches
             images = []
             true_classes_onehot = []
             for image_file in image_paths[batch_i:batch_i+batch_size]:
                 image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
-
-                filename_with_ext = os.path.basename(image_file)          # e.g. "real_1980_4.jpg"
-                filename_wo_ext = os.path.splitext(filename_with_ext)[0]  # e.g. "real_1980_4"
-                filename_parts = filename_wo_ext.split('_')               # e.g. ["real", "1980", 4"]
-                if len(filename_parts) != 3:
-                    sys.stderr.write("Error: image filename not like real_1980_4: \n" % image_file)
-                    sys.exit(1)
-                numeric_state = int(filename_parts[2]) # or ValueException I guess if not integer
-                if numeric_state == 4:
-                    numeric_state = 3 # so we have consecutive range 0..3 for red, yellow, green, unknown
+                numeric_state = get_numeric_light_state_from_filename(image_file)
                 onehot = np.zeros(num_classes)
                 onehot[numeric_state] = 1
 
@@ -102,7 +111,7 @@ def gen_batch_function(data_folder, image_shape, num_classes):
     return get_batches_fn
 
 
-def gen_test_output(sess, logits, keep_prob, image_pl, data_folder, image_shape):
+def gen_test_output(sess, logits, keep_prob, image_pl, image_paths, image_shape):
     """
     Generate test output using the test images
     :param sess: TF session
@@ -111,25 +120,36 @@ def gen_test_output(sess, logits, keep_prob, image_pl, data_folder, image_shape)
     :param image_pl: TF Placeholder for the image placeholder
     :param data_folder: Path to the folder that contains the datasets
     :param image_shape: Tuple - Shape of image
+    :param image_paths: File paths of images to test
     :return: Output for for each test image
     """
-    for image_file in glob(os.path.join(data_folder, 'image_2', '*.png')):
+    num_correct = 0
+    for image_file in image_paths:
         image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
 
         im_softmax = sess.run(
             [tf.nn.softmax(logits)],
             {keep_prob: 1.0, image_pl: [image]})
-        im_softmax = im_softmax[0][:, 1].reshape(image_shape[0], image_shape[1])
-        segmentation = (im_softmax > 0.5).reshape(image_shape[0], image_shape[1], 1)
-        mask = np.dot(segmentation, np.array([[0, 255, 0, 127]]))
-        mask = scipy.misc.toimage(mask, mode="RGBA")
-        street_im = scipy.misc.toimage(image)
-        street_im.paste(mask, box=None, mask=mask)
 
-        yield os.path.basename(image_file), np.array(street_im)
+        # Figure out if we got it right
+        top_score = np.argmax(im_softmax)
+        correct_state = get_numeric_light_state_from_filename(image_file)
+        prediction_correct = (top_score == correct_state)
+        num_correct += 1 if prediction_correct else 0
+
+        # Embed scores for different colours in filename to help understand output
+        softmax_scores_as_list = im_softmax[0].tolist()[0]
+        numeric_state = get_numeric_light_state_from_filename(image_file)
+        classification = "_R%.2f_Y%.2f_G%.2f_U%.2f" % tuple(softmax_scores_as_list)
+        basename = os.path.basename(image_file)
+        root, ext = os.path.splitext(basename)
+        newname = "P_" if prediction_correct else "F_" # pass or fail
+        newname += root + classification + ext # add detailed scores to filename
+
+        yield newname, image # just return original image so we can look at it with new filename
 
 
-def save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image):
+def save_inference_samples(runs_dir, image_paths, sess, image_shape, logits, keep_prob, input_image):
     # Make folder for current run
     output_dir = os.path.join(runs_dir, str(time.time()))
     if os.path.exists(output_dir):
@@ -139,6 +159,6 @@ def save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_p
     # Run NN on test images and save them to HD
     print('Training Finished. Saving test images to: {}'.format(output_dir))
     image_outputs = gen_test_output(
-        sess, logits, keep_prob, input_image, os.path.join(data_dir, 'data_road/testing'), image_shape)
+        sess, logits, keep_prob, input_image, image_paths, image_shape)
     for name, image in image_outputs:
         scipy.misc.imsave(os.path.join(output_dir, name), image)

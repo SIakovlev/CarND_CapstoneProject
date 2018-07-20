@@ -220,6 +220,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
  
 def run():
     num_classes = 4 #  CW: red, yellow, green, unknown
+    proportion_train = 0.175 # rest validation. Don't have big enough set for separate test set really!
 
     # CW: both real Carla images and simulator exports are 800x600.
     # We might find shrinking them helps with performance in terms of
@@ -239,7 +240,7 @@ def run():
     runs_dir = './runs'
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
-    epochs = 50 # To get started
+    epochs = 1 # To get started
     batch_size = 1 # To get started
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 
@@ -254,8 +255,12 @@ def run():
         # Path to vgg model
         vgg_path = os.path.join(data_dir, 'vgg')
 
+        # Split images into training and validation sets
+        training_image_paths, validation_image_paths =  \
+                    helper.get_split_image_paths(proportion_train, '../data/training_images')
+
         # Create function to get batches
-        get_batches_fn = helper.gen_batch_function('../data/training_images', image_shape, num_classes)
+        get_batches_fn = helper.gen_batch_function(training_image_paths, image_shape, num_classes)
 
         # OPTIONAL: Augment Images for better results
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
@@ -306,7 +311,7 @@ def run():
                  flattened_label, keep_prob, learning_rate)
 
         # DONE: Save inference data using helper.save_inference_samples
-        helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
+        helper.save_inference_samples(runs_dir, validation_image_paths, sess, image_shape, logits, keep_prob, input_image)
 
         # OPTIONAL: Apply the trained model to a video
 
