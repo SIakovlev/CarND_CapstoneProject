@@ -120,9 +120,9 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     # Borowed from https://www.tensorflow.org/versions/r1.0/tutorials/layers
     # _cw suffixes on layer names to avoid inadvertent links to VGG names!
     flat_cw = tf.reshape(vgg_layer7_out, [-1,9*12*4096], name="flat_cw")
-    dense_cw = tf.layers.dense(inputs=flat_cw, units=32, activation=tf.nn.relu, name="dense_cw") # CW far fewer than example
-    dropout_cw = tf.layers.dropout(inputs=dense_cw, rate=0.4, name="dropout_cw")
-    final_layer_cw = tf.layers.dense(inputs=dropout_cw, units=num_classes, name="final_layer_cw")
+    dense_cw = tf.layers.dense(inputs=flat_cw, units=128, activation=tf.nn.relu, name="dense_cw")
+    #dropout_cw = tf.layers.dropout(inputs=dense_cw, rate=0.4, name="dropout_cw")
+    final_layer_cw = tf.layers.dense(inputs=dense_cw, units=num_classes, name="final_layer_cw")
 
     return final_layer_cw # should be num images x num_classes
 
@@ -221,6 +221,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 def run():
     num_classes = 4 #  CW: red, yellow, green, unknown
     proportion_train = 0.75 # rest validation. Don't have big enough set for separate test set really!
+    img_type = "sim"   # "sim", "real" or "both"
 
     # CW: both real Carla images and simulator exports are 800x600.
     # We might find shrinking them helps with performance in terms of
@@ -257,7 +258,7 @@ def run():
 
         # Split images into training and validation sets
         training_image_paths, validation_image_paths =  \
-                    helper.get_split_image_paths(proportion_train, '../data/training_images')
+                    helper.get_split_image_paths(proportion_train, img_type, '../data/training_images')
 
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(training_image_paths, image_shape, num_classes)
@@ -281,7 +282,7 @@ def run():
         # CW: for debug, want to visualise model structure in Tensorboard; initially did this
         # before adding my layers to understand how to connect to unmodified VGG layers. Now
         # doing afterwards to include picture in write-up that includes my layers.
-        if True:  # Turned off for most runs when not debugging
+        if False:  # Turned off for most runs when not debugging
             print(tf.trainable_variables()) # also trying to understand what we've got
             log_path = os.path.join(vgg_path, 'logs')
             writer = tf.summary.FileWriter(log_path, graph=sess.graph)
