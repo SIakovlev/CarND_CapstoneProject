@@ -153,6 +153,8 @@ def gen_test_output(sess, logits, keep_prob, image_pl, image_paths, image_shape)
         softmax_scores_as_list = im_softmax[0].tolist()[0]
         numeric_state = get_numeric_light_state_from_filename(image_file)
         classification = "_R%.2f_Y%.2f_G%.2f_U%.2f" % tuple(softmax_scores_as_list)
+        # Debug -- is there some problem which means we're getting _identical_ logits each time?
+        print("Debug logits: " + repr(softmax_scores_as_list))
         basename = os.path.basename(image_file)
         root, ext = os.path.splitext(basename)
         newname = "P_" if prediction_correct else "F_" # pass or fail

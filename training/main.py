@@ -241,7 +241,7 @@ def run():
     runs_dir = './runs'
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
-    epochs = 20 # To get started
+    epochs = 5 # To get started
     batch_size = 1 # Already getting memory warnings!
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 
