@@ -234,7 +234,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 def run():
     num_classes = 4 #  CW: red, yellow, green, unknown
     proportion_train = 0.7 # rest validation. Don't have big enough set for separate test set really!
-    img_type = "real"   # "sim", "real" or "both"
+    img_type = "sim"   # "sim", "real" or "both"
 
     # CW: both real Carla images and simulator exports are 800x600.
     # We might find shrinking them helps with performance in terms of
@@ -248,13 +248,13 @@ def run():
     # images, so clipping a little to 800x576 should be quite nice,
     # maybe with a 1/2 or 1/4 shrink to speed things up.
     # TODO clipping logic -- for now just shrinking to avoid code changes
-    image_shape = (128, 64) # Initial experiment size (heightxwidth) -- out of GPU memory trying 576*800. Multiples of 32.
+    image_shape = (288, 384) # Initial experiment size (heightxwidth) -- out of GPU memory trying 576*800. Multiples of 32.
 
     data_dir = './data'
     runs_dir = './runs'
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
-    epochs = 20 # To get started
+    epochs = 8 # To get started
     batch_size = 1 # Already getting memory warnings!
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 
@@ -271,7 +271,7 @@ def run():
 
         # Split images into training and validation sets
         training_image_paths, validation_image_paths =  \
-                    helper.get_split_image_paths(proportion_train, img_type, '../data/training_images_cropped_roughly')
+                    helper.get_split_image_paths(proportion_train, img_type, '../data/training_images')
 
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(training_image_paths, image_shape, num_classes)
