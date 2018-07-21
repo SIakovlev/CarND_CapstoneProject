@@ -234,7 +234,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 def run():
     num_classes = 4 #  CW: red, yellow, green, unknown
     proportion_train = 0.75 # rest validation. Don't have big enough set for separate test set really!
-    img_type = "both"   # "sim", "real" or "both"
+    img_type = "sim"   # "sim", "real" or "both"
 
     # CW: both real Carla images and simulator exports are 800x600.
     # We might find shrinking them helps with performance in terms of

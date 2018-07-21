@@ -1,0 +1,25 @@
+
+(carnd-advdl-odlab) C:\Users\UK000044\git\CarND_CapstoneProject\training>python main.py
+TensorFlow Version: 1.4.0
+2018-07-21 15:04:49.520552: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\platform\cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX AVX2
+2018-07-21 15:04:49.801875: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1030] Found device 0 with properties:
+name: Quadro P3000 major: 6 minor: 1 memoryClockRate(GHz): 1.215
+pciBusID: 0000:01:00.0
+totalMemory: 6.00GiB freeMemory: 4.97GiB
+2018-07-21 15:04:49.807359: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+2018-07-21 15:04:50.105814: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+Default GPU Device: /device:GPU:0
+2018-07-21 15:04:50.123431: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+Selected 142 total images (106 for training, propn=0.750000)
+[<tf.Variable 'conv1_1/filter:0' shape=(3, 3, 3, 64) dtype=float32_ref>, <tf.Variable 'conv1_1/biases:0' shape=(64,) dtype=float32_ref>, <tf.Variable 'conv1_2/filter:0' shape=(3, 3, 64, 64) dtype=float32_ref>, <tf.Variable 'conv1_2/biases:0' shape=(64,) dtype=float32_ref>, <tf.Variable 'conv2_1/filter:0' shape=(3, 3, 64, 128) dtype=float32_ref>, <tf.Variable 'conv2_1/biases:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'conv2_2/filter:0' shape=(3, 3, 128, 128) dtype=float32_ref>, <tf.Variable 'conv2_2/biases:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'conv3_1/filter:0' shape=(3, 3, 128, 256) dtype=float32_ref>, <tf.Variable 'conv3_1/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv3_2/filter:0' shape=(3, 3, 256, 256) dtype=float32_ref>, <tf.Variable 'conv3_2/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv3_3/filter:0' shape=(3, 3, 256, 256) dtype=float32_ref>, <tf.Variable 'conv3_3/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv4_1/filter:0' shape=(3, 3, 256, 512) dtype=float32_ref>, <tf.Variable 'conv4_1/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv4_2/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv4_2/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv4_3/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv4_3/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_1/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_1/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_2/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_2/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_3/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_3/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'fc6/weights:0' shape=(7, 7, 512, 4096) dtype=float32_ref>, <tf.Variable 'fc6/biases:0' shape=(4096,) dtype=float32_ref>, <tf.Variable 'fc7/weights:0' shape=(1, 1, 4096, 4096) dtype=float32_ref>, <tf.Variable 'fc7/biases:0' shape=(4096,) dtype=float32_ref>, <tf.Variable 'dense_cw/kernel:0' shape=(32768, 128) dtype=float32_ref>, <tf.Variable 'dense_cw/bias:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'final_layer_cw/kernel:0' shape=(128, 4) dtype=float32_ref>, <tf.Variable 'final_layer_cw/bias:0' shape=(4,) dtype=float32_ref>]
+..........................................................................................................
+Epoch: 0 Loss/batch: 2.845180429225435 time so far: 0:00:10.734809..........................................................................................................
+Epoch: 1 Loss/batch: 0.1595180306365004 time so far: 0:00:19.807804..........................................................................................................
+Epoch: 2 Loss/batch: 0.08008020387404431 time so far: 0:00:28.873953..........................................................................................................
+Epoch: 3 Loss/batch: 0.18885403793469654 time so far: 0:00:37.955647..........................................................................................................
+Epoch: 4 Loss/batch: 0.12985897534980112 time so far: 0:00:47.048176
+Training Finished. Saving test images to: ./runs\1532181963.7585251
+Test set complete, 36 of 36 correct (proportion=1.000000)
+
+
+(carnd-advdl-odlab) C:\Users\UK000044\git\CarND_CapstoneProject\training>
