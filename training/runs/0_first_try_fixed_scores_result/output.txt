@@ -1,0 +1,200 @@
+
+(base) C:\Users\UK000044>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 1664-8D0C
+
+ Directory of C:\Users\UK000044
+
+19/07/2018  07:17    <DIR>          .
+19/07/2018  07:17    <DIR>          ..
+05/06/2018  16:47    <DIR>          .conda
+12/04/2018  13:35                69 .gitconfig
+05/06/2018  16:59    <DIR>          .ipython
+05/06/2018  16:48    <DIR>          .jupyter
+09/06/2018  07:08    <DIR>          .keras
+18/07/2018  18:16    <DIR>          .VirtualBox
+11/04/2018  16:27    <DIR>          3D Objects
+11/04/2018  16:27    <DIR>          Contacts
+09/06/2018  07:46    <DIR>          Desktop
+09/06/2018  09:35    <DIR>          Documents
+18/07/2018  17:27    <DIR>          Downloads
+11/04/2018  16:27    <DIR>          Favorites
+19/07/2018  07:26    <DIR>          git
+11/04/2018  16:27    <DIR>          Links
+11/04/2018  16:27    <DIR>          Music
+18/07/2018  17:24    <DIR>          OneDrive
+14/05/2018  13:22    <DIR>          Pictures
+13/04/2018  11:31         5,179,538 PiSnoop.msi
+11/04/2018  16:27    <DIR>          Saved Games
+11/04/2018  16:28    <DIR>          Searches
+09/06/2018  09:36    <DIR>          source
+13/04/2018  10:30    <DIR>          svn
+11/01/2013  13:18               862 svnFolderOps.reg
+30/04/2018  15:32    <DIR>          Videos
+18/07/2018  17:37    <DIR>          VirtualBox VMs
+               3 File(s)      5,180,469 bytes
+              24 Dir(s)  95,452,663,808 bytes free
+
+(base) C:\Users\UK000044>cd git
+
+(base) C:\Users\UK000044\git>
+(base) C:\Users\UK000044\git>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 1664-8D0C
+
+ Directory of C:\Users\UK000044\git
+
+19/07/2018  07:26    <DIR>          .
+19/07/2018  07:26    <DIR>          ..
+05/06/2018  17:01    <DIR>          CarND-Object-Detection-Lab
+22/06/2018  17:24     2,739,517,048 CarND-Semantic-Segmentation.zip
+19/07/2018  07:18    <DIR>          CarND-Semantic-Segmentation_udacity_repo_checkout
+19/07/2018  07:16    <DIR>          CarND_CapstoneProject
+09/06/2018  06:29    <DIR>          kitti_data_road
+09/06/2018  06:26       470,992,343 kitti_data_road.zip
+08/05/2018  11:23    <DIR>          mucca
+19/07/2018  07:27    <DIR>          udacity
+               2 File(s)  3,210,509,391 bytes
+               8 Dir(s)  95,452,475,392 bytes free
+
+(base) C:\Users\UK000044\git>cd CarND-Object-Detection-Lab
+
+(base) C:\Users\UK000044\git\CarND-Object-Detection-Lab>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 1664-8D0C
+
+ Directory of C:\Users\UK000044\git\CarND-Object-Detection-Lab
+
+05/06/2018  17:01    <DIR>          .
+05/06/2018  17:01    <DIR>          ..
+05/06/2018  16:23                53 .gitignore
+05/06/2018  17:01    <DIR>          .ipynb_checkpoints
+05/06/2018  16:23    <DIR>          assets
+05/06/2018  17:01            35,153 CarND-Object-Detection-Lab.ipynb
+05/06/2018  16:23        20,689,672 driving.mp4
+05/06/2018  16:23               300 environment.yml
+05/06/2018  16:23    <DIR>          exercise-solutions
+05/06/2018  16:23             1,096 LICENSE
+05/06/2018  16:23             1,809 README.md
+               6 File(s)     20,728,083 bytes
+               5 Dir(s)  95,451,611,136 bytes free
+
+(base) C:\Users\UK000044\git\CarND-Object-Detection-Lab>cd ..
+
+(base) C:\Users\UK000044\git>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 1664-8D0C
+
+ Directory of C:\Users\UK000044\git
+
+19/07/2018  07:26    <DIR>          .
+19/07/2018  07:26    <DIR>          ..
+05/06/2018  17:01    <DIR>          CarND-Object-Detection-Lab
+22/06/2018  17:24     2,739,517,048 CarND-Semantic-Segmentation.zip
+19/07/2018  07:18    <DIR>          CarND-Semantic-Segmentation_udacity_repo_checkout
+19/07/2018  07:16    <DIR>          CarND_CapstoneProject
+09/06/2018  06:29    <DIR>          kitti_data_road
+09/06/2018  06:26       470,992,343 kitti_data_road.zip
+08/05/2018  11:23    <DIR>          mucca
+19/07/2018  07:27    <DIR>          udacity
+               2 File(s)  3,210,509,391 bytes
+               8 Dir(s)  95,451,045,888 bytes free
+
+(base) C:\Users\UK000044\git>conda env list
+# conda environments:
+#
+base                  *  C:\ProgramData\Anaconda3
+carnd-advdl-odlab        C:\Users\UK000044\AppData\Local\conda\conda\envs\carnd-advdl-odlab
+
+
+(base) C:\Users\UK000044\git>conda activate carnd-advdl-odlab
+
+(carnd-advdl-odlab) C:\Users\UK000044\git>cd CarND_CapstoneProject
+
+(carnd-advdl-odlab) C:\Users\UK000044\git\CarND_CapstoneProject>cd training
+
+(carnd-advdl-odlab) C:\Users\UK000044\git\CarND_CapstoneProject\training>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 1664-8D0C
+
+ Directory of C:\Users\UK000044\git\CarND_CapstoneProject\training
+
+20/07/2018  21:15    <DIR>          .
+20/07/2018  21:15    <DIR>          ..
+19/07/2018  07:46    <DIR>          data
+20/07/2018  21:12             6,879 helper.py
+20/07/2018  21:15            16,672 main.py
+19/07/2018  08:09               447 README.md
+20/07/2018  21:18    <DIR>          runs
+19/07/2018  07:44             1,386 training_vs_proj.pyproj
+19/07/2018  07:39               966 training_vs_proj.sln
+20/07/2018  21:12    <DIR>          __pycache__
+               5 File(s)         26,350 bytes
+               5 Dir(s)  95,445,495,808 bytes free
+
+(carnd-advdl-odlab) C:\Users\UK000044\git\CarND_CapstoneProject\training>python main.py
+TensorFlow Version: 1.4.0
+2018-07-20 21:24:56.249745: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\platform\cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX AVX2
+2018-07-20 21:24:56.687352: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1030] Found device 0 with properties:
+name: Quadro P3000 major: 6 minor: 1 memoryClockRate(GHz): 1.215
+pciBusID: 0000:01:00.0
+totalMemory: 6.00GiB freeMemory: 4.97GiB
+2018-07-20 21:24:56.695743: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+2018-07-20 21:24:57.015754: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+Default GPU Device: /device:GPU:0
+2018-07-20 21:24:57.046418: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+[<tf.Variable 'conv1_1/filter:0' shape=(3, 3, 3, 64) dtype=float32_ref>, <tf.Variable 'conv1_1/biases:0' shape=(64,) dtype=float32_ref>, <tf.Variable 'conv1_2/filter:0' shape=(3, 3, 64, 64) dtype=float32_ref>, <tf.Variable 'conv1_2/biases:0' shape=(64,) dtype=float32_ref>, <tf.Variable 'conv2_1/filter:0' shape=(3, 3, 64, 128) dtype=float32_ref>, <tf.Variable 'conv2_1/biases:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'conv2_2/filter:0' shape=(3, 3, 128, 128) dtype=float32_ref>, <tf.Variable 'conv2_2/biases:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'conv3_1/filter:0' shape=(3, 3, 128, 256) dtype=float32_ref>, <tf.Variable 'conv3_1/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv3_2/filter:0' shape=(3, 3, 256, 256) dtype=float32_ref>, <tf.Variable 'conv3_2/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv3_3/filter:0' shape=(3, 3, 256, 256) dtype=float32_ref>, <tf.Variable 'conv3_3/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv4_1/filter:0' shape=(3, 3, 256, 512) dtype=float32_ref>, <tf.Variable 'conv4_1/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv4_2/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv4_2/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv4_3/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv4_3/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_1/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_1/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_2/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_2/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_3/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_3/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'fc6/weights:0' shape=(7, 7, 512, 4096) dtype=float32_ref>, <tf.Variable 'fc6/biases:0' shape=(4096,) dtype=float32_ref>, <tf.Variable 'fc7/weights:0' shape=(1, 1, 4096, 4096) dtype=float32_ref>, <tf.Variable 'fc7/biases:0' shape=(4096,) dtype=float32_ref>, <tf.Variable 'dense_cw/kernel:0' shape=(442368, 32) dtype=float32_ref>, <tf.Variable 'dense_cw/bias:0' shape=(32,) dtype=float32_ref>, <tf.Variable 'final_layer_cw/kernel:0' shape=(32, 4) dtype=float32_ref>, <tf.Variable 'final_layer_cw/bias:0' shape=(4,) dtype=float32_ref>]
+2018-07-20 21:25:26.773615: W C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\bfc_allocator.cc:217] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.14GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory is available.
+2018-07-20 21:25:27.358695: W C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\bfc_allocator.cc:217] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.14GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory is available.
+2018-07-20 21:25:27.396357: W C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\bfc_allocator.cc:217] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.13GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory is available.
+....................................................................
+Epoch: 0 Loss/batch: nan time so far: 0:00:32.034691
+Training Finished. Saving test images to: ./runs\1532118356.7836192
+forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+libifcoremd.dll    00007FF9A0E894C4  Unknown               Unknown  Unknown
+KERNELBASE.dll     00007FFA08507EDD  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFA09B31FE4  Unknown               Unknown  Unknown
+ntdll.dll          00007FFA0C34F061  Unknown               Unknown  Unknown
+
+(carnd-advdl-odlab) C:\Users\UK000044\git\CarND_CapstoneProject\training>python main.py
+TensorFlow Version: 1.4.0
+2018-07-20 21:49:56.401009: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\platform\cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX AVX2
+2018-07-20 21:49:56.690547: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1030] Found device 0 with properties:
+name: Quadro P3000 major: 6 minor: 1 memoryClockRate(GHz): 1.215
+pciBusID: 0000:01:00.0
+totalMemory: 6.00GiB freeMemory: 4.97GiB
+2018-07-20 21:49:56.700270: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+2018-07-20 21:49:56.988157: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+Default GPU Device: /device:GPU:0
+2018-07-20 21:49:57.005973: I C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\gpu\gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0, compute capability: 6.1)
+[<tf.Variable 'conv1_1/filter:0' shape=(3, 3, 3, 64) dtype=float32_ref>, <tf.Variable 'conv1_1/biases:0' shape=(64,) dtype=float32_ref>, <tf.Variable 'conv1_2/filter:0' shape=(3, 3, 64, 64) dtype=float32_ref>, <tf.Variable 'conv1_2/biases:0' shape=(64,) dtype=float32_ref>, <tf.Variable 'conv2_1/filter:0' shape=(3, 3, 64, 128) dtype=float32_ref>, <tf.Variable 'conv2_1/biases:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'conv2_2/filter:0' shape=(3, 3, 128, 128) dtype=float32_ref>, <tf.Variable 'conv2_2/biases:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'conv3_1/filter:0' shape=(3, 3, 128, 256) dtype=float32_ref>, <tf.Variable 'conv3_1/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv3_2/filter:0' shape=(3, 3, 256, 256) dtype=float32_ref>, <tf.Variable 'conv3_2/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv3_3/filter:0' shape=(3, 3, 256, 256) dtype=float32_ref>, <tf.Variable 'conv3_3/biases:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'conv4_1/filter:0' shape=(3, 3, 256, 512) dtype=float32_ref>, <tf.Variable 'conv4_1/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv4_2/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv4_2/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv4_3/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv4_3/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_1/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_1/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_2/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_2/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'conv5_3/filter:0' shape=(3, 3, 512, 512) dtype=float32_ref>, <tf.Variable 'conv5_3/biases:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'fc6/weights:0' shape=(7, 7, 512, 4096) dtype=float32_ref>, <tf.Variable 'fc6/biases:0' shape=(4096,) dtype=float32_ref>, <tf.Variable 'fc7/weights:0' shape=(1, 1, 4096, 4096) dtype=float32_ref>, <tf.Variable 'fc7/biases:0' shape=(4096,) dtype=float32_ref>, <tf.Variable 'dense_cw/kernel:0' shape=(442368, 32) dtype=float32_ref>, <tf.Variable 'dense_cw/bias:0' shape=(32,) dtype=float32_ref>, <tf.Variable 'final_layer_cw/kernel:0' shape=(32, 4) dtype=float32_ref>, <tf.Variable 'final_layer_cw/bias:0' shape=(4,) dtype=float32_ref>]
+2018-07-20 21:50:26.243583: W C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\bfc_allocator.cc:217] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.14GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory is available.
+2018-07-20 21:50:26.826433: W C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\bfc_allocator.cc:217] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.14GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory is available.
+2018-07-20 21:50:26.867500: W C:\tf_jenkins\home\workspace\rel-win\M\windows-gpu\PY\36\tensorflow\core\common_runtime\bfc_allocator.cc:217] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.13GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory is available.
+..................................................................................................................................................................................................................................................................................................
+Epoch: 0 Loss/batch: 37.67350041210522 time so far: 0:02:07.132785..................................................................................................................................................................................................................................................................................................
+Epoch: 1 Loss/batch: 1.1771435544922435 time so far: 0:04:12.134810..................................................................................................................................................................................................................................................................................................
+Epoch: 2 Loss/batch: 1.1477035785864653 time so far: 0:06:16.766037..................................................................................................................................................................................................................................................................................................
+Epoch: 3 Loss/batch: 1.7039719983357293 time so far: 0:08:21.289605..................................................................................................................................................................................................................................................................................................
+Epoch: 4 Loss/batch: 1.4952658546381983 time so far: 0:10:25.581211..................................................................................................................................................................................................................................................................................................
+Epoch: 5 Loss/batch: 60927.364631064185 time so far: 0:12:29.721456..................................................................................................................................................................................................................................................................................................
+Epoch: 6 Loss/batch: 1.1907050753461903 time so far: 0:14:33.942610..................................................................................................................................................................................................................................................................................................
+Epoch: 7 Loss/batch: 1.161784539962637 time so far: 0:16:38.109668..................................................................................................................................................................................................................................................................................................
+Epoch: 8 Loss/batch: 1.141253084971987 time so far: 0:18:42.363453..................................................................................................................................................................................................................................................................................................
+Epoch: 9 Loss/batch: 1.1264684720286007 time so far: 0:20:46.548358..................................................................................................................................................................................................................................................................................................
+Epoch: 10 Loss/batch: 1.1156875221893705 time so far: 0:22:50.770504..................................................................................................................................................................................................................................................................................................
+Epoch: 11 Loss/batch: 1.1077339996551645 time so far: 0:24:55.160282..................................................................................................................................................................................................................................................................................................
+Epoch: 12 Loss/batch: 1.101801484001094 time so far: 0:26:59.502716..................................................................................................................................................................................................................................................................................................
+Epoch: 13 Loss/batch: 1.097330354822093 time so far: 0:29:03.752830..................................................................................................................................................................................................................................................................................................
+Epoch: 14 Loss/batch: 1.0939276315014939 time so far: 0:31:07.809687..................................................................................................................................................................................................................................................................................................
+Epoch: 15 Loss/batch: 1.0913143564914836 time so far: 0:33:11.990363..................................................................................................................................................................................................................................................................................................
+Epoch: 16 Loss/batch: 1.0892903580747801 time so far: 0:35:16.207749..................................................................................................................................................................................................................................................................................................
+Epoch: 17 Loss/batch: 1.0877105501191369 time so far: 0:37:20.467812..................................................................................................................................................................................................................................................................................................
+Epoch: 18 Loss/batch: 1.086468536894897 time so far: 0:39:24.719911..................................................................................................................................................................................................................................................................................................
+Epoch: 19 Loss/batch: 1.0854856433539555 time so far: 0:41:28.871052
+Training Finished. Saving test images to: ./runs\1532122313.615476
+Test set complete, 50 of 96 correct (proportion=0.520833)
+
+
+(carnd-advdl-odlab) C:\Users\UK000044\git\CarND_CapstoneProject\training>.
