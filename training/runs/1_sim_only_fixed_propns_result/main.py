@@ -120,9 +120,9 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     # Borowed from https://www.tensorflow.org/versions/r1.0/tutorials/layers
     # _cw suffixes on layer names to avoid inadvertent links to VGG names!
     flat_cw = tf.reshape(vgg_layer7_out, [-1,9*12*4096], name="flat_cw")
-    dense_cw = tf.layers.dense(inputs=flat_cw, units=128, activation=tf.nn.relu, name="dense_cw")
-    #dropout_cw = tf.layers.dropout(inputs=dense_cw, rate=0.4, name="dropout_cw")
-    final_layer_cw = tf.layers.dense(inputs=dense_cw, units=num_classes, name="final_layer_cw")
+    dense_cw = tf.layers.dense(inputs=flat_cw, units=32, activation=tf.nn.relu, name="dense_cw") # CW far fewer than example
+    dropout_cw = tf.layers.dropout(inputs=dense_cw, rate=0.4, name="dropout_cw")
+    final_layer_cw = tf.layers.dense(inputs=dropout_cw, units=num_classes, name="final_layer_cw")
 
     return final_layer_cw # should be num images x num_classes
 
@@ -241,7 +241,7 @@ def run():
     runs_dir = './runs'
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
-    epochs = 5 # To get started
+    epochs = 20 # To get started
     batch_size = 1 # Already getting memory warnings!
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 
@@ -282,7 +282,7 @@ def run():
         # CW: for debug, want to visualise model structure in Tensorboard; initially did this
         # before adding my layers to understand how to connect to unmodified VGG layers. Now
         # doing afterwards to include picture in write-up that includes my layers.
-        if False:  # Turned off for most runs when not debugging
+        if True:  # Turned off for most runs when not debugging
             print(tf.trainable_variables()) # also trying to understand what we've got
             log_path = os.path.join(vgg_path, 'logs')
             writer = tf.summary.FileWriter(log_path, graph=sess.graph)

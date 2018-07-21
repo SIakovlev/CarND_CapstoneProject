@@ -57,22 +57,12 @@ def maybe_download_pretrained_vgg(data_dir):
         # Remove zip file to save space
         os.remove(os.path.join(vgg_path, vgg_filename))
 
-def get_split_image_paths(proportion_train, img_type, data_folder):
+def get_split_image_paths(proportion_train, data_folder):
     """Return file paths for images to use for training, and validation"""
 
-    # Select simulation, real or both types of image
-    if img_type == "both":
-        wildcard = "*.jpg"
-    else:
-        # "sim" or "real"
-        wildcard = img_type + "_*.jpg"
-
-    image_paths = glob(os.path.join(data_folder, wildcard))
+    image_paths = glob(os.path.join(data_folder, '*.jpg')) # all photos
     random.shuffle(image_paths)
     num_train = int(round(len(image_paths) * proportion_train))
-
-    print("Selected %d total images (%d for training, propn=%f)" 
-             % (len(image_paths), num_train, proportion_train))
 
     return image_paths[:num_train], image_paths[num_train:]
 
@@ -153,8 +143,6 @@ def gen_test_output(sess, logits, keep_prob, image_pl, image_paths, image_shape)
         softmax_scores_as_list = im_softmax[0].tolist()[0]
         numeric_state = get_numeric_light_state_from_filename(image_file)
         classification = "_R%.2f_Y%.2f_G%.2f_U%.2f" % tuple(softmax_scores_as_list)
-        # Debug -- is there some problem which means we're getting _identical_ logits each time?
-        print("Debug logits: " + repr(softmax_scores_as_list))
         basename = os.path.basename(image_file)
         root, ext = os.path.splitext(basename)
         newname = "P_" if prediction_correct else "F_" # pass or fail
