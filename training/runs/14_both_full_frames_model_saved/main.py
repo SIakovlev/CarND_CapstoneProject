@@ -235,7 +235,7 @@ def run():
     num_classes = 4 #  CW: red, yellow, green, unknown
     proportion_train = 0.95 # rest validation. Don't have big enough set for separate test set really!
     img_type = "both"   # "sim", "real" or "both"
-    restore_from_model_path = "./runs/14_both_full_frames_model_saved/both_full_frame_model.ckpt" # or empty string to train
+    restore_from_model_path = "" # "./runs/14_both_full_frames_model_saved/both_full_frame_model.ckpt" # or empty string to train
     save_model_name = "both_full_frame_model.ckpt" # if saving this time
 
     if restore_from_model_path:
