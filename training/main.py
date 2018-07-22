@@ -233,8 +233,13 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
  
 def run():
     num_classes = 4 #  CW: red, yellow, green, unknown
-    proportion_train = 0.7 # rest validation. Don't have big enough set for separate test set really!
-    img_type = "real"   # "sim", "real" or "both"
+    proportion_train = 0.9 # rest validation. Don't have big enough set for separate test set really!
+    img_type = "both"   # "sim", "real" or "both"
+    use_saved_model_path = "./runs/14_both_full_frames_model_saved/both_full_frame_model.ckpt" # or empty string to train
+
+    if use_saved_model_path:
+        # Want to apply model in inference mode to all images
+        proportion_train = 0.0
 
     # CW: both real Carla images and simulator exports are 800x600.
     # We might find shrinking them helps with performance in terms of
@@ -248,22 +253,22 @@ def run():
     # images, so clipping a little to 800x576 should be quite nice,
     # maybe with a 1/2 or 1/4 shrink to speed things up.
     # TODO clipping logic -- for now just shrinking to avoid code changes
-    image_shape = (128, 64) # Initial experiment size (heightxwidth) -- out of GPU memory trying 576*800. Multiples of 32.
+    # Choosing multiples of 32 because resolution is halved 5 times (so 2^-5) factor)
+    # by CNN encoder.
+    # Shape is rows x cols (i.e. height x width), not usual width x height!
+    #image_shape = (2*32, 1*32) # Portrait slot shape suitable for crops round traffic lights
+    image_shape = (9*32, 12*32) # Landscape format for full frames -- out of GPU memory trying 576*800, had to go smaller.
 
     data_dir = './data'
     runs_dir = './runs'
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
-    epochs = 20 # To get started
+    epochs = 6 # Seemed to get worse last time
     batch_size = 1 # Already getting memory warnings!
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
-
-    # OPTIONAL: Train and Inference on the cityscapes dataset instead of the Kitti dataset.
-    # You'll need a GPU with at least 10 teraFLOPS to train on.
-    #  https://www.cityscapes-dataset.com/
 
     with tf.Session() as sess:
         # Path to vgg model
@@ -271,7 +276,7 @@ def run():
 
         # Split images into training and validation sets
         training_image_paths, validation_image_paths =  \
-                    helper.get_split_image_paths(proportion_train, img_type, '../data/training_images_cropped_roughly')
+                    helper.get_split_image_paths(proportion_train, img_type, '../data/training_images')
 
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(training_image_paths, image_shape, num_classes)
@@ -295,7 +300,7 @@ def run():
         # CW: for debug, want to visualise model structure in Tensorboard; initially did this
         # before adding my layers to understand how to connect to unmodified VGG layers. Now
         # doing afterwards to include picture in write-up that includes my layers.
-        if True:  # Turned off for most runs when not debugging
+        if False:  # Turned off for most runs when not debugging
             print(tf.trainable_variables()) # also trying to understand what we've got
             log_path = os.path.join(vgg_path, 'logs')
             writer = tf.summary.FileWriter(log_path, graph=sess.graph)
@@ -304,31 +309,44 @@ def run():
             # Open http://localhost:6006 in browser (if don't specify --host, in Windows 10 uses PC name, and 
             #                         localhost or 127.0.0.1 find no server, whereas http://pc_name:6006 does work)
 
-        # CW: add operations to classify each pixel by class and assess performance
+        # CW: add operations to classify each image by class and assess performance
         # Input label size dynamic because have odd number of images as last batch; can get away without specifying 
         # shape in complete detail up front but specifying those we know to hopefully make bugs more apparent
         correct_label = tf.placeholder(tf.float32, shape=[None,num_classes], name='correct_label')
 
-        # Reshape labels as one-hot matrix spanning all of the pixels from all of the images concatenated together
+        # Reshape labels as one-hot matrix spanning all of the images concatenated together
         flattened_label = tf.reshape(correct_label, (-1, num_classes), name='flattened_label')
 
         learning_rate = tf.placeholder(tf.float32, shape=(), name='learning_rate')
 
+        # Build optimiser (doesn't actually get run as yet)
         logits, train_op, cross_entropy_loss = optimize(layer_output, correct_label, learning_rate, num_classes, opt_var_list)
+
+        # Add operations to save and restore the variables
+        saver = tf.train.Saver()
 
         # CW: have to initialise variables at some point
         init_op = tf.global_variables_initializer()
         sess.run(init_op)
 
-        # DONE: Train NN using the train_nn function
-        train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
-                 flattened_label, keep_prob, learning_rate)
+        if not use_saved_model_path:
+            print("Training model...")
+            train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
+                     flattened_label, keep_prob, learning_rate)
+        else:
+            print("Loading model weights from %s" % use_saved_model_path)
+            print("Debug: os.getcwd()=%s" % os.getcwd())
+            saver.restore(sess, use_saved_model_path)
 
         # DONE: Save inference data using helper.save_inference_samples
-        helper.save_inference_samples(runs_dir, validation_image_paths, sess, image_shape, logits, keep_prob, input_image)
+        run_output_dir = helper.save_inference_samples(runs_dir, validation_image_paths, sess, image_shape, logits, keep_prob, input_image)
 
-        # OPTIONAL: Apply the trained model to a video
-
+        # Save model for reuse in inference mode, if we trained it this time
+        if not use_saved_model_path:
+            save_path = saver.save(sess, os.path.join(run_output_dir, 'model.ckpt'))
+            print("Saved TensorFlow model in %s\n" % save_path)
+        else:
+            print("Didn't save model because we loaded the weights from disk this time")
 
 if __name__ == '__main__':
     run()

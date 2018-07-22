@@ -178,3 +178,5 @@ def save_inference_samples(runs_dir, image_paths, sess, image_shape, logits, kee
         sess, logits, keep_prob, input_image, image_paths, image_shape)
     for name, image in image_outputs:
         scipy.misc.imsave(os.path.join(output_dir, name), image)
+
+    return output_dir
