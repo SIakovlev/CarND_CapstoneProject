@@ -338,7 +338,13 @@ def run():
                      flattened_label, keep_prob, learning_rate)
         else:
             print("Loading model weights from %s" % restore_from_model_path)
-            print("Debug: os.getcwd()=%s" % os.getcwd())
+            url_folder = "http://www.wartnaby.org/smart_carla/training/runs/14_both_full_frames_model_saved/"
+            local_folder = os.path.dirname(restore_from_model_path)
+            file_list = ["both_full_frame_model.ckpt.data-00000-of-00001",
+                         "both_full_frame_model.ckpt.index",
+                         "both_full_frame_model.ckpt.meta",
+                         "checkpoint"]
+            helper.maybe_download_files_of_same_name_from_server(url_folder, local_folder, file_list)
             saver.restore(sess, restore_from_model_path)
 
         # DONE: Save inference data using helper.save_inference_samples
