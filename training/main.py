@@ -221,12 +221,14 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 
             batches_run += 1
             total_loss += loss
-            print('.', end='', flush=True) # Show progress through batches
+            # Show progress through batches
+            sys.stdout.write('.')
+            sys.stdout.flush() 
 
         elapsed_time = str(datetime.timedelta(seconds=(time.time() - start_time)))
         print("")
         loss_per_batch = -1.0 if batches_run == 0 else total_loss / batches_run # avoid div by zero
-        print("Epoch:", epoch, "Loss/batch:", loss_per_batch, "time so far:", elapsed_time, end='', flush=True)
+        print("Epoch:", epoch, "Loss/batch:", loss_per_batch, "time so far:", elapsed_time)
 
     print("")
 

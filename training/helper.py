@@ -8,7 +8,11 @@ import zipfile
 import time
 import tensorflow as tf
 from glob import glob
-from urllib.request import urlretrieve
+import sys
+if sys.version_info[0] >= 3:
+    from urllib.request import urlretrieve
+else:
+    import urllib2
 from tqdm import tqdm
 
 
@@ -43,10 +47,19 @@ def maybe_download_pretrained_vgg(data_dir):
         # Download vgg
         print('Downloading pre-trained vgg model...')
         with DLProgress(unit='B', unit_scale=True, miniters=1) as pbar:
-            urlretrieve(
-                'https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/vgg.zip',
-                os.path.join(vgg_path, vgg_filename),
-                pbar.hook)
+            vgg_url = 'https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/vgg.zip'
+            vgg_local_path = os.path.join(vgg_path, vgg_filename)
+            if sys.version_info[0] >= 3:
+                urlretrieve(
+                    vgg_url,
+                    vgg_local_path,
+                    pbar.hook)
+            else:
+                # Python 2.7 version
+                page=urllib2.urlopen(vgg_url)
+                fd = open(vgg_local_path,"wb")
+                fd.write(page.read())
+                fd.close()
 
         # Extract vgg
         print('Extracting model...')
