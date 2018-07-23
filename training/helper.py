@@ -9,21 +9,7 @@ import time
 import tensorflow as tf
 from glob import glob
 import sys
-if sys.version_info[0] >= 3:
-    from urllib.request import urlretrieve
-else:
-    import urllib
-    import urllib2
-from tqdm import tqdm
 import wget
-
-class DLProgress(tqdm):
-    last_block = 0
-
-    def hook(self, block_num=1, block_size=1, total_size=None):
-        self.total = total_size
-        self.update((block_num - self.last_block) * block_size)
-        self.last_block = block_num
 
 def maybe_download_file(url, local_path):
     """Download file from the internet, unless we already have it"""
@@ -32,19 +18,8 @@ def maybe_download_file(url, local_path):
         print("Skipping download, already have %s" % local_path)
     else:
         print("Attempting download of %s from %s" % (local_path, url))  
-        with DLProgress(unit='B', unit_scale=True, miniters=1) as pbar:
-            if sys.version_info[0] >= 3:
-                urlretrieve(
-                    url,
-                    local_path,
-                    pbar.hook)
-            else:
-                # Python 2.7 version
-                page=urllib2.urlopen(url)
-                fd = open(local_path,"wb")
-                fd.write(page.read())
-                fd.close()
-    
+        wget.download(url, local_path)
+            
 def maybe_download_files_of_same_name_from_server(url_folder, local_folder, filenames):
     """Download file(s) of same name from remote folder unless
        we already have them"""
