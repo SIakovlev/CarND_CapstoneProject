@@ -192,11 +192,15 @@ def gen_test_output(sess, logits, keep_prob, image_pl, image_paths, image_shape)
         root, ext = os.path.splitext(basename)
         newname = "P_" if prediction_correct else "F_" # pass or fail
         newname += root + classification + ext # add detailed scores to filename
+        
+        # Show progress
+        sys.stdout.write('.')
+        sys.stdout.flush() 
 
         yield newname, image # just return original image so we can look at it with new filename
 
-    print("Test set complete, %d of %d correct (proportion=%f)\n" %
-             (num_correct, len(image_paths), num_correct/len(image_paths)))
+    print("\nTest set complete, %d of %d correct (proportion=%f)\n" %
+             (num_correct, len(image_paths), float(num_correct)/len(image_paths)))
 
 def save_inference_samples(runs_dir, image_paths, sess, image_shape, logits, keep_prob, input_image):
     # Make folder for current run
