@@ -67,28 +67,28 @@ class DBWNode(object):
             max_steer_angle=max_steer_angle
             )
 
-        # TODO: Subscribe to all the topics you need to
+        # Subscribing to all the topics you need to
 
         rospy.Subscriber(
-            '/current_velocity', 
-            TwistStamped, 
+            '/current_velocity',
+            TwistStamped,
             self.current_velocity_cb)
 
         rospy.Subscriber(
-            '/twist_cmd', 
-            TwistStamped, 
+            '/twist_cmd',
+            TwistStamped,
             self.twist_cmd_cb)
 
         rospy.Subscriber(
-            '/vehicle/dbw_enabled', 
-            Bool, 
+            '/vehicle/dbw_enabled',
+            Bool,
             self.dbw_enabled_cb)
 
         self.dbw_enabled = None
 
         self.ref_v = None
         self.ref_yaw = None
-        
+
         self.cur_v = None
         self.cur_yaw = None
 
@@ -102,15 +102,15 @@ class DBWNode(object):
         rate = rospy.Rate(50) # 50Hz
         while not rospy.is_shutdown():
 
-            # TODO: Get predicted throttle, brake, and steering using `twist_controller`
-            # You should only publish the control commands if dbw is enabled
-            if not None in (self.throttle, self.brake, self.steering):
+            # Get predicted throttle, brake, and steering using `twist_controller`
+            if not None in (self.ref_v, self.cur_v, self.ref_yaw):
                 self.throttle, self.brake, self.steering = self.controller.control(
                     self.ref_v,
                     self.ref_yaw,
                     self.cur_v,
                     self.dbw_enabled)
 
+            # Publishing only if dbw is enabled
             if self.dbw_enabled:
                 self.publish(self.throttle, self.brake, self.steering)
             rate.sleep()
