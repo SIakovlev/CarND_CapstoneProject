@@ -156,7 +156,7 @@ def gen_batch_function(image_paths, image_shape, num_classes):
     return get_batches_fn
 
 
-def gen_test_output(sess, logits, keep_prob, image_pl, image_paths, image_shape):
+def gen_test_output(sess, logits, image_pl, image_paths, keep_prob, image_shape):
     """
     Generate test output using the test images
     :param sess: TF session
@@ -202,7 +202,7 @@ def gen_test_output(sess, logits, keep_prob, image_pl, image_paths, image_shape)
     print("\nTest set complete, %d of %d correct (proportion=%f)\n" %
              (num_correct, len(image_paths), float(num_correct)/len(image_paths)))
 
-def save_inference_samples(runs_dir, image_paths, sess, image_shape, logits, keep_prob, input_image):
+def save_inference_samples(runs_dir, image_paths, sess, image_shape, keep_prob, logits, input_image):
     # Make folder for current run
     output_dir = os.path.join(runs_dir, str(time.time()))
     if os.path.exists(output_dir):
@@ -212,7 +212,7 @@ def save_inference_samples(runs_dir, image_paths, sess, image_shape, logits, kee
     # Run NN on test images and save them to HD
     print('Training Finished. Saving test images to: {}'.format(output_dir))
     image_outputs = gen_test_output(
-        sess, logits, keep_prob, input_image, image_paths, image_shape)
+        sess, logits, input_image, image_paths, keep_prob, image_shape)
     for name, image in image_outputs:
         scipy.misc.imsave(os.path.join(output_dir, name), image)
 
