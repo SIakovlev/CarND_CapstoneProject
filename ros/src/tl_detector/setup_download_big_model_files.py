@@ -10,7 +10,7 @@
 
 import tensorflow as tf
 import sys
-sys.path.insert(0,"../../../../training")
+sys.path.insert(0,"../../../training")
 import cnn_classifier_model
 import os
 
