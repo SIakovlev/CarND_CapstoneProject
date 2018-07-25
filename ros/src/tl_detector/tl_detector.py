@@ -26,10 +26,11 @@ class TLDetector(object):
         self.waypoints_tree = None
         self.camera_image = None
         self.lights = []
+        self.light_classifier = None # until ready
         
         # Some variables for development use
         # Could make these ROS params to avoid editing code for different experiments
-        self.stub_return_ground_truth = True   # If set, cheat by just returning known state
+        self.stub_return_ground_truth = False  # If set, cheat by just returning known state
         self.grab_training_images = False      # If set, saving image files for classifier training
         self.using_real_images = False         # True for ROS bag of real images, false for simulator
         self.training_image_idx = 0            # For training image unique filenames
@@ -41,9 +42,31 @@ class TLDetector(object):
         self.real_image_grab_decimator = 20    # Only grab fraction of simulator images
         
 
-        sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
+        # Moved most initialisations before subscribers set up so they don't fire
+        # before we are ready
+        
+        self.state = TrafficLight.UNKNOWN
+        self.last_state = TrafficLight.UNKNOWN
+        self.last_wp = -1
+        self.state_count = 0
+
+        config_string = rospy.get_param("/traffic_light_config")
+        self.config = yaml.load(config_string)
+
+        self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
+
+        self.bridge = CvBridge()
+        self.listener = tf.TransformListener()
+
+        # OK to set up waypoints
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
 
+        # Load model last because this is slow, so that at least other initialisations
+        # likely to have finished before callbacks start firing
+        self.light_classifier = TLClassifier()
+        print("Debug: light classifier initialised")
+        
+        
         '''
         /vehicle/traffic_lights provides you with the location of the traffic light in 3D map space and
         helps you acquire an accurate ground truth data source for the traffic light
@@ -54,25 +77,14 @@ class TLDetector(object):
         # In simulator, get ground truth traffic light states in here too:
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
         
+        sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
+
         # Walkthrough video ~2 mins:
         # /image_color is camera data, but might alternatively want to use image_raw instead
         # This version is somehow independent of colour scheme (how?) which may make
         # the classifier easier
-        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
-
-        config_string = rospy.get_param("/traffic_light_config")
-        self.config = yaml.load(config_string)
-
-        self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
-
-        self.bridge = CvBridge()
-        self.light_classifier = TLClassifier()
-        self.listener = tf.TransformListener()
-
-        self.state = TrafficLight.UNKNOWN
-        self.last_state = TrafficLight.UNKNOWN
-        self.last_wp = -1
-        self.state_count = 0
+        # Queue size set to 1 to avoid backlog as we are likely to be slow in processing
+        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb, queue_size=1)
 
         rospy.spin()
 
@@ -138,7 +150,10 @@ class TLDetector(object):
         # CW: from walkthrough video ~4min suggests KDTree again as we used for
         # waypoint updater
         # Returning index of closest desired path waypoint
-        return self.waypoints_tree.query([x, y], 1)[1]
+        if self.waypoints_tree:
+            return self.waypoints_tree.query([x, y], 1)[1]
+        else:
+            return 0
 
     def get_light_state(self, light):
         """Determines the current color of the traffic light
@@ -191,8 +206,11 @@ class TLDetector(object):
 
             if not self.stub_return_ground_truth:
                 # Get classification, this is not a drill!
-                # TODO will get UNKNOWN until we have a classifier!
-                light_state_inferred = self.light_classifier.get_classification(cv_image)
+                if not self.light_classifier:
+                    print("Debug: light_classifier=None so unknown")
+                    light_state_inferred = 4
+                else:
+                    light_state_inferred = self.light_classifier.get_classification(cv_image)
 
         # Return either ground truth for debug or real classifier result for production
         return light_state_known if self.stub_return_ground_truth else light_state_inferred
