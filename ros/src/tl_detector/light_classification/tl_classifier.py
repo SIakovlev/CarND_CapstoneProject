@@ -1,9 +1,14 @@
 from styx_msgs.msg import TrafficLight
+import tensorflow as tf
+import sys
+sys.path.insert(0,"../../../training")
+import cnn_classifier_model
+
 
 class TLClassifier(object):
     def __init__(self):
-        #TODO load classifier
-        pass
+        self.sess = tf.Session()
+        cnn_model = cnn_classifier_model.CnnClassifierModel(self.sess, True)
 
     def get_classification(self, image):
         """Determines the color of the traffic light in the image
