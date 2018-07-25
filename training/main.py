@@ -33,8 +33,7 @@ else:
     print('Default GPU Device: {}'.format(tf.test.gpu_device_name()))
 
 
-def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, image_input,
-             correct_label, keep_prob, learning_rate):
+def train_nn(sess, epochs, batch_size, get_batches_fn, cnn_model):
     """
     Train neural network and print out the loss during training.
     :param sess: TF Session
@@ -79,7 +78,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
                          };
 
             # Then actually run optimizer and get loss (OK to do in one step? Seems to work OK.)
-            train_out, loss = sess.run([train_op, cross_entropy_loss], feed_dict=feed_dict)
+            train_out, loss = sess.run([cnn_model.train_op, cnn_model.cross_entropy_loss], feed_dict=feed_dict)
 
             batches_run += 1
             total_loss += loss
@@ -100,7 +99,7 @@ def run():
     img_type = "both"   # "sim", "real" or "both"
     save_model_name = "both_full_frame_model.ckpt" # if saving this time
 
-    load_trained_weights = False   # False to train, True to run in inference mode
+    load_trained_weights = True   # False to train, True to run in inference mode
     
     if load_trained_weights:
         # Want to apply model in inference mode to all images
@@ -120,26 +119,25 @@ def run():
 
     with tf.Session() as sess:
 
-        num_classes, image_shape, input_image, keep_prob, logits, train_op, cross_entropy_loss, flattened_label, learning_rate, saver = cnn_classifier_model.build_model_for_session(
-                                                                                    sess, load_trained_weights)
+        cnn_model = cnn_classifier_model.CnnClassifierModel(sess, load_trained_weights)
         
         # Create function to get batches
-        get_batches_fn = helper.gen_batch_function(training_image_paths, image_shape, num_classes)
+        get_batches_fn = helper.gen_batch_function(training_image_paths, cnn_model.image_shape, cnn_model.num_classes)
 
         if not load_trained_weights:
             print("Training model...")
-            train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
-                     flattened_label, keep_prob, learning_rate)
+            train_nn(sess, epochs, batch_size, get_batches_fn, cnn_model)
         else:
             # Using trained weights so no training to do
             pass
 
         # DONE: Save inference data using helper.save_inference_samples
-        run_output_dir = helper.save_inference_samples(runs_dir, validation_image_paths, sess, image_shape, keep_prob, logits, input_image)
+        run_output_dir = helper.save_inference_samples(runs_dir, validation_image_paths, sess, 
+                   cnn_model.image_shape, cnn_model.keep_prob, cnn_model.logits, cnn_model.image_input)
 
         # Save model for reuse in inference mode, if we trained it this time
         if not load_trained_weights:
-            save_path = saver.save(sess, os.path.join(run_output_dir, save_model_name))
+            save_path = cnn_model.saver.save(sess, os.path.join(run_output_dir, save_model_name))
             print("Saved TensorFlow model in %s\n" % save_path)
         else:
             print("Didn't save model because we loaded the weights from disk this time")
