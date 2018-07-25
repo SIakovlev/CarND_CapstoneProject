@@ -8,8 +8,8 @@ import zipfile
 import time
 import tensorflow as tf
 from glob import glob
+import subprocess
 import sys
-import wget
 
 def maybe_download_file(url, local_path):
     """Download file from the internet, unless we already have it"""
@@ -18,7 +18,9 @@ def maybe_download_file(url, local_path):
         print("Skipping download, already have %s" % local_path)
     else:
         print("Attempting download of %s from %s" % (local_path, url))  
-        wget.download(url, local_path)
+        # Using system call instead of Python wget package, as we
+        # shouldn't require additional package installs for this project submission
+        subprocess.check_call(["wget", "-O", local_path, url])
             
 def maybe_download_files_of_same_name_from_server(url_folder, local_folder, filenames):
     """Download file(s) of same name from remote folder unless
