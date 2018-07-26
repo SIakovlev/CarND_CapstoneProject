@@ -31,7 +31,7 @@ class TLDetector(object):
         
         # Some variables for development use
         # Could make these ROS params to avoid editing code for different experiments
-        self.stub_return_ground_truth = False  # If set, cheat by just returning known state
+        self.stub_return_ground_truth = True   # If set, cheat by just returning known state
         self.grab_training_images = False      # If set, saving image files for classifier training
         self.using_real_images = False         # True for ROS bag of real images, false for simulator
         self.training_image_idx = 0            # For training image unique filenames
@@ -65,9 +65,12 @@ class TLDetector(object):
         # Load model last because this is slow, so that at least other initialisations
         # likely to have finished before callbacks start firing
         self.last_classify_time = time.time()
-        self.light_classifier = TLClassifier()
-        print("Debug: light classifier initialised")
-        
+        if not self.stub_return_ground_truth:
+            self.light_classifier = TLClassifier()
+            print("Debug: light classifier initialised")
+        else:
+            self.light_classifier = None
+            print("Debug: skipping classifier model construction, using simulator light states")        
         
         '''
         /vehicle/traffic_lights provides you with the location of the traffic light in 3D map space and
