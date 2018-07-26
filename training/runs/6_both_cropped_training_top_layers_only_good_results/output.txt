@@ -1,0 +1,48 @@
+
+(carnd-advdl-odlab) CUsersUK000044gitCarND_CapstoneProjecttrainingpython main.py
+TensorFlow Version 1.4.0
+2018-07-21 150449.520552 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcoreplatformcpu_feature_guard.cc137] Your CPU supports instructions that this TensorFlow binary was not compiled to use AVX AVX2
+2018-07-21 150449.801875 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcorecommon_runtimegpugpu_device.cc1030] Found device 0 with properties
+name Quadro P3000 major 6 minor 1 memoryClockRate(GHz) 1.215
+pciBusID 00000100.0
+totalMemory 6.00GiB freeMemory 4.97GiB
+2018-07-21 150449.807359 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcorecommon_runtimegpugpu_device.cc1120] Creating TensorFlow device (deviceGPU0) - (device 0, name Quadro P3000, pci bus id 00000100.0, compute capability 6.1)
+2018-07-21 150450.105814 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcorecommon_runtimegpugpu_device.cc1120] Creating TensorFlow device (deviceGPU0) - (device 0, name Quadro P3000, pci bus id 00000100.0, compute capability 6.1)
+Default GPU Device deviceGPU0
+2018-07-21 150450.123431 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcorecommon_runtimegpugpu_device.cc1120] Creating TensorFlow device (deviceGPU0) - (device 0, name Quadro P3000, pci bus id 00000100.0, compute capability 6.1)
+Selected 142 total images (106 for training, propn=0.750000)
+[tf.Variable 'conv1_1filter0' shape=(3, 3, 3, 64) dtype=float32_ref, tf.Variable 'conv1_1biases0' shape=(64,) dtype=float32_ref, tf.Variable 'conv1_2filter0' shape=(3, 3, 64, 64) dtype=float32_ref, tf.Variable 'conv1_2biases0' shape=(64,) dtype=float32_ref, tf.Variable 'conv2_1filter0' shape=(3, 3, 64, 128) dtype=float32_ref, tf.Variable 'conv2_1biases0' shape=(128,) dtype=float32_ref, tf.Variable 'conv2_2filter0' shape=(3, 3, 128, 128) dtype=float32_ref, tf.Variable 'conv2_2biases0' shape=(128,) dtype=float32_ref, tf.Variable 'conv3_1filter0' shape=(3, 3, 128, 256) dtype=float32_ref, tf.Variable 'conv3_1biases0' shape=(256,) dtype=float32_ref, tf.Variable 'conv3_2filter0' shape=(3, 3, 256, 256) dtype=float32_ref, tf.Variable 'conv3_2biases0' shape=(256,) dtype=float32_ref, tf.Variable 'conv3_3filter0' shape=(3, 3, 256, 256) dtype=float32_ref, tf.Variable 'conv3_3biases0' shape=(256,) dtype=float32_ref, tf.Variable 'conv4_1filter0' shape=(3, 3, 256, 512) dtype=float32_ref, tf.Variable 'conv4_1biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv4_2filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv4_2biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv4_3filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv4_3biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv5_1filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv5_1biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv5_2filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv5_2biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv5_3filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv5_3biases0' shape=(512,) dtype=float32_ref, tf.Variable 'fc6weights0' shape=(7, 7, 512, 4096) dtype=float32_ref, tf.Variable 'fc6biases0' shape=(4096,) dtype=float32_ref, tf.Variable 'fc7weights0' shape=(1, 1, 4096, 4096) dtype=float32_ref, tf.Variable 'fc7biases0' shape=(4096,) dtype=float32_ref, tf.Variable 'dense_cwkernel0' shape=(32768, 128) dtype=float32_ref, tf.Variable 'dense_cwbias0' shape=(128,) dtype=float32_ref, tf.Variable 'final_layer_cwkernel0' shape=(128, 4) dtype=float32_ref, tf.Variable 'final_layer_cwbias0' shape=(4,) dtype=float32_ref]
+..........................................................................................................
+Epoch 0 Lossbatch 2.845180429225435 time so far 00010.734809..........................................................................................................
+Epoch 1 Lossbatch 0.1595180306365004 time so far 00019.807804..........................................................................................................
+Epoch 2 Lossbatch 0.08008020387404431 time so far 00028.873953..........................................................................................................
+Epoch 3 Lossbatch 0.18885403793469654 time so far 00037.955647..........................................................................................................
+Epoch 4 Lossbatch 0.12985897534980112 time so far 00047.048176
+Training Finished. Saving test images to .runs1532181963.7585251
+Test set complete, 36 of 36 correct (proportion=1.000000)
+
+
+(carnd-advdl-odlab) CUsersUK000044gitCarND_CapstoneProjecttrainingpython main.py
+TensorFlow Version 1.4.0
+2018-07-21 150849.768230 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcoreplatformcpu_feature_guard.cc137] Your CPU supports instructions that this TensorFlow binary was not compiled to use AVX AVX2
+2018-07-21 150850.068999 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcorecommon_runtimegpugpu_device.cc1030] Found device 0 with properties
+name Quadro P3000 major 6 minor 1 memoryClockRate(GHz) 1.215
+pciBusID 00000100.0
+totalMemory 6.00GiB freeMemory 4.97GiB
+2018-07-21 150850.078716 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcorecommon_runtimegpugpu_device.cc1120] Creating TensorFlow device (deviceGPU0) - (device 0, name Quadro P3000, pci bus id 00000100.0, compute capability 6.1)
+2018-07-21 150850.375461 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcorecommon_runtimegpugpu_device.cc1120] Creating TensorFlow device (deviceGPU0) - (device 0, name Quadro P3000, pci bus id 00000100.0, compute capability 6.1)
+Default GPU Device deviceGPU0
+2018-07-21 150850.394370 I Ctf_jenkinshomeworkspacerel-winMwindows-gpuPY36tensorflowcorecommon_runtimegpugpu_device.cc1120] Creating TensorFlow device (deviceGPU0) - (device 0, name Quadro P3000, pci bus id 00000100.0, compute capability 6.1)
+Selected 243 total images (182 for training, propn=0.750000)
+[tf.Variable 'conv1_1filter0' shape=(3, 3, 3, 64) dtype=float32_ref, tf.Variable 'conv1_1biases0' shape=(64,) dtype=float32_ref, tf.Variable 'conv1_2filter0' shape=(3, 3, 64, 64) dtype=float32_ref, tf.Variable 'conv1_2biases0' shape=(64,) dtype=float32_ref, tf.Variable 'conv2_1filter0' shape=(3, 3, 64, 128) dtype=float32_ref, tf.Variable 'conv2_1biases0' shape=(128,) dtype=float32_ref, tf.Variable 'conv2_2filter0' shape=(3, 3, 128, 128) dtype=float32_ref, tf.Variable 'conv2_2biases0' shape=(128,) dtype=float32_ref, tf.Variable 'conv3_1filter0' shape=(3, 3, 128, 256) dtype=float32_ref, tf.Variable 'conv3_1biases0' shape=(256,) dtype=float32_ref, tf.Variable 'conv3_2filter0' shape=(3, 3, 256, 256) dtype=float32_ref, tf.Variable 'conv3_2biases0' shape=(256,) dtype=float32_ref, tf.Variable 'conv3_3filter0' shape=(3, 3, 256, 256) dtype=float32_ref, tf.Variable 'conv3_3biases0' shape=(256,) dtype=float32_ref, tf.Variable 'conv4_1filter0' shape=(3, 3, 256, 512) dtype=float32_ref, tf.Variable 'conv4_1biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv4_2filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv4_2biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv4_3filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv4_3biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv5_1filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv5_1biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv5_2filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv5_2biases0' shape=(512,) dtype=float32_ref, tf.Variable 'conv5_3filter0' shape=(3, 3, 512, 512) dtype=float32_ref, tf.Variable 'conv5_3biases0' shape=(512,) dtype=float32_ref, tf.Variable 'fc6weights0' shape=(7, 7, 512, 4096) dtype=float32_ref, tf.Variable 'fc6biases0' shape=(4096,) dtype=float32_ref, tf.Variable 'fc7weights0' shape=(1, 1, 4096, 4096) dtype=float32_ref, tf.Variable 'fc7biases0' shape=(4096,) dtype=float32_ref, tf.Variable 'dense_cwkernel0' shape=(32768, 128) dtype=float32_ref, tf.Variable 'dense_cwbias0' shape=(128,) dtype=float32_ref, tf.Variable 'final_layer_cwkernel0' shape=(128, 4) dtype=float32_ref, tf.Variable 'final_layer_cwbias0' shape=(4,) dtype=float32_ref]
+......................................................................................................................................................................................
+Epoch 0 Lossbatch 2.8359756340045723 time so far 00017.232302......................................................................................................................................................................................
+Epoch 1 Lossbatch 0.341298353236901 time so far 00032.781778......................................................................................................................................................................................
+Epoch 2 Lossbatch 0.2261048354304215 time so far 00048.316984......................................................................................................................................................................................
+Epoch 3 Lossbatch 0.1284944352929561 time so far 00103.849887......................................................................................................................................................................................
+Epoch 4 Lossbatch 0.15643821209752695 time so far 00119.393592
+Training Finished. Saving test images to .runs1532182235.4220333
+Test set complete, 55 of 61 correct (proportion=0.901639)
+
+
+(carnd-advdl-odlab) CUsersUK000044gitCarND_CapstoneProjecttraining
