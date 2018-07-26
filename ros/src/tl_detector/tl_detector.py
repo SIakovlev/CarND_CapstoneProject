@@ -13,6 +13,7 @@ import cv2
 import math
 import yaml
 import sys # for debug output
+import time
 
 STATE_COUNT_THRESHOLD = 3
 
@@ -63,6 +64,7 @@ class TLDetector(object):
 
         # Load model last because this is slow, so that at least other initialisations
         # likely to have finished before callbacks start firing
+        self.last_classify_time = time.time()
         self.light_classifier = TLClassifier()
         print("Debug: light classifier initialised")
         
@@ -112,12 +114,18 @@ class TLDetector(object):
         self.has_image = True
         self.camera_image = msg
         
-        if self.debug_show_encoding:
-            print("Debug: /image_color .encoding=%s" % msg.encoding)
-            self.debug_show_encoding = False # just do once
-            
-        # sys.stderr.write("Debug tl_detector got an image\n") CW this does happen
+        if time.time() - self.last_classify_time < 0.1:
+            # CW: discard latest messages, which will have been queued some time ago
+            # just before we started last model run. Otherwise we end up processing
+            # historical messages. Note: since we set queue_size=1, I have not
+            # understood why this is still a problem (discarding just one queued
+            # message is not sufficient). Tried setting deadtime here to 0.01 sec
+            # but was too short, still seemed to end up processing some stale images.
+            #print("Debug: skipping queued image to flush")
+            return
+                
         light_wp, state = self.process_traffic_lights()
+        self.last_classify_time = time.time()
 
         '''
         Publish upcoming red lights at camera frequency.

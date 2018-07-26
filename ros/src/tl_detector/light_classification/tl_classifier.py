@@ -40,7 +40,7 @@ class TLClassifier(object):
             softmax_scores_as_list = im_softmax[0].tolist()[0]
             classification = "R%.2f_Y%.2f_G%.2f_U%.2f" % tuple(softmax_scores_as_list)
             filename = "run_%d_%d_%s.jpg" % (self.image_counter, top_score, classification)
-            scipy.misc.imsave(filename, image)
+            #scipy.misc.imsave(filename, image)
             print("Debug: image %s classed:%d" % (filename, top_score))
             self.image_counter += 1
             
