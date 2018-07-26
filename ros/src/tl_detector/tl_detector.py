@@ -84,6 +84,7 @@ class TLDetector(object):
         # This version is somehow independent of colour scheme (how?) which may make
         # the classifier easier
         # Queue size set to 1 to avoid backlog as we are likely to be slow in processing
+        self.debug_show_encoding = True
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb, queue_size=1)
 
         rospy.spin()
@@ -110,6 +111,11 @@ class TLDetector(object):
         """
         self.has_image = True
         self.camera_image = msg
+        
+        if self.debug_show_encoding:
+            print("Debug: /image_color .encoding=%s" % msg.encoding)
+            self.debug_show_encoding = False # just do once
+            
         # sys.stderr.write("Debug tl_detector got an image\n") CW this does happen
         light_wp, state = self.process_traffic_lights()
 
