@@ -39,20 +39,25 @@ class TLClassifier(object):
             sys.stdout.flush()
 
         if os.path.isfile(fullfilename):
-            print("Model file is downloaded. Proceeding with graph initialisation...")
+            print("Model file is downloaded. Full path: {} \n".format(fullfilename))
+            print("Proceeding with graph initialisation...\n")
         else:
-            print("Model file is missing, start downloading...")
+            print("Model file is missing, start downloading...\n")
             urllib.request.urlretrieve(DOWNLOAD_URL, fullfilename, reporthook)
-            print("\n Done. Proceeding with classifier initialisation...")
+            print()
+            print("New directory was created: {}".format(MODEL_DIR_NAME))
+            print("Model file is downloaded. Full path: {} \n".format(fullfilename))
+            print("Proceeding with classifier initialisation...\n")
 
+        # Import tensorflow graph
         self.detection_graph = tf.Graph()
         with self.detection_graph.as_default():
             od_graph_def = tf.GraphDef()
-            # Works up to here.
             with tf.gfile.GFile(fullfilename, 'rb') as fid:
                 serialized_graph = fid.read()
                 od_graph_def.ParseFromString(serialized_graph)
                 tf.import_graph_def(od_graph_def, name='')
+            # get all necessary tensors
             self.image_tensor = self.detection_graph.get_tensor_by_name('image_tensor:0')
             self.d_boxes = self.detection_graph.get_tensor_by_name('detection_boxes:0')
             self.d_scores = self.detection_graph.get_tensor_by_name('detection_scores:0')
@@ -76,10 +81,13 @@ class TLClassifier(object):
             img = image[:, :, ::-1]
             # Expand dimension since the model expects image to have shape [1, None, None, 3].
             img_expanded = np.expand_dims(img, axis=0)  
+            # run classifier
             (boxes, scores, classes, num) = self.sess.run(
                 [self.d_boxes, self.d_scores, self.d_classes, self.num_d],
                 feed_dict={self.image_tensor: img_expanded})
+            # find the top score for a given image frame
             top_score = np.amax(np.squeeze(scores))
+            # figure out traffic light class based on the top score
             if top_score > DETECTION_THRESHOLD:
                 tl_state = int(np.squeeze(classes)[0])
                 if tl_state == 1:
