@@ -15,6 +15,8 @@ class TLClassifier(object):
 
         # specify path to /models directory with respect to the absolute path of tl_classifier.py
         MODEL_DIR_NAME=os.path.join(os.path.dirname(__file__), 'models')
+        if not os.path.exists(MODEL_DIR_NAME):
+            os.makedirs(MODEL_DIR_NAME)
         # specify the model name
         FILENAME = 'faster_fcnn.pb'
         # Dropbox link for downloading
