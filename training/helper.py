@@ -70,6 +70,8 @@ def maybe_download_pretrained_vgg(data_dir):
 
         # Download vgg
         print('Downloading pre-trained vgg model...')
+        print('(If this is slow, adjust this source code for alternative URL)')
+        #vgg_url_folder = 'http://www.wartnaby.org/smart_carla/'
         vgg_url_folder = 'https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/'
         maybe_download_files_of_same_name_from_server(vgg_url_folder,
                                                       vgg_path,

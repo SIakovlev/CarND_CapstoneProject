@@ -96,16 +96,16 @@ def run():
     img_type = "both"   # "sim", "real" or "both"
     save_model_name = "both_full_frame_model.ckpt" # if saving this time
 
-    load_trained_weights = True   # False to train, True to run in inference mode
+    load_trained_weights = False   # False to train, True to run in inference mode
     
     if load_trained_weights:
         # Want to apply model in inference mode to all images
         proportion_train = 0.0
 
-    runs_dir = './runs'
+    runs_dir = "../ros/src/tl_detector/runs"
 
     # Walkthrough: maybe ~6 epochs to start with. Batches not too big because large amount of information.
-    epochs = 1 # Now reduced for debug   8 # Seemed to get worse last time after too many
+    epochs = 10 # Now reduced for debug   8 # Seemed to get worse last time after too many
     batch_size = 1 # Already getting memory warnings!
     # Other hyperparameters in train_nn(); would have put them here but went with template calling structure
 

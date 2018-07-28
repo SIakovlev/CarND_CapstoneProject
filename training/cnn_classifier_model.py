@@ -101,7 +101,7 @@ class CnnClassifierModel():
         final_rows = int(self.image_shape[0] / 32)
         final_cols = int(self.image_shape[1] / 32)
         flat_cw = tf.reshape(self.layer7_out, [-1,final_rows*final_cols*4096], name="flat_cw")
-        dense_cw = tf.layers.dense(inputs=flat_cw, units=128, activation=tf.nn.relu, name="dense_cw") # number of units chosen not to exceed memory!
+        dense_cw = tf.layers.dense(inputs=flat_cw, units=32, activation=tf.nn.relu, name="dense_cw") # number of units chosen not to exceed memory! Classifier useless with fewer.
         final_layer_cw = tf.layers.dense(inputs=dense_cw, units=self.num_classes, name="final_layer_cw")
 
         # End-to-end training on our small dataset didn't really work; the number
@@ -170,10 +170,16 @@ class CnnClassifierModel():
         # But for now just shrinking whole image to manageable size.
         # Shape is rows x cols (i.e. height x width), not usual width x height!
         #image_shape = (2*32, 1*32) # Portrait slot shape suitable for crops round traffic lights
-        self.image_shape = (9*32, 12*32) # Landscape format for full frames -- out of GPU memory trying 576*800, had to go smaller.
+        self.image_shape = (8*32, 11*32) # Landscape format for full frames -- out of GPU memory trying 576*800, had to go smaller.
+        # This size is bare minimum to get model to usefully classify on original dataset.
 
-        data_dir = './data'
-        restore_from_model_path = "./runs/14_both_full_frames_model_saved/both_full_frame_model.ckpt"
+        data_dir = 'data'
+        restore_from_model_path = "runs/1532796265.11/both_full_frame_model.ckpt"
+        if os.getcwd().endswith("training"):
+            # Horrible hack
+            rel_path_to_ros_runtime = "../ros/src/tl_detector/"
+            data_dir = os.path.join(rel_path_to_ros_runtime, data_dir)
+            restore_from_model_path = os.path.join(rel_path_to_ros_runtime, restore_from_model_path)
 
         # Download pretrained vgg model
         helper.maybe_download_pretrained_vgg(data_dir)
@@ -224,7 +230,7 @@ class CnnClassifierModel():
             # Pretrained weights are stored in a large file, too big for GitHub,
             # so download those now if we haven't already got them
             print("Loading model weights from %s" % restore_from_model_path)
-            url_folder = "http://www.wartnaby.org/smart_carla/training/runs/14_both_full_frames_model_saved/"
+            url_folder = "http://www.wartnaby.org/smart_carla/training/runs/1532796265.11/"
             local_folder = os.path.dirname(restore_from_model_path)
             file_list = ["both_full_frame_model.ckpt.data-00000-of-00001",
                          "both_full_frame_model.ckpt.index",
