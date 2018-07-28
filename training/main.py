@@ -1,6 +1,7 @@
 ############################################################################### 
 #   Udacity self-driving car course : Capstone Project.
 #
+#   Team   : smart-carla
 #   Author : Charlie Wartnaby, Applus IDIADA
 #   Email  : charlie.wartnaby@idiada.com
 #
@@ -58,17 +59,13 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, cnn_model):
         total_loss = 0
         batches_run = 0
         for image, label in get_batches_fn(batch_size):
-            # Labels are 4D [N image, height, width, classes]; we just want
-            # to span pixels overall and classes for comparison with the network output
-
             # A note to self on sizing: Tensorflow does seem to handle the last batch being
             # smaller in size than the others, and so we can feed less data to a placeholder than
             # its allocated size, and get a smaller array out. E.g.
             # image.shape= (12, 160, 576, 3)   for a batch of 12 images x height x width x colour channels
             # but with 289 samples, the last one is:
             # image.shape= (1, 160, 576, 3)
-            # and at output, we get corresponding logits_out.shape= (1105920, 2) and logits_out.shape= (92160, 2)
-            # respectively, where 12*160*576=1105920 and 1*160*576=92160.
+            # and at output, we get correspondingly different sized logits tensor. 
 
             # Construct feed dictionary
             feed_dict = {'image_input:0'   : image,
@@ -95,7 +92,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, cnn_model):
 
  
 def run():
-    proportion_train = 0.6 # rest validation. Don't have big enough set for separate test set really!
+    proportion_train = 0.75 # rest validation. Don't have big enough set for separate test set really!
     img_type = "both"   # "sim", "real" or "both"
     save_model_name = "both_full_frame_model.ckpt" # if saving this time
 
@@ -119,6 +116,8 @@ def run():
 
     with tf.Session() as sess:
 
+        # Construct model; done by separate class so that it can be invoked
+        # by ROS runtime in exactly the same way
         cnn_model = cnn_classifier_model.CnnClassifierModel(sess, load_trained_weights)
         
         # Create function to get batches

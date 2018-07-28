@@ -1,9 +1,16 @@
-# This module has the common model setup tasks used both in
-# training a CNN, and setting up the same model to use at
-# run time in inference mode. It was originally derived
-# from the semantic segregation project.
+############################################################################### 
+#   Udacity self-driving car course : Capstone Project.
 #
-#    Charlie Wartnaby charlie.wartnaby@idiada.com
+#   Team   : smart-carla
+#   Author : Charlie Wartnaby, Applus IDIADA
+#   Email  : charlie.wartnaby@idiada.com
+#
+#   This module has the common model setup tasks used both in
+#   training a CNN, and setting up the same model to use at
+#   run time in inference mode. It was originally derived
+#   from the semantic segregation project.
+#
+############################################################################### 
 
 import os.path
 import tensorflow as tf
@@ -55,13 +62,13 @@ class CnnClassifierModel():
         # Using Tensorboard to visualise the structure of the VGG model provided, and
         # tf.trainable_variables() to list the dimensions and sizes of the weights and biases
         # for each layer, I arrive at this summary of what shape the output of each layer
-        # is (knowing that we started with a 160 height x 576 width x 3 colour channel image).
+        # is (knowing that we started with a 288 height x 384 width x 3 colour channel image).
         # All of the convolution layers have SAME padding and [1,1,1,1] strides so they
         # don't reduce the x-y pixel size. All the pooling layers have [1,2,2,1] strides so
         # they halve the pixel size. I'm ignoring the first dimension (across images), as
         # everything works on one image at a time.
         #
-        # Layer name  Details                     Output dimensions
+        # Layer name  Details                     Output dimensions [example, h x w may vary]
         # <input>     raw image                   288x384x3
         # conv1_1     conv2d 3x3x3x64, Relu       288x384x64
         # conv1_2     conv2d 3x3x64x64, Relu      288x384x64
@@ -86,17 +93,22 @@ class CnnClassifierModel():
         # fc7         conv2d 1x1x4096x4096, Relu  9x12x4096
         # dropout_1   dropout(keep_prob)          9x12x4096     --> layer7_out
 
-        # To get something working just go straight from final layer to fully
+        # Go from final layer to fully
         # connected with depth equal to number of classes we require
+        # with an intermediate fully connected layer
         # Borowed from https://www.tensorflow.org/versions/r1.0/tutorials/layers
         # _cw suffixes on layer names to avoid inadvertent links to VGG names!
         final_rows = int(self.image_shape[0] / 32)
         final_cols = int(self.image_shape[1] / 32)
         flat_cw = tf.reshape(self.layer7_out, [-1,final_rows*final_cols*4096], name="flat_cw")
-        dense_cw = tf.layers.dense(inputs=flat_cw, units=128, activation=tf.nn.relu, name="dense_cw")
-        #dropout_cw = tf.layers.dropout(inputs=dense_cw, rate=0.4, name="dropout_cw")
+        dense_cw = tf.layers.dense(inputs=flat_cw, units=128, activation=tf.nn.relu, name="dense_cw") # number of units chosen not to exceed memory!
         final_layer_cw = tf.layers.dense(inputs=dense_cw, units=self.num_classes, name="final_layer_cw")
 
+        # End-to-end training on our small dataset didn't really work; the number
+        # of images was small compared to the sheer size of the VGG-based model.
+        # Instead, froze the VGG weights and trained only the custom layer weights.
+        # So here, we identify the variables for those custom layer weights
+        # so that we can specify that the optimiser only adjusts these.
         with tf.variable_scope('dense_cw', reuse=True):
             dense_weights=tf.get_variable('kernel')
             dense_biases = tf.get_variable('bias')
@@ -106,7 +118,8 @@ class CnnClassifierModel():
 
         opt_var_list=[dense_weights, dense_biases, final_weights, final_biases]
 
-        return final_layer_cw, opt_var_list # should be num images x num_classes
+        # Final layer output is 2D: number of images x number of classes
+        return final_layer_cw, opt_var_list
 
 
 
@@ -154,7 +167,7 @@ class CnnClassifierModel():
         # But there is not too much happening at the bottom of any of our
         # images, so clipping a little off the bottom should be quite nice,
         # maybe with a 1/2 or 1/4 shrink to speed things up.
-        # TODO for now just shrinking whole image to manageable size.
+        # But for now just shrinking whole image to manageable size.
         # Shape is rows x cols (i.e. height x width), not usual width x height!
         #image_shape = (2*32, 1*32) # Portrait slot shape suitable for crops round traffic lights
         self.image_shape = (9*32, 12*32) # Landscape format for full frames -- out of GPU memory trying 576*800, had to go smaller.
@@ -208,6 +221,8 @@ class CnnClassifierModel():
         sess.run(init_op)
 
         if load_trained_weights:
+            # Pretrained weights are stored in a large file, too big for GitHub,
+            # so download those now if we haven't already got them
             print("Loading model weights from %s" % restore_from_model_path)
             url_folder = "http://www.wartnaby.org/smart_carla/training/runs/14_both_full_frames_model_saved/"
             local_folder = os.path.dirname(restore_from_model_path)

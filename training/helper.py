@@ -1,3 +1,17 @@
+############################################################################### 
+#   Udacity self-driving car course : Capstone Project.
+#
+#   Team   : smart-carla
+#   Author : Charlie Wartnaby, Applus IDIADA
+#   Email  : charlie.wartnaby@idiada.com
+#
+#   This module creates and trains a CNN to classify images containing
+#   traffic lights by the colour of those lights.
+#   The model setup is reused in inference mode at run time by the ROS build.
+#
+#   Note: adapted from semantic segregation project
+############################################################################### 
+
 import re
 import random
 import numpy as np
@@ -95,7 +109,7 @@ def get_split_image_paths(proportion_train, img_type, data_folder):
     flipped_yellow_image_paths = []
     for image_path in training_paths:
         numeric_state = get_numeric_light_state_from_filename(image_path)
-        if numeric_state == 1:
+        if numeric_state == 1: # yellow
             flipped_name = image_path + ".flip"
             flipped_yellow_image_paths.append(flipped_name)
     training_paths.extend(flipped_yellow_image_paths)
@@ -117,7 +131,9 @@ def get_numeric_light_state_from_filename(image_file):
         sys.exit(1)
     numeric_state = int(filename_parts[2]) # or ValueException I guess if not integer
     if numeric_state == 4:
-        numeric_state = 3 # so we have consecutive range 0..3 for red, yellow, green, unknown
+        # We need contiguous range 0..3 for red, yellow, green, unknown for model
+        # output class scores (logits)
+        numeric_state = 3
 
     return numeric_state
 
@@ -141,12 +157,18 @@ def gen_batch_function(image_paths, image_shape, num_classes):
             images = []
             true_classes_onehot = []
             for image_file in image_paths[batch_i:batch_i+batch_size]:
-                flip_image = image_file.endswith(".flip") # fake filename indicating we should flip original
+
+                # If this is an image we should flip round, do so; indicated by fake
+                # filename:
+                flip_image = image_file.endswith(".flip")
                 if flip_image:
                     image_file = image_file[:-5] # remove ".flip"
+                # Resize whether or not it needs flipping
                 image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
                 if flip_image:
                     np.fliplr(image) # image now flipped compared to disk version
+
+                # Create one-hot array of ground truth class scores
                 numeric_state = get_numeric_light_state_from_filename(image_file)
                 onehot = np.zeros(num_classes)
                 onehot[numeric_state] = 1
@@ -174,10 +196,13 @@ def gen_test_output(sess, logits, image_pl, image_paths, keep_prob, image_shape)
     for image_file in image_paths:
         image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
 
+        # Run this image through the model in inference mode
         im_softmax = sess.run(
             [tf.nn.softmax(logits)],
             {keep_prob: 1.0, image_pl: [image]})
+
         #print("Debug im_softmax: " + repr(im_softmax))
+
         # Figure out if we got it right
         top_score = np.argmax(im_softmax)
         correct_state = get_numeric_light_state_from_filename(image_file)
@@ -188,7 +213,6 @@ def gen_test_output(sess, logits, image_pl, image_paths, keep_prob, image_shape)
         softmax_scores_as_list = im_softmax[0].tolist()[0]
         numeric_state = get_numeric_light_state_from_filename(image_file)
         classification = "_R%.2f_Y%.2f_G%.2f_U%.2f" % tuple(softmax_scores_as_list)
-        # Debug -- is there some problem which means we're getting _identical_ logits each time?
         #print("Debug softmax_scores_as_list: " + repr(softmax_scores_as_list))
         basename = os.path.basename(image_file)
         root, ext = os.path.splitext(basename)
