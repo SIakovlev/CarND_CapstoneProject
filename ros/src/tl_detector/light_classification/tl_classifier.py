@@ -13,7 +13,7 @@ DETECTION_THRESHOLD = 0.5
 class TLClassifier(object):
     def __init__(self):
 
-        self.is_site = False # if set then classifier for simulator images will be used
+        self.is_site = True # if set then classifier for simulator images will be used
 
         # specify path to /models directory with respect to the absolute path of tl_classifier.py
         MODEL_DIR_NAME=os.path.join(os.path.dirname(__file__), 'models')
@@ -24,7 +24,7 @@ class TLClassifier(object):
         if self.is_site:    
             FILENAME = 'faster_rcnn_real.pb'
             # Dropbox link for downloading
-            DOWNLOAD_URL=''
+            DOWNLOAD_URL='https://www.dropbox.com/s/e3acw9s1wtvzk3n/faster_rcnn_real.pb?dl=1'
         else:
             FILENAME = 'faster_rcnn_sim.pb'
             # Dropbox link for downloading
