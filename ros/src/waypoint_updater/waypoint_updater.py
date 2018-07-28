@@ -27,7 +27,7 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
 
 MPH_TO_MPS = 0.44704
-MAX_SPEED = 5 * MPH_TO_MPS
+MAX_SPEED = 20 * MPH_TO_MPS
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -49,6 +49,8 @@ class WaypointUpdater(object):
         self.waypoints_tree = None
         self.pose = None
         self.stopline_wp_idx = -1
+
+        self.set_speed_manually = False # If this flag is set then car speed is equal to MAX_SPEED
 
         #rospy.spin()
         self.loop()
@@ -72,9 +74,10 @@ class WaypointUpdater(object):
         farthest_idx = closest_idx + LOOKAHEAD_WPS
         base_waypoints = self.base_lane.waypoints[closest_idx:farthest_idx]
 
-        # set max speed for each waypoint
-        for wp in base_waypoints:
-            wp.twist.twist.linear.x = MAX_SPEED
+        if self.set_speed_manually:
+            # set max speed for each waypoint
+            for wp in base_waypoints:
+                wp.twist.twist.linear.x = MAX_SPEED
 
         if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx):
             lane.waypoints = base_waypoints

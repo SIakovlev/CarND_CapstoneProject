@@ -18,9 +18,13 @@ class TLClassifier(object):
         if not os.path.exists(MODEL_DIR_NAME):
             os.makedirs(MODEL_DIR_NAME)
         # specify the model name
-        FILENAME = 'faster_fcnn.pb'
+        FILENAME = 'faster_rcnn_v2.pb'
         # Dropbox link for downloading
-        DOWNLOAD_URL='https://www.dropbox.com/s/9yuj9ve5a36dguo/faster_fcnn.pb?dl=1'
+        # version 1
+        # DOWNLOAD_URL='https://www.dropbox.com/s/9yuj9ve5a36dguo/faster_fcnn.pb?dl=1'
+        # version 2
+        DOWNLOAD_URL='https://www.dropbox.com/s/wc4bky8v7roya0q/faster_rcnn_v2.pb?dl=1'
+
         # full path to the model file
         fullfilename = os.path.join(MODEL_DIR_NAME, FILENAME)
 
