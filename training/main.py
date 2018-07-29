@@ -111,8 +111,13 @@ def run():
 
 
     # Split images into training and validation sets
+    training_dir_list=['../data/training_images',
+                       '../data/training_images3/green',
+                       '../data/training_images3/yellow',
+                       '../data/training_images3/red',
+                       '../data/training_images3/unknown']
     training_image_paths, validation_image_paths =  \
-                helper.get_split_image_paths(proportion_train, img_type, '../data/training_images')
+                helper.get_split_image_paths(proportion_train, img_type, training_dir_list)
 
     with tf.Session() as sess:
 

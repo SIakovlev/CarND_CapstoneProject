@@ -86,7 +86,7 @@ def maybe_download_pretrained_vgg(data_dir):
         # Remove zip file to save space
         os.remove(os.path.join(vgg_path, vgg_filename))
 
-def get_split_image_paths(proportion_train, img_type, data_folder):
+def get_split_image_paths(proportion_train, img_type, training_dir_list):
     """Return file paths for images to use for training, and validation"""
 
     # Select simulation, real or both types of image
@@ -96,7 +96,10 @@ def get_split_image_paths(proportion_train, img_type, data_folder):
         # "sim" or "real"
         wildcard = img_type + "_*.jpg"
 
-    image_paths = glob(os.path.join(data_folder, wildcard))
+    image_paths = []
+    for data_folder in training_dir_list:
+        image_paths.extend(glob(os.path.join(data_folder, wildcard)))
+
     random.shuffle(image_paths)
     num_train = int(round(len(image_paths) * proportion_train))
 
