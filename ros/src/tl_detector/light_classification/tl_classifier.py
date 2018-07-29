@@ -12,7 +12,7 @@ DETECTION_THRESHOLD = 0.5
 class TLClassifier(object):
     def __init__(self):
 
-        self.is_site = False # if set then classifier for simulator images will be used
+        self.is_site = True # if set then classifier for real images will be used
 
         # specify path to /models directory with respect to the absolute path of tl_classifier.py
         MODEL_DIR_NAME=os.path.join(os.path.dirname(__file__), 'models')
@@ -22,12 +22,14 @@ class TLClassifier(object):
         # specify the model name based on the is_site flag state
         if self.is_site:    
             FILENAME = 'faster_rcnn_real.pb'
-            # Dropbox link for downloading
-            DOWNLOAD_URL='https://www.dropbox.com/s/e3acw9s1wtvzk3n/faster_rcnn_real.pb?dl=1'
+            # Dropbox link for downloading (backup if web location is down)
+            #DOWNLOAD_URL='https://www.dropbox.com/s/e3acw9s1wtvzk3n/faster_rcnn_real.pb?dl=1'
+            DOWNLOAD_URL='http://www.wartnaby.org/smart_carla/faster_rcnn_real.pb'
         else:
             FILENAME = 'faster_rcnn_sim.pb'
-            # Dropbox link for downloading
-            DOWNLOAD_URL='https://www.dropbox.com/s/wc4bky8v7roya0q/faster_rcnn_sim.pb?dl=1'
+            # Dropbox link for downloading (backup if web location is down)
+            #DOWNLOAD_URL='https://www.dropbox.com/s/wc4bky8v7roya0q/faster_rcnn_sim.pb?dl=1'
+            DOWNLOAD_URL='http://www.wartnaby.org/smart_carla/faster_rcnn_sim.pb'
 
         # full path to the model file
         fullfilename = os.path.join(MODEL_DIR_NAME, FILENAME)
