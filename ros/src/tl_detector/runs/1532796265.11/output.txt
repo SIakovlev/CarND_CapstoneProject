@@ -1,0 +1,93 @@
+mucca@PCUK039-PL:~/git/CarND_CapstoneProject/training$ python main.py
+TensorFlow Version: 1.3.0
+2018-07-28 17:36:22.308261: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-28 17:36:22.308280: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-28 17:36:22.308289: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-28 17:36:22.308296: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-28 17:36:22.308302: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-28 17:36:22.398731: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:893] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-07-28 17:36:22.399137: I tensorflow/core/common_runtime/gpu/gpu_device.cc:955] Found device 0 with properties: 
+name: Quadro P3000
+major: 6 minor: 1 memoryClockRate (GHz) 1.215
+pciBusID 0000:01:00.0
+Total memory: 5.90GiB
+Free memory: 5.21GiB
+2018-07-28 17:36:22.399153: I tensorflow/core/common_runtime/gpu/gpu_device.cc:976] DMA: 0 
+2018-07-28 17:36:22.399159: I tensorflow/core/common_runtime/gpu/gpu_device.cc:986] 0:   Y 
+2018-07-28 17:36:22.399168: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1045] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0)
+2018-07-28 17:36:22.451305: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1045] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0)
+Default GPU Device: /gpu:0
+Selected 386 total images (290 for training, propn=0.750000)
+Augmenting data with 26 flipped yellow-light images, now 316 total for training
+2018-07-28 17:36:22.453147: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1045] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0)
+CNN classifier model constructed
+Training model...
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 0, 'Loss/batch:', 16.402588330539022, 'time so far:', '0:00:48.510026')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 1, 'Loss/batch:', 3.7030081862027791, 'time so far:', '0:01:36.308431')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 2, 'Loss/batch:', 2.1943943468880169, 'time so far:', '0:02:23.947225')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 3, 'Loss/batch:', 0.45987014169271101, 'time so far:', '0:03:11.644165')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 4, 'Loss/batch:', 0.8201007012385072, 'time so far:', '0:03:59.379477')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 5, 'Loss/batch:', 0.44470925071391798, 'time so far:', '0:04:47.051572')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 6, 'Loss/batch:', 0.42977741479453063, 'time so far:', '0:05:34.603498')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 7, 'Loss/batch:', 0.41699335003131222, 'time so far:', '0:06:22.351457')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 8, 'Loss/batch:', 0.401592924160936, 'time so far:', '0:07:10.481619')
+............................................................................................................................................................................................................................................................................................................................
+('Epoch:', 9, 'Loss/batch:', 0.41511614471290964, 'time so far:', '0:07:58.458185')
+
+Training Finished. Saving test images to: ../ros/src/tl_detector/runs/1532796265.11
+................................................................................................
+Test set complete, 76 of 96 correct (proportion=0.791667)
+
+Saved TensorFlow model in ../ros/src/tl_detector/runs/1532796265.11/both_full_frame_model.ckpt
+
+mucca@PCUK039-PL:~/git/CarND_CapstoneProject/training$ nvidia-smi
+Sat Jul 28 17:45:34 2018       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 390.77                 Driver Version: 390.77                    |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Quadro P3000        Off  | 00000000:01:00.0  On |                  N/A |
+| N/A   48C    P0    38W /  N/A |   5941MiB /  6044MiB |     63%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    0       981      G   /usr/lib/xorg/Xorg                           390MiB |
+|    0      1836      G   compiz                                       114MiB |
+|    0     10544      G   ./sys_int.x86_64                             126MiB |
+|    0     12419      C   python                                      5303MiB |
++-----------------------------------------------------------------------------+
+mucca@PCUK039-PL:~/git/CarND_CapstoneProject/training$ nvidia-smi
+Sat Jul 28 17:47:15 2018       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 390.77                 Driver Version: 390.77                    |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Quadro P3000        Off  | 00000000:01:00.0  On |                  N/A |
+| N/A   50C    P0    25W /  N/A |   5941MiB /  6044MiB |     68%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    0       981      G   /usr/lib/xorg/Xorg                           390MiB |
+|    0      1836      G   compiz                                       114MiB |
+|    0     10544      G   ./sys_int.x86_64                             126MiB |
+|    0     12419      C   python                                      5303MiB |
++-----------------------------------------------------------------------------+
