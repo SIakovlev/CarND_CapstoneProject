@@ -31,7 +31,7 @@ class TLDetector(object):
         
         # Some variables for development use
         # Could make these ROS params to avoid editing code for different experiments
-        self.stub_return_ground_truth = True   # If set, cheat by just returning known state
+        self.stub_return_ground_truth = False   # If set, cheat by just returning known state
         self.grab_training_images = False      # If set, saving image files for classifier training
         self.using_real_images = False         # True for ROS bag of real images, false for simulator
         self.training_image_idx = 0            # For training image unique filenames
