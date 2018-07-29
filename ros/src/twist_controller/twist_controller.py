@@ -59,13 +59,13 @@ class Controller(object):
         # 3) Brake calculation
         brake = 0.0
         if ref_v == 0.0 and cur_v_filtered < 0.1:
-        # car is about to brake
-          throttle = 0
-          brake = 400
-        elif throttle < 0.1 and error_v < 0.0:
-          throttle = 0
-          decel = max(error_v, self.decel_limit)
-          brake = abs(decel) * self.vehicle_mass * self.wheel_radius;
+        	# car is about to brake
+        	throttle = 0
+        	brake = 400 
+        elif throttle < 0.01 and error_v < 0.0:
+        	throttle = 0
+        	decel = min(error_v, self.decel_limit)
+        	brake = abs(decel) * self.vehicle_mass * self.wheel_radius;
 
         return throttle, brake, steering
 
