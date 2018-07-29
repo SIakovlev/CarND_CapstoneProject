@@ -40,7 +40,7 @@ class TLDetector(object):
         self.sim_image_grab_min_spacing = 1    # Distance gap between images
         self.image_grab_last_light = None      # Identify which light we were approaching last time
         self.image_grab_last_distance = 0      # Distance from light last time
-        self.real_image_grab_decimator = 20    # Only grab fraction of simulator images
+        self.real_image_grab_decimator = 20    # Only grab fraction of real images
         
 
         # Moved most initialisations before subscribers set up so they don't fire
@@ -242,8 +242,7 @@ class TLDetector(object):
         Returns:
            bool: True if now is a good time to save a training image"""
           
-        # TODO implement
-        
+       
         # Figure out 2D Euclidean distance between us and this closest light
         delta_x = self.pose.pose.position.x - closest_light.pose.pose.position.x
         delta_y = self.pose.pose.position.y - closest_light.pose.pose.position.y
@@ -277,7 +276,7 @@ class TLDetector(object):
             # We're not in the right distance bracket but make sure we get first
             # image when we do get within range
             self.image_grab_last_light_x = 0
-            #sys.stderr.write("dist=%f outside limits so False\n" % distance)
+            #sys.stderr.write("Debug: dist=%f outside limits so False\n" % distance)
             do_grab_image = False
 
         if do_grab_image:
@@ -308,7 +307,7 @@ class TLDetector(object):
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
             #sys.stderr.write("Debug: tl_detector process_traffic_lights() car_wp_idx=%d\n" % car_wp_idx)
             
-            #TODO find the closest visible traffic light (if one exists)
+            #DONE find the closest visible traffic light (if one exists)
             
             # CW: starting with walkthrough code suggestion; gets closest in terms of
             #  waypoint index rather than actual distance, but that's fine assuming
@@ -341,7 +340,6 @@ class TLDetector(object):
             #sys.stderr.write("Debug: tl_detector process_traffic_lights() returning light_wp_idx=%d state=%d\n" % (light_wp_idx, state))
             return light_wp_idx, state
         else:
-            # self.waypoints = None
             #sys.stderr.write("Debug: tl_detector process_traffic_lights() returning -1 as no closest_light\n")
             return -1, TrafficLight.UNKNOWN
 
