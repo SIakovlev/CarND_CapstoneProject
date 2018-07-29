@@ -27,13 +27,8 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
 
-<<<<<<< HEAD
 #STEEPNESS = 5
 #XCENTER = 5
-=======
-STEEPNESS = 0.0041
-XCENTER = 1200
->>>>>>> 52809041cc721f58d0927dfb17e1464f902df95e
 
 class WaypointUpdater(object):
     def __init__(self):
