@@ -9,11 +9,10 @@ import numpy as np
 
 DETECTION_THRESHOLD = 0.5
 
-
 class TLClassifier(object):
     def __init__(self):
 
-        self.is_site = True # if set then classifier for simulator images will be used
+        self.is_site = False # if set then classifier for simulator images will be used
 
         # specify path to /models directory with respect to the absolute path of tl_classifier.py
         MODEL_DIR_NAME=os.path.join(os.path.dirname(__file__), 'models')
