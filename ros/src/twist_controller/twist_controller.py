@@ -12,14 +12,14 @@ class Controller(object):
     def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit, accel_limit,
     	wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
 
-    	self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
+        self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
 
         # values are taken from the project walkthrough
     	kp = 0.3
     	ki = 0.1
     	kd = 0.0
     	mn = 0.0 # min throttle value
-    	mx = 0.2 # max throttle value
+    	mx = 0.3 # max throttle value
     	self.throttle_controller = PID(kp, ki, kd, mn, mx)
 
     	tau = 0.5
@@ -64,7 +64,7 @@ class Controller(object):
         	brake = 400 
         elif throttle < 0.01 and error_v < 0.0:
         	throttle = 0
-        	decel = min(error_v/sample_time, self.decel_limit)
+        	decel = min(error_v, self.decel_limit)
         	brake = abs(decel) * self.vehicle_mass * self.wheel_radius;
 
         return throttle, brake, steering
