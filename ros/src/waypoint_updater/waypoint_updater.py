@@ -8,6 +8,7 @@ from scipy.spatial import KDTree
 from std_msgs.msg import Int32
 
 import math
+import sys
 
 '''
 This node will publish waypoints from the car's current position to some `x` distance ahead.
@@ -26,9 +27,8 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
 
-STEEPNESS = 0.0041
-XCENTER = 1200
-BASE_VEL = 160
+#STEEPNESS = 5
+#XCENTER = 5
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -82,6 +82,7 @@ class WaypointUpdater(object):
 
     def decelerate_waypoints(self, waypoints, closest_idx):
         temp = []
+        #C = waypoints[0].twist.twist.linear.x
         for i, wp in enumerate(waypoints):
 
             p = Waypoint()
@@ -89,9 +90,9 @@ class WaypointUpdater(object):
 
             stop_idx = max(self.stopline_wp_idx - closest_idx - 2, 0) # to make sure that car front stops before the stopline
             dist = self.distance(waypoints, i, stop_idx)
-            vel = BASE_VEL / (1 + math.exp(-STEEPNESS*(dist-XCENTER)))
-
-            if vel < 1.:
+            vel = np.sqrt(2 * abs(self.decel_limit) * dist)
+            #vel = C / (1 + np.exp(-STEEPNESS/XCENTER*(dist-XCENTER))) + 1
+            if vel < 1:
                 vel = 0.
             p.twist.twist.linear.x = min(vel, wp.twist.twist.linear.x)
             temp.append(p)

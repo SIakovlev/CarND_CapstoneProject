@@ -62,7 +62,7 @@ class Controller(object):
         	# car is about to brake
         	throttle = 0
         	brake = 400 
-        elif throttle < 0.1 and error_v < 0.0:
+        elif throttle < 0.01 and error_v < 0.0:
         	throttle = 0
         	decel = min(error_v/sample_time, self.decel_limit)
         	brake = abs(decel) * self.vehicle_mass * self.wheel_radius;
