@@ -1,74 +1,77 @@
-This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
+# System Integration (Capstone) Project Write-Up
 
-Please use **one** of the two installation options, either native **or** docker installation.
+Self-Driving Car Engineer Nanodegree Program
 
-### Native Installation
+Version: 1.0
 
-* Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. [Ubuntu downloads can be found here](https://www.ubuntu.com/download/desktop).
-* If using a Virtual Machine to install Ubuntu, use the following configuration as minimum:
-  * 2 CPU
-  * 2 GB system memory
-  * 25 GB of free hard drive space
+Date: 03Aug2018
 
-  The Udacity provided virtual machine has ROS and Dataspeed DBW already installed, so you can skip the next two steps if you are using this.
+## Team smart-carla
 
-* Follow these instructions to install ROS
-  * [ROS Kinetic](http://wiki.ros.org/kinetic/Installation/Ubuntu) if you have Ubuntu 16.04.
-  * [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu) if you have Ubuntu 14.04.
-* [Dataspeed DBW](https://bitbucket.org/DataspeedInc/dbw_mkz_ros)
-  * Use this option to install the SDK on a workstation that already has ROS installed: [One Line SDK Install (binary)](https://bitbucket.org/DataspeedInc/dbw_mkz_ros/src/81e63fcc335d7b64139d7482017d6a97b405e250/ROS_SETUP.md?fileviewer=file-view-default)
-* Download the [Udacity Simulator](https://github.com/udacity/CarND-Capstone/releases).
+|      Name  |          Email |    Responsibilities |
+|:------------:|:------------:|:-----------:|
+| Sergey Iakovlev |    |  Team lead/Faster R-CNN classifier 
+| Tatsuya Hatanaka |                              |                                                      |
+| Swapan Shridhar  |                              |                                                      |
+| Anthony T Tran   |                              |                                                      |
+| Charlie Wartnaby | charlie.wartnaby@idiada.com | Auto simulation training image capture/VGG classifier |
 
-### Docker Installation
-[Install Docker](https://docs.docker.com/engine/installation/)
 
-Build the docker container
-```bash
-docker build . -t capstone
-```
+## Abstract
 
-Run the docker file
-```bash
-docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
-```
+[A few sentences saying that we did it, and how.]
 
-### Port Forwarding
-To set up port forwarding, please refer to the [instructions from term 2](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/16cf4a78-4fc7-49e1-8621-3450ca938b77)
+## Submission checklist
 
-### Usage
+This section describes how each of the required checklist items have been met
+for project submission.
 
-1. Clone the project repository
-```bash
-git clone https://github.com/udacity/CarND-Capstone.git
-```
+[CW: by having a sentence or two for each of these, we should make it really
+easy for the Udacity assessor to see we've done everything we are supposed to.]
 
-2. Install python dependencies
-```bash
-cd CarND-Capstone
-pip install -r requirements.txt
-```
-3. Make and run styx
-```bash
-cd ros
-catkin_make
-source devel/setup.sh
-roslaunch launch/styx.launch
-```
-4. Run the simulator
+**Launch correctly using the launch files provided in the capstone repo**
 
-### Real world testing
-1. Download [training bag](https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/traffic_light_bag_file.zip) that was recorded on the Udacity self-driving car.
-2. Unzip the file
-```bash
-unzip traffic_light_bag_file.zip
-```
-3. Play the bag file
-```bash
-rosbag play -l traffic_light_bag_file/traffic_light_training.bag
-```
-4. Launch your project in site mode
-```bash
-cd CarND-Capstone/ros
-roslaunch launch/site.launch
-```
-5. Confirm that traffic light detection works on real life images
+**Smoothly follow waypoints in the simulator**
+
+**Respect the target top speed set for the waypoints**
+
+**Stop at traffic lights when needed**
+
+**Stop and restart PID controllers depending on the state of /vehicle/dbw_enabled**
+
+**Publish throttle, steering, and brake commands at 50 Hz**
+
+**Test it out using ROS bags that were recorded at the test site**
+
+
+## Required set-up
+
+[CW: notes on any one-time scripts to run, etc]
+
+## Waypoint processing
+
+## Drive-by-wire controls
+
+### Steering
+
+### Braking and acceleration
+
+## Training image capture
+
+### Simulation images
+
+[CW: will write something here about automatic capture of classified simulation images]
+
+### Real images
+
+## Image classifier and results: Faster R-CNN
+
+## Image classifier and results: VGG
+
+[CW: will write something here about my adventures with VGG, and include video]
+
+## Other sections I've forgotten about
+
+## Summary
+
+[CW: We did it. Again. ?]
