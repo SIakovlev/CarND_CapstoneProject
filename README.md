@@ -35,19 +35,19 @@ for project submission.
 [CW: by having a sentence or two for each of these, we should make it really
 easy for the Udacity assessor to see we've done everything we are supposed to.]
 
-**Launch correctly using the launch files provided in the capstone repo**
+* [x] **Launch correctly using the launch files provided in the capstone repo**
 
-**Smoothly follow waypoints in the simulator**
+* [x] **Smoothly follow waypoints in the simulator**
 
-**Respect the target top speed set for the waypoints**
+* [x] **Respect the target top speed set for the waypoints**
 
-**Stop at traffic lights when needed**
+* [x] **Stop at traffic lights when needed**
 
-**Stop and restart PID controllers depending on the state of /vehicle/dbw_enabled**
+* [x] **Stop and restart PID controllers depending on the state of /vehicle/dbw_enabled**
 
-**Publish throttle, steering, and brake commands at 50 Hz**
+* [x] **Publish throttle, steering, and brake commands at 50 Hz**
 
-**Test it out using ROS bags that were recorded at the test site**
+* [x] **Test it out using ROS bags that were recorded at the test site**
 
 
 ## Required set-up
@@ -124,7 +124,7 @@ As a pre-trained classifier, we chose the Faster R-CNN network ([link](https://a
 
 ### Results
 
-THe following picures demonstrate traffic lights classifier performance for two different classes of images:
+The following picures demonstrate traffic lights classifier performance for two different classes of images:
 
 - real images taken from `just_traffic_light.bag`:
   <p float="left">
@@ -139,6 +139,17 @@ THe following picures demonstrate traffic lights classifier performance for two 
       <img src="/writeup_files/pictures/image_sim_red.jpg" width="270" />
   </p>
 Note that classifier score is always above 90.
+
+The videos below show 
+
+- classifier performance in the simulator (by Udacity):
+  
+  [![Simulator](https://img.youtube.com/vi/n33BJwhKeUU/0.jpg)](https://youtu.be/n33BJwhKeUU)
+  
+- classifier performance for the `just_traffic_light.bag` file (by Udacity):
+  
+  [![Real images](https://img.youtube.com/vi/I5Ab-Io5ETI/0.jpg)](https://youtu.be/I5Ab-Io5ETI)
+
 
 ### Hardware
 
