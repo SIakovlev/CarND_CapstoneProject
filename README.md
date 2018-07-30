@@ -11,7 +11,7 @@ Date: 03Aug2018
 |      Name  |          Email |    Responsibilities |
 |:------------:|:------------:|:-----------:|
 | Sergey Iakovlev | siakovlev@studnet.unimelb.edu.au |  Team lead/Faster R-CNN classifier |
-| Tatsuya Hatanaka |                              |                                                      |
+| Tatsuya Hatanaka | tatsuya.hatanaka@gmail.com | Data preparation, Smooth braking |
 | Swapan Shridhar  | available365.24.7@gmail.com  | Twist Controller, Finalizing the README              |
 | Anthony T Tran   |                              |                                                      |
 | Charlie Wartnaby | charlie.wartnaby@idiada.com | Auto simulation training image capture/VGG classifier |
