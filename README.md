@@ -1,4 +1,4 @@
-# System Integration (Capstone) Project Write-Up
+# SmartCarla. System Integration (Capstone) Project Write-Up
 
 Self-Driving Car Engineer Nanodegree Program
 
@@ -10,7 +10,7 @@ Date: 03Aug2018
 
 |      Name  |          Email |    Responsibilities |
 |:------------:|:------------:|:-----------:|
-| Sergey Iakovlev |    |  Team lead/Faster R-CNN classifier 
+| Sergey Iakovlev | siakovlev@studnet.unimelb.edu.au |  Team lead/Faster R-CNN classifier |
 | Tatsuya Hatanaka |                              |                                                      |
 | Swapan Shridhar  |                              |                                                      |
 | Anthony T Tran   |                              |                                                      |
