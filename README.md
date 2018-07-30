@@ -78,8 +78,8 @@ strategy for collecting simulator or real images then differed.
 The end result was a collection of images named e.g. `sim_123_0.jpg` (for the 123rd simulator
 image of state 0=RED) or `real_124_2.jpg` (for the 124th real image of state 2=GREEN). These
 images could then be read into the training programs directly and the ground truth state
-extracted easily from the filename suffix. The main training images can be found in the 
-`data\training_images` and `data\training_images3` folders.
+extracted easily from the filename suffix. The training images can be found in the 
+`data\training_images*` folders.
  
 ### Simulation images
 
@@ -97,9 +97,11 @@ images of light-free roads, logic was included as follows:
    metres of the point at which the last image was captured.
 
 The car was then allowed to drive round the circuit in simulation and images were
-accumulated. 285 were collected initially; this was perfectly adequate for training
+accumulated. 285 were collected initially in `data\training_images`; this was perfectly adequate for training
 the classifiers, as the simulation images were relatively easy to identify by
 a DL model.
+
+Additional simulation images were later captured as `data\training_images2`.
 
 ### Real images
 
