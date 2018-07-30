@@ -77,7 +77,7 @@ easy for the Udacity assessor to see we've done everything we are supposed to.]
 ### Tensorflow object detection API
 One way build a classifier is to use a powerfull API from Tensorflow on Object Detection. It has many pre-trained networks that can be fine tuned using custom dataset. There are several good tutorials that cover main steps and were used as references in our project:
   - by Daniel Stang: [link](https://medium.com/@WuStangDan/step-by-step-tensorflow-object-detection-api-tutorial-part-1-selecting-a-model-a02b6aabe39e)
-  - by Vatsal SodhaL [link](https://becominghuman.ai/tensorflow-object-detection-api-tutorial-training-and-evaluating-custom-object-detector-ed2594afcf73)
+  - by Vatsal Sodhal [link](https://becominghuman.ai/tensorflow-object-detection-api-tutorial-training-and-evaluating-custom-object-detector-ed2594afcf73)
   - by Dat Tran: [link](https://towardsdatascience.com/how-to-train-your-own-object-detector-with-tensorflows-object-detector-api-bec72ecfe1d9)
 
 
@@ -163,4 +163,4 @@ Tests were conducted using Nvidia GTX1070 8GB, i7-7700HQ.
 
 ## Summary
 
-[CW: We did it. Again. ?]
+[CW: discuss possible imporvements that could be made]
