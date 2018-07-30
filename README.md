@@ -54,6 +54,8 @@ easy for the Udacity assessor to see we've done everything we are supposed to.]
 
 ### Steering
 
+"wayoint_follower" pure_pursuit_core.h params updated to enable more fine grained check in **verifyFollowing()** to fix cars wandering around the waypoints.
+
 ### Braking and acceleration
 
 ## Training image capture
