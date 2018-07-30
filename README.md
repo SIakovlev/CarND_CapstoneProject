@@ -66,15 +66,58 @@ easy for the Udacity assessor to see we've done everything we are supposed to.]
 
 ## Training image capture
 
+Automatic collection of images for classifier training purposes was added to `tl_detector.py`.
+This collected images from the `/image_color` topic, either from the simulator (acting as a
+virtual camera sensor), or from playing one of the Udacity-provided .bag files with real
+images.
+
+The images were captured if `self.grab_training_images` (normally False) was set True. The
+files were automatically named and numbered (using `self.training_image_idx`). However, The
+strategy for collecting simulator or real images then differed.
+
+The end result was a collection of images named e.g. `sim_123_0.jpg` (for the 123rd simulator
+image of state 0=RED) or `real_124_2.jpg` (for the 124th real image of state 2=GREEN). These
+images could then be read into the training programs directly and the ground truth state
+extracted easily from the filename suffix. The main training images can be found in the 
+`data\training_images` and `data\training_images3` folders.
+ 
 ### Simulation images
 
-[CW: will write something here about automatic capture of classified simulation images]
+The simulator provided ground truth light states (colours) alongside the images, so
+we wrote code in `tl_detector.py` to automatically name the saved image files with the
+required ground-truth suffix number, requiring no manual work.
+
+To collect a useful set of images without capturing near-identical images, or many
+images of light-free roads, logic was included as follows:
+1. Images were captured only if the car was within `self.sim_image_grab_max_range` metres of a light,
+   to avoid pictures of empty road.
+2. Image capture stopped below `self.sim_image_grab_min_range` of a light, assuming it
+   would be passing out of the camera frame when very nearby.
+3. Another image would not be captured if the car was still within `self.sim_image_grab_min_spacing`
+   metres of the point at which the last image was captured.
+
+The car was then allowed to drive round the circuit in simulation and images were
+accumulated. 285 were collected initially; this was perfectly adequate for training
+the classifiers, as the simulation images were relatively easy to identify by
+a DL model.
 
 ### Real images
 
-Data was gathered in two steps: 
-  - (Charlie's method, show lines in the code where it was implemented)
-  - using `rviz` ROS package. The following tutorial from ROS webpage ([link])(http://wiki.ros.org/rosbag/Tutorials/Exporting%20image%20and%20video%20data) describes how to create a new `.launch` file and automatically capture images.
+All the real images were obtained from Udacity .bag files.
+
+The first images were obtained by automatic saving in `tl_detector.py` from 
+`traffic_light_training.bag` (linked to in the start project repo `README.md` file).
+However, these images were of poor quality, with excessive brightness and poor
+colours. Even as a human it was difficult to distinguish the colour; in some cases
+it could only be determined by looking at the reflection on the car bonnet (hood).
+Also, the difficulty in training a classifier on these poor images meant that we
+needed more pictures.
+
+In the second step, we used the `rviz` ROS package. The following tutorial from ROS webpage
+(http://wiki.ros.org/rosbag/Tutorials/Exporting%20image%20and%20video%20data)
+describes how to create a new `.launch` file and automatically capture images. Furthermore
+the file `just_traffic_light.bag` linked to on the project submission page of the
+classroom was used, which proved to have better-quality images.
 
 ## Image classifier and results: Faster R-CNN
 
