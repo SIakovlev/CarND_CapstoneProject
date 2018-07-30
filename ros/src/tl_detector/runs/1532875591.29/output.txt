@@ -1,0 +1,72 @@
+mucca@PCUK039-PL:~/git/CarND_CapstoneProject/training$ python main.py
+TensorFlow Version: 1.3.0
+2018-07-29 14:08:55.113824: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-29 14:08:55.113836: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-29 14:08:55.113859: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-29 14:08:55.113863: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-29 14:08:55.113880: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+2018-07-29 14:08:55.192980: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:893] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-07-29 14:08:55.193392: I tensorflow/core/common_runtime/gpu/gpu_device.cc:955] Found device 0 with properties: 
+name: Quadro P3000
+major: 6 minor: 1 memoryClockRate (GHz) 1.215
+pciBusID 0000:01:00.0
+Total memory: 5.90GiB
+Free memory: 5.11GiB
+2018-07-29 14:08:55.193422: I tensorflow/core/common_runtime/gpu/gpu_device.cc:976] DMA: 0 
+2018-07-29 14:08:55.193427: I tensorflow/core/common_runtime/gpu/gpu_device.cc:986] 0:   Y 
+2018-07-29 14:08:55.193454: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1045] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0)
+2018-07-29 14:08:55.240775: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1045] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0)
+Default GPU Device: /gpu:0
+Selected 1968 total images (1574 for training, propn=0.800000)
+Augmenting data with 346 flipped yellow-light images, now 1920 total for training
+2018-07-29 14:08:55.246917: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1045] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Quadro P3000, pci bus id: 0000:01:00.0)
+CNN classifier model constructed
+Training model...
+
+('Epoch:', 0, 'Loss/batch:', 8.7879527308228269, 'time so far:', '0:04:54.842752')
+
+('Epoch:', 1, 'Loss/batch:', 1.2340428922237006, 'time so far:', '0:09:49.065434')
+
+('Epoch:', 2, 'Loss/batch:', 1.3570107184660931, 'time so far:', '0:14:43.274557')
+
+('Epoch:', 3, 'Loss/batch:', 1.3526656690364083, 'time so far:', '0:19:36.854051')
+
+('Epoch:', 4, 'Loss/batch:', 1.3522354521788658, 'time so far:', '0:24:31.280579')
+
+('Epoch:', 5, 'Loss/batch:', 1.3522099278867246, 'time so far:', '0:29:25.159461')
+
+('Epoch:', 6, 'Loss/batch:', 1.3522152015318474, 'time so far:', '0:34:19.047186')
+
+('Epoch:', 7, 'Loss/batch:', 1.3522186156983176, 'time so far:', '0:39:12.170825')
+
+('Epoch:', 8, 'Loss/batch:', 1.3522199659297864, 'time so far:', '0:44:05.905805')
+
+('Epoch:', 9, 'Loss/batch:', 1.3522204412147403, 'time so far:', '0:48:56.936738')
+
+('Epoch:', 10, 'Loss/batch:', 1.4772939117287023, 'time so far:', '0:53:48.514039')
+
+('Epoch:', 11, 'Loss/batch:', 1.3522149945298831, 'time so far:', '0:58:39.688656')
+
+('Epoch:', 12, 'Loss/batch:', 1.3522185728574792, 'time so far:', '1:03:31.173097')
+
+('Epoch:', 13, 'Loss/batch:', 1.352219923834006, 'time so far:', '1:08:22.583147')
+
+('Epoch:', 14, 'Loss/batch:', 1.3522204151997963, 'time so far:', '1:13:13.833750')
+
+('Epoch:', 15, 'Loss/batch:', 1.3522205918406447, 'time so far:', '1:18:05.459939')
+
+('Epoch:', 16, 'Loss/batch:', 1.352220657840371, 'time so far:', '1:22:56.644237')
+
+('Epoch:', 17, 'Loss/batch:', 1.3522206766530871, 'time so far:', '1:27:48.750838')
+
+('Epoch:', 18, 'Loss/batch:', 1.3522206859042247, 'time so far:', '1:32:40.579894')
+
+('Epoch:', 19, 'Loss/batch:', 1.3522422395025691, 'time so far:', '1:37:31.986026')
+
+Training Finished. Saving test images to: ../ros/src/tl_detector/runs/1532875591.29
+..........................................................................................................................................................................................................................................................................................................................................................................................................
+Test set complete, 91 of 394 correct (proportion=0.230964)
+
+Saved TensorFlow model in ../ros/src/tl_detector/runs/1532875591.29/both_full_frame_model.ckpt
+
+
