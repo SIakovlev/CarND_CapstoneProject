@@ -114,15 +114,35 @@ As a pre-trained classifier, we chose the Faster R-CNN network ([link](https://a
     ```
     
 ### Running instructions
+
 - The flag `is_site` (inside `tl_classifier.py` line 16) is used for switching between two types of classifiers: one is based on simulator images and another is a real images classifier. 
 - Once code is running the required model is automatically downloaded and configured. The user will see corresponding messages signifying that classifier was set up successfully. To run the code, GPU enabled machine is required. 
-P.S. Tests were conducted using Nvidia GTX1070 8GB, i7-7700HQ.
 
 ### Issues:
+
 - Back compatibility with Tensorflow 1.3 as required by Udacity. The current version of object detection API is based on 1.9 tensorflow and not compatible with 1.3. Instead we used a one year old version taken from this [commit](https://github.com/tensorflow/models/tree/d1173bc9714b5729b8c95d8e91e8647c66acebe6).
 
 ### Results
-[Placeholder for my results]
+
+THe following picures demonstrate traffic lights classifier performance for two different classes of images:
+
+- real images taken from `just_traffic_light.bag`:
+  <p float="left">
+      <img src="/writeup_files/pictures/image_real_green.jpg" width="270" />
+      <img src="/writeup_files/pictures/image_real_yellow.jpg" width="270" /> 
+      <img src="/writeup_files/pictures/image_real_red.jpg" width="270" />
+  </p>
+- simulator images:
+  <p float="left">
+      <img src="/writeup_files/pictures/image_sim_green.jpg" width="270" />
+      <img src="/writeup_files/pictures/image_sim_yellow.jpg" width="270" /> 
+      <img src="/writeup_files/pictures/image_sim_red.jpg" width="270" />
+  </p>
+Note that classifier score is always above 90.
+
+### Hardware
+
+Tests were conducted using Nvidia GTX1070 8GB, i7-7700HQ.
 
 ## Image classifier and results: VGG
 
