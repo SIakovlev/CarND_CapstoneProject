@@ -19,7 +19,13 @@ Date: 03Aug2018
 
 ## Abstract
 
-[A few sentences saying that we did it, and how.]
+This is the project repo of **Smart Carla team** for the final project of the Udacity Self-Driving Car Nanodegree in which we programed a real self-driving car.
+
+The goal of the project was to get **Udacity's self-driving car** to drive around a test track while avoiding obstacles and stopping at traffic lights.
+
+The starting code has been taken from Udacity's gthub repository [here](https://github.com/udacity/CarND-Capstone) 
+
+
 
 ## Submission checklist
 
