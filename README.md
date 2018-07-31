@@ -56,7 +56,24 @@ easy for the Udacity assessor to see we've done everything we are supposed to.]
 
 ## Required set-up
 
-[CW: notes on any one-time scripts to run, etc]
+As required by Udacity, no additional Python packages or other libraries are required to
+run the software. The list of packages installed by the provided `requirements.txt` (but with
+`tensorflow-gpu` instead of `tensorflow`) is adequate.
+
+The light classifier has three possible settings. Each will cause the download of
+one or more large pretrained neural network model files on first use, because those files were too large to
+include in the GitHub repository. The possible settings in `tl_classifier.py` are:
+
+| Options           | Description    |
+|:-----------------:|:--------------------:|
+| `self.classifier = "FRCNN"`, `self.is_site = False` | Default: F-R-CNN, for simulator use |
+| `self.classifier = "FRCNN"`, `self.is_site = True` | F-R-CNN, for vehicle/real image use |
+| `self.classifier = "VGG"` | VGG, for simulator use only (less good, see notes below) |
+
+This initial download may cause the tl_detector process (which imports tl_classifier) to
+time out the ROS launch overall. For the VGG case, you can execute
+`ros/run_this_first_to_download_big_model_files.sh` first to avoid this ROS timeout.
+
 
 ## Waypoint processing
 
@@ -205,7 +222,62 @@ Tests were conducted using Nvidia GTX1070 8GB, i7-7700HQ.
 
 ## Image classifier and results: VGG
 
-[CW: will write something here about my adventures with VGG, and include video]
+Two methods of classification were attempted in parallel, and overall the Faster R-CNN approach
+above was successful. However, a full-frame classifier based on the pretrained VGG network
+was also attempted, which is described here. This was good enough to work in the simulator,
+but not with real camera images taken from Carla.
+
+The VGG classifier can be invoked as an option by setting `self.classifier = "FRCNN"` in 
+`tl_classifier.py`. Most of the related work is in these separate source files however,
+which were initially based on one of our submissions for the Semantic Segregation project:
+
+1. `/training/cnn_classifier_model.py` sets up the model in TensorFlow both for training
+   and run-time inference. This common code ensures that the same structure is set up in
+   both cases, so that the loaded weights remain compatible.
+2. `/training/main.py` invokes the model in training mode. 
+3. `/training/helper.py` contains some common utilities, including loading the training
+   images from disk into a Numpy array (using a generator function for memory efficiency),
+   obtaining the correct ground truth classifications from the filename suffix.
+
+Most recently the model was trained on
+the original set of 185 simulator and 101 real images in `data\training_images`. The
+raw command-line output is retained in `ros/src/tl_detector/runs/1532796265.11.output.txt`
+(the location the now-pretrained weights are downloaded to on first execution). As
+explained previously those first real images were from the `traffic_light_training.bag`
+file which proved to be of low quality compared with the `just_traffic_light.bag`
+introduced only later in the classroom. In practice the model trained itself mainly
+to classify simulator images, which it did successfully.
+
+The structure was as follows:
+
+| Raw image input |
+|:---------------:|
+| Resize to (8*32, 11*32) pixels to fit memory overall (multiples of 32 because of 5 halving steps) |
+| Standard VGG network |
+| Flattening |
+| Fully connected, reduced to depth 32 (maximum to fit GPU memory) |
+| Fully connected, reduced to depth 4 (required output classes) |
+
+The key addition of custom layers is implemented here in `training\cnn_classifier_model.py`:
+```
+flat_cw = tf.reshape(self.layer7_out, [-1,final_rows*final_cols*4096], name="flat_cw")
+dense_cw = tf.layers.dense(inputs=flat_cw, units=32, activation=tf.nn.relu, name="dense_cw")
+final_layer_cw = tf.layers.dense(inputs=dense_cw, units=self.num_classes, name="final_layer_cw")
+```
+
+Training end-to-end was not very successful. The intial training set was too small to
+train such a large model. However, freezing the VGG weights and training only the custom
+fully connected layers worked.
+
+ 
+Training was later attempted using the larger set of real images in `data\training_images3`,
+but the model failed to classify these effectively. Given the success of the Faster R-CNN approach,
+it was not pursued further.
+
+This short video shows the VGG classifier successfully running the car in simulation:
+
+  [![Simulator](./writeup_files/videos/vgg_classifier_simulator.jpg](./writeup_files/videos/vgg_classifier_simulator.mp4)
+
 
 ## Other sections I've forgotten about
 

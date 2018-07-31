@@ -1,6 +1,6 @@
 #!/bin/sh
 
 cd src/tl_detector
-mkdir -p runs/14_both_full_frames_model_saved
+mkdir -p runs/1532796265.11
 python setup_download_big_model_files.py
 cd -
