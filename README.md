@@ -1,4 +1,5 @@
 [projectLogoImage]: data/SmartCarlaProjectLogo.jpg "1"
+[ROS_GraphImage]: data/final-project-ros-graph.png "1"
 
 ![Alt text][projectLogoImage]
 
@@ -44,13 +45,13 @@ Date: 03Aug2018 </pre>
 
 ## Abstract <a name="abstract"></a>
 
-This is the project repo of **Smart Carla team** for the final project of the Udacity Self-Driving Car Nanodegree in which we programed a real self-driving car.
+This is the repository of **Smart Carla team** for the final project of the Udacity Self-Driving Car Nanodegree in which we programed a real self-driving car's perception, control and path planning modules. The diagram below shows the details:
+
+![Alt text][ROS_GraphImage]
 
 The goal of the project was to get **Udacity's self-driving car** to drive around a test track while avoiding obstacles and stopping at traffic lights.
 
 The starting code has been taken from Udacity's github repository [here](https://github.com/udacity/CarND-Capstone).
-
-
 
 ## Submission checklist <a name="checklist"></a>
 
@@ -62,18 +63,40 @@ easy for the Udacity assessor to see we've done everything we are supposed to.
 **TODO no description of how we have tested or met these, does it matter I wonder?**]
 
 * [x] **Launch correctly using the launch files provided in the capstone repo**
+This was tested on several machines running under different OS. 
 
 * [x] **Smoothly follow waypoints in the simulator**
+This is achieved by tweaking parameters in `pure_pursuit_core.h` file. The details are discussed in [waypoint processing](#waypointProcessing).
 
 * [x] **Respect the target top speed set for the waypoints**
+This is was achieved by using PID contoroller and tuning its parameters. Please refer to [drive-by-wire controls](#dbwControls) for details.
 
 * [x] **Stop at traffic lights when needed**
+To get this working we implemented two different classifiers. This is discussed in sections [Image classifier and results: Faster R-CNN](#fasterRCNN) and [Image classifier and results: VGG](#vgg).
 
-* [x] **Stop and restart PID controllers depending on the state of /vehicle/dbw_enabled**
+* [x] **Stop and restart PID controllers depending on the state of /vehicle/dbw_enabled** 
+This feature is working and implementation details are discussed in [Drive-by-wire controls](#dbwControls) section.
 
 * [x] **Publish throttle, steering, and brake commands at 50 Hz**
+This is implemented in `dbw_node.py` (lines 101-116):
+
+```python
+   def loop(self):
+        rate = rospy.Rate(50) # 50Hz
+        while not rospy.is_shutdown():
+
+            # Get predicted throttle, brake, and steering using `twist_controller`
+            if not None in (self.ref_v, self.cur_v, self.ref_yaw):
+                self.throttle, self.brake, self.steering = self.controller.control(
+                    self.ref_v,
+                    self.ref_yaw,
+                    self.cur_v,
+                    self.dbw_enabled)
+        ...
+```
 
 * [x] **Test it out using ROS bags that were recorded at the test site**
+The video in the [Image classifier and results: Faster R-CNN](#fasterRCNN) section shows our test results.
 
 
 ## Required set-up <a name="setup"></a>
