@@ -13,6 +13,23 @@ Date: 03Aug2018 </pre>
 # Table of contents
 
 1. [Team](#team) 
+2. [Abstract](#abstract)
+3. [Submission checklist](#checklist)
+4. [Required set-up](#setup)
+5. [Waypoint processing](#waypointProcessing)
+6. [Drive-by-wire controls](#dbwControls)
+7. [Training image capture](#trainingImageCapture)
+   1. [Simulation images](#simulationImages)
+   2. [Real images](#realImages)
+8. [Image classifier and results: Faster R-CNN](#fasterRCNN)
+    1. [Tensorflow object detection API](#fasterRCNNTensorflow) 
+    2. [Model setup and training](#fasterRCNNModelSetup)
+    3. [Running instructions](#fasterRCNNInstructions)
+    4. [Issues](#fasterRCNNIssues)
+    5. [Results](#fasterRCNNResults)
+    6. [Hardware](#fasterRCNNHardware)
+9. [Image classifier and results: VGG](#vgg)
+10. [Summary](#summary)
 
 ## Team SmartCarla <a name="team"></a>
 
@@ -25,7 +42,7 @@ Date: 03Aug2018 </pre>
 | Charlie Wartnaby | charlie.wartnaby@idiada.com | Auto simulation training image capture/VGG classifier |
 
 
-## Abstract
+## Abstract <a name="abstract"></a>
 
 This is the project repo of **Smart Carla team** for the final project of the Udacity Self-Driving Car Nanodegree in which we programed a real self-driving car.
 
@@ -35,7 +52,7 @@ The starting code has been taken from Udacity's github repository [here](https:/
 
 
 
-## Submission checklist
+## Submission checklist <a name="checklist"></a>
 
 This section describes how each of the required checklist items have been met
 for project submission.
@@ -59,7 +76,7 @@ easy for the Udacity assessor to see we've done everything we are supposed to.
 * [x] **Test it out using ROS bags that were recorded at the test site**
 
 
-## Required set-up
+## Required set-up <a name="setup"></a>
 
 As required by Udacity, no additional Python packages or other libraries are required to
 run the software. The list of packages installed by the provided `requirements.txt` (but with
@@ -80,15 +97,15 @@ time out the ROS launch overall. For the VGG case, you can execute
 `ros/run_this_first_to_download_big_model_files.sh` first to avoid this ROS timeout.
 
 
-## Waypoint processing
+## Waypoint processing <a name="waypointProcessing"></a>
 
 Updated `wayoint_follower` pure_pursuit_core.h params `displacement_threshold`, `relative_angle_threshold` to `0.1` and `1.0` respectively, to enable fine grained check in `PurePursuit::verifyFollowing()` for the waypoints. This helps in fixing car's wandering around the waypoints, when zoomed in. Thus, smooth following of waypoints.
 
-## Drive-by-wire controls
+## Drive-by-wire controls <a name="dbwControls></a>
 
 Subscribes to `/current_velocity`, `/twist_cmd` and `/vehicle/dbw_enabled`. Checks if dbw_enabled is True and then publishes throttle, brake and steer values using `PID` controller, for the simulator.
 
-## Training image capture
+## Training image capture <a name="trainingImageCapture></a>
 
 Automatic collection of images for classifier training purposes was added to `tl_detector.py`.
 This collected images from the `/image_color` topic, either from the simulator (acting as a
@@ -105,7 +122,7 @@ images could then be read into the training programs directly and the ground tru
 extracted easily from the filename suffix. The training images can be found in the
 `data\training_images*` folders.
 
-### Simulation images
+### Simulation images <a name="simulationImages></a>
 
 The simulator provided ground truth light states (colours) alongside the images, so
 we wrote code in `tl_detector.py` to automatically name the saved image files with the
@@ -127,7 +144,7 @@ a DL model.
 
 Additional simulation images were later captured as `data\training_images2`.
 
-### Real images
+### Real images <a name="realImages></a>
 
 All the real images were obtained from Udacity .bag files.
 
@@ -145,7 +162,7 @@ describes how to create a new `.launch` file and automatically capture images. F
 the file `just_traffic_light.bag` linked to on the project submission page of the
 classroom was used, which proved to have better-quality images.
 
-## Image classifier and results: Faster R-CNN
+## Image classifier and results: Faster R-CNN <a name="fasterRCNN></a>
 
 ### Tensorflow object detection API
 One way to build a classifier is to use a powerfull API from Tensorflow on Object Detection. It has many pre-trained networks that can be fine tuned using custom datasets. There are several good tutorials that cover main steps and were used by our team as references in this project:
@@ -186,7 +203,7 @@ Once the data was ready the following steps were taken to get classifier working
 - The flag `is_site` (inside `tl_classifier.py` line 16) is used for switching between two types of classifiers: one is based on simulator images and another is a real images classifier.
 - Once code is running the required model is automatically downloaded and configured. The user will see corresponding messages signifying that classifier was set up successfully. To run the code, GPU enabled machine is required.
 
-### Issues:
+### Issues
 
 - Back compatibility with Tensorflow 1.3 as required by Udacity. The current version of object detection API is based on 1.9 tensorflow and not compatible with 1.3. Instead we used an older version from this [commit](https://github.com/tensorflow/models/tree/d1173bc9714b5729b8c95d8e91e8647c66acebe6).
 
@@ -223,7 +240,7 @@ The videos below show
 
 Tests were conducted using Nvidia GTX1070 8GB, i7-7700HQ.
 
-## Image classifier and results: VGG
+## Image classifier and results: VGG <a name="vgg"></a>
 
 Two methods of classification were attempted in parallel, and overall the Faster R-CNN approach
 above was successful. However, a full-frame classifier based on the pretrained VGG network
@@ -285,6 +302,6 @@ This short video shows the VGG classifier successfully running the car in simula
 
 ## Other sections I've forgotten about
 
-## Summary
+## Summary <a name="summary"></a>
 
 [CW: discuss possible imporvements that could be made]
