@@ -58,12 +58,8 @@ The starting code has been taken from Udacity's github repository [here](https:/
 This section describes how each of the required checklist items have been met
 for project submission.
 
-[CW: by having a sentence or two for each of these, we should make it really
-easy for the Udacity assessor to see we've done everything we are supposed to.
-**TODO no description of how we have tested or met these, does it matter I wonder?**]
-
 * [x] **Launch correctly using the launch files provided in the capstone repo**
-The project code was tested on several machines running under different OS. 
+The project code was tested on several machines running under different operating systems (Ubuntu and Mac OS). 
 
 * [x] **Smoothly follow waypoints in the simulator**
 This is achieved by tweaking parameters in `pure_pursuit_core.h` file. The details are discussed in [waypoint processing](#waypointProcessing).
