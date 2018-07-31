@@ -1,4 +1,4 @@
-[projectLogoImage]: data/SmartCarlaProjectLogo.png "1"
+[projectLogoImage]: data/SmartCarlaProjectLogo.jpg "1"
 
 ![Alt text][projectLogoImage]
 
