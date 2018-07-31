@@ -4,7 +4,7 @@
 
 # SmartCarla. System Integration (Capstone) Project
 
-Udacity Self-Driving Car Engineer Nanodegree Program   &npsp;**|**&npsp;  Version: 1.0   &npsp;**|**&npsp; Date: 03Aug2018
+Udacity Self-Driving Car Engineer Nanodegree Program   &npsp; **|** &npsp;  Version: 1.0   &npsp; **|** &npsp; Date: 03Aug2018
 
 ## Team SmartCarla
 
