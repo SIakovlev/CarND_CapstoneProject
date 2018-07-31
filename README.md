@@ -1,10 +1,12 @@
+[projectLogoImage]: data/SmartCarlaProjectLogo.png "1"
+
 # SmartCarla. System Integration (Capstone) Project Write-Up
 
 Self-Driving Car Engineer Nanodegree Program
-
 Version: 1.0
-
 Date: 03Aug2018
+
+![Alt text][projectLogoImage]
 
 ## Team smart-carla
 
@@ -78,9 +80,9 @@ strategy for collecting simulator or real images then differed.
 The end result was a collection of images named e.g. `sim_123_0.jpg` (for the 123rd simulator
 image of state 0=RED) or `real_124_2.jpg` (for the 124th real image of state 2=GREEN). These
 images could then be read into the training programs directly and the ground truth state
-extracted easily from the filename suffix. The training images can be found in the 
+extracted easily from the filename suffix. The training images can be found in the
 `data\training_images*` folders.
- 
+
 ### Simulation images
 
 The simulator provided ground truth light states (colours) alongside the images, so
@@ -107,7 +109,7 @@ Additional simulation images were later captured as `data\training_images2`.
 
 All the real images were obtained from Udacity .bag files.
 
-The first images were obtained by automatic saving in `tl_detector.py` from 
+The first images were obtained by automatic saving in `tl_detector.py` from
 `traffic_light_training.bag` (linked to in the start project repo `README.md` file).
 However, these images were of poor quality, with excessive brightness and poor
 colours. Even as a human it was difficult to distinguish the colour; in some cases
@@ -134,7 +136,7 @@ As a pre-trained classifier, we chose the Faster R-CNN network ([link](https://a
 ### Model setup and training
 Once the data was ready the following steps were taken to get classifier working:
   - Follow installation instructions for object detection api: [link](https://github.com/tensorflow/models/blob/d1173bc9714b5729b8c95d8e91e8647c66acebe6/object_detection/g3doc/installation.md)
-  - Draw boxes and give a corresponding label (`red`, `yellow` or `green`) for each image in the dataset. We used [labelImg](https://github.com/tzutalin/labelImg) to do this. 
+  - Draw boxes and give a corresponding label (`red`, `yellow` or `green`) for each image in the dataset. We used [labelImg](https://github.com/tzutalin/labelImg) to do this.
   - Create `.pbtxt` file with labels data. See [](link)
   - Create `.record` file. To do this we adopted code from the original [`create_pascal_tf_record.py`](https://github.com/tensorflow/models/blob/d1173bc9714b5729b8c95d8e91e8647c66acebe6/object_detection/create_pascal_tf_record.py). The modified version of the script can be found here: [tf_record_udacity.py](link)
     Usage example:
@@ -156,11 +158,11 @@ Once the data was ready the following steps were taken to get classifier working
     --trained_checkpoint_prefix ./models/train/model.ckpt-10000 \
     --output_directory ./fine_tuned_model
     ```
-    
+
 ### Running instructions
 
-- The flag `is_site` (inside `tl_classifier.py` line 16) is used for switching between two types of classifiers: one is based on simulator images and another is a real images classifier. 
-- Once code is running the required model is automatically downloaded and configured. The user will see corresponding messages signifying that classifier was set up successfully. To run the code, GPU enabled machine is required. 
+- The flag `is_site` (inside `tl_classifier.py` line 16) is used for switching between two types of classifiers: one is based on simulator images and another is a real images classifier.
+- Once code is running the required model is automatically downloaded and configured. The user will see corresponding messages signifying that classifier was set up successfully. To run the code, GPU enabled machine is required.
 
 ### Issues:
 
@@ -173,25 +175,25 @@ The following picures demonstrate traffic lights classifier performance for two 
 - real images taken from `just_traffic_light.bag`:
   <p float="left">
       <img src="/writeup_files/pictures/image_real_green.jpg" width="270" />
-      <img src="/writeup_files/pictures/image_real_yellow.jpg" width="270" /> 
+      <img src="/writeup_files/pictures/image_real_yellow.jpg" width="270" />
       <img src="/writeup_files/pictures/image_real_red.jpg" width="270" />
   </p>
 - simulator images:
   <p float="left">
       <img src="/writeup_files/pictures/image_sim_green.jpg" width="270" />
-      <img src="/writeup_files/pictures/image_sim_yellow.jpg" width="270" /> 
+      <img src="/writeup_files/pictures/image_sim_yellow.jpg" width="270" />
       <img src="/writeup_files/pictures/image_sim_red.jpg" width="270" />
   </p>
 Note that classifier score is always above 90.
 
-The videos below show 
+The videos below show
 
 - classifier performance in the simulator (by Udacity):
-  
+
   [![Simulator](https://img.youtube.com/vi/n33BJwhKeUU/0.jpg)](https://youtu.be/n33BJwhKeUU)
-  
+
 - classifier performance for the `just_traffic_light.bag` file (by Udacity):
-  
+
   [![Real images](https://img.youtube.com/vi/I5Ab-Io5ETI/0.jpg)](https://youtu.be/I5Ab-Io5ETI)
 
 
