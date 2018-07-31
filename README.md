@@ -63,7 +63,7 @@ easy for the Udacity assessor to see we've done everything we are supposed to.
 **TODO no description of how we have tested or met these, does it matter I wonder?**]
 
 * [x] **Launch correctly using the launch files provided in the capstone repo**
-This was tested on several machines running under different OS. 
+The project code was tested on several machines running under different OS. 
 
 * [x] **Smoothly follow waypoints in the simulator**
 This is achieved by tweaking parameters in `pure_pursuit_core.h` file. The details are discussed in [waypoint processing](#waypointProcessing).
@@ -119,6 +119,7 @@ This initial download may cause the tl_detector process (which imports tl_classi
 time out the ROS launch overall. For the VGG case, you can execute
 `ros/run_this_first_to_download_big_model_files.sh` first to avoid this ROS timeout.
 
+**Note**. When running the code for the first time with `self.classifier = "FRCNN"` the corresponding model (either for `self.is_site = False` or `self.is_site = True`) will be downloaded. 
 
 ## Waypoint processing <a name="waypointProcessing"></a>
 
