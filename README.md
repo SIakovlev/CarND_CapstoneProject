@@ -272,7 +272,7 @@ The structure was as follows:
 
 | Raw image input |
 |:---------------:|
-| Resize to (8*32, 11*32) pixels to fit memory overall (multiples of 32 because of 5 halving steps) |
+| Resize to (8 x 32, 11 x 32) pixels to fit memory overall (multiples of 32 because of 5 halving steps) |
 | Standard VGG network |
 | Flattening |
 | Fully connected, reduced to depth 32 (maximum to fit GPU memory) |
