@@ -17,8 +17,10 @@ Date: 03Aug2018 </pre>
 2. [Abstract](#abstract)
 3. [Submission checklist](#checklist)
 4. [Required set-up](#setup)
-5. [Waypoint processing](#waypointProcessing)
-6. [Drive-by-wire controls](#dbwControls)
+5. [Drive-by-wire controls](#dbwControls)
+   1. [Steering](#dbwSteering)
+   2. [Break and Throttle](#dbwBrakeThrottle) 
+6. [Waypoint processing](#waypointProcessing)
 7. [Training image capture](#trainingImageCapture)
    1. [Simulation images](#simulationImages)
    2. [Real images](#realImages)
@@ -117,6 +119,61 @@ time out the ROS launch overall. For the VGG case, you can execute
 
 **Note**. When running the code for the first time with `self.classifier = "FRCNN"` the corresponding model (either for `self.is_site = False` or `self.is_site = True`) will be downloaded. 
 
+
+## Drive-by-wire controls <a name="dbwControls"></a>
+
+**Inputs:** Subscribes to `/current_velocity`, `/twist_cmd` and `/vehicle/dbw_enabled` topics. 
+**Outputs:** Checks for `dbw_enabled == True` and publishes `throttle`, `brake` and `steer` topic values at `50 Hz`. 
+Publishing at 50 Hz is important as simulator may complain if we go less than 50 Hz and will shutdown at ~30 Hz. This is a built-in safety feature and thereby returning control back to the driver.
+
+Before we do any calculations for publishing, we do the following: 
+Use `Low Pass Filter` for current velocity (`cur_v `) to filter out any high frequency noise in it.
+Calculate velocity error (`error_v`) based on reference (`ref_v `) and current (`cur_v_filtered `) velocity after filtering.
+Calculate elapsed time (`sample_time`) since last call. 
+
+###Steering <a name="dbwSteering"></a>
+We use `Yaw controller` initialized below to get the steering angle values with below params:
+```python
+Path : src/twist_controller/twist_controller.py
+....
+self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
+....
+```
+
+### Break and Throttle <a name="dbwBrakeThrottle"></a>
+
+**Brake** values are published in torque units (N*m). The brake value can be computed using the desired acceleration, weight of the vehicle, and wheel radius, depending on the cases mentioned below.
+
+**Throttle** is a proportional value unlike brake or steering and is in the range of 0 to 1. We use `PID controller` for throttle which uses `error_v` and `sample_time` as follows:
+ 
+```python
+Path : src/twist_controller/twist_controller.py
+....
+throttle = self.throttle_controller.step(error_v, sample_time)
+....
+```
+
+`Brake` and `throttle` are interdependent and effect each other as follows:
+
+
+```python
+Path : src/twist_controller/twist_controller.py
+	# 3) Brake calculation
+        brake = 0.0
+        if ref_v == 0.0 and cur_v_filtered < 0.1:
+        	# car is about to brake
+        	throttle = 0
+        	brake = 400 
+        elif throttle < 0.01 and error_v < 0.0:
+        	throttle = 0
+        	decel = min(error_v, self.decel_limit)
+        	brake = abs(decel) * self.vehicle_mass * self.wheel_radius;
+....
+```
+If target linear velocity (`ref_v `) is 0 and our current velocity (`cur_v_filtered` < 0.1) is less than minimum that we can have (implies that we need to stop immediately), we set `throttle` and `brake` to `0` and `400` (max) respectively.  
+Otherwise, if `throttle` calculated (<0.01) is very small and velocity error (`error_v`) is negative (implies we are going faster than we should be ideally), we set `throttle` to 0, calculate deceleration (`decel`) value and use its absolute value along with `vehicle_mass` and `wheel_radius` to calculate the amount of `brake` to be applied at that point.
+
+
 ## Waypoint processing <a name="waypointProcessing"></a>
 
 With **(1).** `waypoints` getting published and **(2).** PID controller publishing correct values for `throttle`, `brake` and `steer`, car still wandered a little bit within the lane. The is because of the `Autoware` code that we are using, as it doesn't recompute the trajectory until the car has passed a certain **(A).** Distance or **(B).** Angle away from the waypoints trajectory. Other attribution is to the simple `PID controller` used, where by the time it recomputes the trajectory and gives new twist command, car has already wandered a bit away from waypoints, and suddenly steers back to the waypoints to catchup. 
@@ -170,10 +227,6 @@ def get_steering(self, linear_velocity, angular_velocity, current_velocity):
        return self.get_angle(max(current_velocity * 0.8, self.min_speed) / angular_velocity) if abs(angular_velocity) > 0. else 0.0;
 ....
 ```
-
-## Drive-by-wire controls <a name="dbwControls"></a>
-
-Subscribes to `/current_velocity`, `/twist_cmd` and `/vehicle/dbw_enabled`. Checks if dbw_enabled is True and then publishes throttle, brake and steer values using `PID` controller, for the simulator.
 
 ## Training image capture <a name="trainingImageCapture"></a>
 
