@@ -37,7 +37,7 @@ Date: 03Aug2018 </pre>
 |:------------:|:------------:|:-----------:|
 | Sergey Iakovlev | siakovlev@studnet.unimelb.edu.au |  Team lead/Faster R-CNN classifier |
 | Tatsuya Hatanaka | tatsuya.hatanaka@gmail.com | Data preparation, Smooth braking |
-| Swapan Shridhar  | available365.24.7@gmail.com  | Twist Controller, Finalizing the README, logo              |
+| Swapan Shridhar  | available365.24.7@gmail.com  | Twist Controller, car wobbling issues, logo |
 | Anthony T Tran   | iamtran@hotmail.com          | Collecting Images for training Classifier/Testing                                                  |
 | Charlie Wartnaby | charlie.wartnaby@idiada.com | Auto simulation training image capture/VGG classifier |
 
