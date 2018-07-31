@@ -304,4 +304,16 @@ This short video shows the VGG classifier successfully running the car in simula
 
 ## Summary <a name="summary"></a>
 
-[CW: discuss possible imporvements that could be made]
+In this project we have developed several modules which are connected and can be used to drive a real car. These modules are essential in solving the following problems:
+- Perception (Traffic lights detection module)
+- Control (DBW module)
+- Basic path planning (Waypoing module)
+We have prepared data for a real machine learning problem, which was not seen in the nanodegree before (usually datasets were carefully prepared for us) and was important from a practical perspective. Although we obtained a working system, there are a few things which can be improved:
+
+- Control. MPC controller could be a more robust alternative since it is based on a vehicle model and can incorporate complex nonlinear effects.
+   - Braking system. The current system exhibits jerky braking, whereas with the usage of the aforementioned controller, smoother braking could be achieved.
+- Perception. The Faster RCNN based on ResNet101 shows a good performance level for the traffic lights detection problem. However it is quite slow and could be greatly improved using quantisation technique as an example. Another alternative could be using the Faster RCNN based on ResNet50 that resizes images before processing.
+- Path planning. The current project was tested in the environment without any other vehicles. It would be interesting to combine current developments with the path-planning project results. 
+
+To conclude, this capstone project was a good opportunity to work with people of different ages and backgrounds from different parts of the world, allowing varied perspectives and opinions on the different aspects of the project.
+
