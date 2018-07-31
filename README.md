@@ -120,7 +120,7 @@ The end result was a collection of images named e.g. `sim_123_0.jpg` (for the 12
 image of state 0=RED) or `real_124_2.jpg` (for the 124th real image of state 2=GREEN). These
 images could then be read into the training programs directly and the ground truth state
 extracted easily from the filename suffix. The training images can be found in the
-`data\training_images*` folders.
+`data/training_images*` folders.
 
 ### Simulation images <a name="simulationImages"></a>
 
@@ -138,11 +138,11 @@ images of light-free roads, logic was included as follows:
    metres of the point at which the last image was captured.
 
 The car was then allowed to drive round the circuit in simulation and images were
-accumulated. 285 were collected initially in `data\training_images`; this was perfectly adequate for training
+accumulated. 285 were collected initially in `data/training_images`; this was perfectly adequate for training
 the classifiers, as the simulation images were relatively easy to identify by
 a DL model.
 
-Additional simulation images were later captured as `data\training_images2`.
+Additional simulation images were later captured as `data/training_images2`.
 
 ### Real images <a name="realImages"></a>
 
@@ -260,8 +260,8 @@ which were initially based on one of our submissions for the Semantic Segregatio
    obtaining the correct ground truth classifications from the filename suffix.
 
 Most recently the model was trained on
-the original set of 185 simulator and 101 real images in `data\training_images`. The
-raw command-line output is retained in `ros/src/tl_detector/runs/1532796265.11.output.txt`
+the original set of 185 simulator and 101 real images in `data/training_images`. The
+raw command-line output is retained in `ros/src/tl_detector/runs/1532796265.11/output.txt`
 (the location the now-pretrained weights are downloaded to on first execution). As
 explained previously those first real images were from the `traffic_light_training.bag`
 file which proved to be of low quality compared with the `just_traffic_light.bag`
@@ -278,7 +278,7 @@ The structure was as follows:
 | Fully connected, reduced to depth 32 (maximum to fit GPU memory) |
 | Fully connected, reduced to depth 4 (required output classes) |
 
-The key addition of custom layers is implemented here in `training\cnn_classifier_model.py`:
+The key addition of custom layers is implemented here in `training/cnn_classifier_model.py`:
 ```
 flat_cw = tf.reshape(self.layer7_out, [-1,final_rows*final_cols*4096], name="flat_cw")
 dense_cw = tf.layers.dense(inputs=flat_cw, units=32, activation=tf.nn.relu, name="dense_cw")
@@ -290,7 +290,7 @@ train such a large model. However, freezing the VGG weights and training only th
 fully connected layers worked.
 
  
-Training was later attempted using the larger set of real images in `data\training_images3`,
+Training was later attempted using the larger set of real images in `data/training_images3`,
 but the model failed to classify these effectively. Given the success of the Faster R-CNN approach,
 it was not pursued further.
 
