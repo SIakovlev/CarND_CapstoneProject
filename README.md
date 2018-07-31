@@ -123,15 +123,18 @@ time out the ROS launch overall. For the VGG case, you can execute
 ## Drive-by-wire controls <a name="dbwControls"></a>
 
 **Inputs:** Subscribes to `/current_velocity`, `/twist_cmd` and `/vehicle/dbw_enabled` topics. 
+
 **Outputs:** Checks for `dbw_enabled == True` and publishes `throttle`, `brake` and `steer` topic values at `50 Hz`. 
+
 Publishing at 50 Hz is important as simulator may complain if we go less than 50 Hz and will shutdown at ~30 Hz. This is a built-in safety feature and thereby returning control back to the driver.
 
 Before we do any calculations for publishing, we do the following: 
-Use `Low Pass Filter` for current velocity (`cur_v `) to filter out any high frequency noise in it.
-Calculate velocity error (`error_v`) based on reference (`ref_v `) and current (`cur_v_filtered `) velocity after filtering.
-Calculate elapsed time (`sample_time`) since last call. 
+ - Use `Low Pass Filter` for current velocity (`cur_v `) to filter out any high frequency noise in it.
+ - Calculate velocity error (`error_v`) based on reference (`ref_v `) and current (`cur_v_filtered `) velocity after filtering.
+ - Calculate elapsed time (`sample_time`) since last call. 
 
-###Steering <a name="dbwSteering"></a>
+### Steering <a name="dbwSteering"></a>
+
 We use `Yaw controller` initialized below to get the steering angle values with below params:
 ```python
 Path : src/twist_controller/twist_controller.py
@@ -170,8 +173,9 @@ Path : src/twist_controller/twist_controller.py
         	brake = abs(decel) * self.vehicle_mass * self.wheel_radius;
 ....
 ```
-If target linear velocity (`ref_v `) is 0 and our current velocity (`cur_v_filtered` < 0.1) is less than minimum that we can have (implies that we need to stop immediately), we set `throttle` and `brake` to `0` and `400` (max) respectively.  
-Otherwise, if `throttle` calculated (<0.01) is very small and velocity error (`error_v`) is negative (implies we are going faster than we should be ideally), we set `throttle` to 0, calculate deceleration (`decel`) value and use its absolute value along with `vehicle_mass` and `wheel_radius` to calculate the amount of `brake` to be applied at that point.
+
+- If target linear velocity (`ref_v `) is 0 and our current velocity (`cur_v_filtered` < 0.1) is less than minimum that we can have (implies that we need to stop immediately), we set `throttle` and `brake` to `0` and `400` (max) respectively.  
+- Otherwise, if `throttle` calculated (<0.01) is very small and velocity error (`error_v`) is negative (implies we are going faster than we should be ideally), we set `throttle` to 0, calculate deceleration (`decel`) value and use its absolute value along with `vehicle_mass` and `wheel_radius` to calculate the amount of `brake` to be applied at that point.
 
 
 ## Waypoint processing <a name="waypointProcessing"></a>
