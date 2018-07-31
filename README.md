@@ -122,10 +122,7 @@ images could then be read into the training programs directly and the ground tru
 extracted easily from the filename suffix. The training images can be found in the
 `data\training_images*` folders.
 
-### Simulation images 
-
-
-"simulationImages></a>
+### Simulation images <a name="simulationImages"></a>
 
 The simulator provided ground truth light states (colours) alongside the images, so
 we wrote code in `tl_detector.py` to automatically name the saved image files with the
