@@ -119,7 +119,57 @@ time out the ROS launch overall. For the VGG case, you can execute
 
 ## Waypoint processing <a name="waypointProcessing"></a>
 
-Updated `wayoint_follower` pure_pursuit_core.h params `displacement_threshold`, `relative_angle_threshold` to `0.1` and `1.0` respectively, to enable fine grained check in `PurePursuit::verifyFollowing()` for the waypoints. This helps in fixing car's wandering around the waypoints, when zoomed in. Thus, smooth following of waypoints.
+With **(1).** `waypoints` getting published and **(2).** PID controller publishing correct values for `throttle`, `brake` and `steer`, car still wandered a little bit within the lane. The is because of the `Autoware` code that we are using, as it doesn't recompute the trajectory until the car has passed a certain **(A).** Distance or **(B).** Angle away from the waypoints trajectory. Other attribution is to the simple `PID controller` used, where by the time it recomputes the trajectory and gives new twist command, car has already wandered a bit away from waypoints, and suddenly steers back to the waypoints to catchup. 
+
+Following was done to fix the above mentioned wandering issue:
+
+**A.** Updated `src/waypoint_follower/include/pure_pursuit_core.h` params `displacement_threshold`, `relative_angle_threshold` to `0.1` and `1.0` respectively.
+
+```cpp
+Path : src/waypoint_follower/include/pure_pursuit_core.h
+....
+public:
+  PurePursuit(bool linear_interpolate_mode)
+    ....
+    , displacement_threshold_(0.1)
+    , relative_angle_threshold_(1.)
+    ....
+```
+This enables fine grained check in `PurePursuit::verifyFollowing()` to follow the waypoints. 
+
+```cpp
+Path : src/waypoint_follower/include/pure_pursuit_core.h
+....
+bool PurePursuit::verifyFollowing() const
+{
+  ....
+  if (displacement < displacement_threshold_ && relative_angle < relative_angle_threshold_)
+  {
+    // ROS_INFO("Following : True");
+    return true;
+  }
+  else
+  {
+    // ROS_INFO("Following : False");
+    return false;
+  }
+}
+....
+```
+
+**B.** Used `current_velocity` and `min_speed` to determine whether to update the steering angle in `src/twist_controller/yaw_controller.py` or not.
+
+```python
+Path : src/twist_controller/yaw_controller.py
+....
+def get_steering(self, linear_velocity, angular_velocity, current_velocity):
+   ....
+   if current_velocity < self.min_speed:
+       return 0.0
+   else:
+       return self.get_angle(max(current_velocity * 0.8, self.min_speed) / angular_velocity) if abs(angular_velocity) > 0. else 0.0;
+....
+```
 
 ## Drive-by-wire controls <a name="dbwControls"></a>
 
