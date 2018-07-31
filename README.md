@@ -324,7 +324,7 @@ This short video shows the VGG classifier successfully running the car in simula
 In this project we have developed several modules which are connected and can be used to drive a real car. These modules are essential in solving the following problems:
 - Perception (Traffic lights detection module)
 - Control (DBW module)
-- Basic path planning (Waypoing module)
+- Basic path planning (Waypoint module)
 
 We have prepared data for a real machine learning problem, which was not seen in the nanodegree before (usually datasets were carefully prepared for us) and was important from a practical perspective. Although we obtained a working system, there are a few things which can be improved:
 
