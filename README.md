@@ -3,7 +3,9 @@
 # SmartCarla. System Integration (Capstone) Project Write-Up
 
 Self-Driving Car Engineer Nanodegree Program
+
 Version: 1.0
+
 Date: 03Aug2018
 
 ![Alt text][projectLogoImage]
