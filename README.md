@@ -37,7 +37,8 @@ This section describes how each of the required checklist items have been met
 for project submission.
 
 [CW: by having a sentence or two for each of these, we should make it really
-easy for the Udacity assessor to see we've done everything we are supposed to.]
+easy for the Udacity assessor to see we've done everything we are supposed to.
+**TODO no description of how we have tested or met these, does it matter I wonder?**]
 
 * [x] **Launch correctly using the launch files provided in the capstone repo**
 
@@ -274,9 +275,10 @@ Training was later attempted using the larger set of real images in `data\traini
 but the model failed to classify these effectively. Given the success of the Faster R-CNN approach,
 it was not pursued further.
 
-This short video shows the VGG classifier successfully running the car in simulation:
+This short video shows the VGG classifier successfully running the car in simulation
+(with audio narrative):
 
-  [![Simulator](writeup_files/pictures/vgg_classifier_simulator.jpg)](writeup_files/videos/vgg_classifier_simulator.mp4)
+  [![Simulator](writeup_files/pictures/vgg_classifier_simulator.jpg)](https://youtu.be/xVj-Mr-K_Ek)
 
 
 ## Other sections I've forgotten about
