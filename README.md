@@ -299,15 +299,13 @@ This short video shows the VGG classifier successfully running the car in simula
 
   [![Simulator](writeup_files/pictures/vgg_classifier_simulator.jpg)](https://youtu.be/xVj-Mr-K_Ek)
 
-
-## Other sections I've forgotten about
-
 ## Summary <a name="summary"></a>
 
 In this project we have developed several modules which are connected and can be used to drive a real car. These modules are essential in solving the following problems:
 - Perception (Traffic lights detection module)
 - Control (DBW module)
 - Basic path planning (Waypoing module)
+
 We have prepared data for a real machine learning problem, which was not seen in the nanodegree before (usually datasets were carefully prepared for us) and was important from a practical perspective. Although we obtained a working system, there are a few things which can be improved:
 
 - Control. MPC controller could be a more robust alternative since it is based on a vehicle model and can incorporate complex nonlinear effects.
