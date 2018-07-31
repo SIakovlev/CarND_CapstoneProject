@@ -101,11 +101,11 @@ time out the ROS launch overall. For the VGG case, you can execute
 
 Updated `wayoint_follower` pure_pursuit_core.h params `displacement_threshold`, `relative_angle_threshold` to `0.1` and `1.0` respectively, to enable fine grained check in `PurePursuit::verifyFollowing()` for the waypoints. This helps in fixing car's wandering around the waypoints, when zoomed in. Thus, smooth following of waypoints.
 
-## Drive-by-wire controls <a name="dbwControls></a>
+## Drive-by-wire controls <a name="dbwControls"></a>
 
 Subscribes to `/current_velocity`, `/twist_cmd` and `/vehicle/dbw_enabled`. Checks if dbw_enabled is True and then publishes throttle, brake and steer values using `PID` controller, for the simulator.
 
-## Training image capture <a name="trainingImageCapture></a>
+## Training image capture <a name="trainingImageCapture"></a>
 
 Automatic collection of images for classifier training purposes was added to `tl_detector.py`.
 This collected images from the `/image_color` topic, either from the simulator (acting as a
@@ -122,7 +122,10 @@ images could then be read into the training programs directly and the ground tru
 extracted easily from the filename suffix. The training images can be found in the
 `data\training_images*` folders.
 
-### Simulation images <a name="simulationImages></a>
+### Simulation images 
+
+
+"simulationImages></a>
 
 The simulator provided ground truth light states (colours) alongside the images, so
 we wrote code in `tl_detector.py` to automatically name the saved image files with the
@@ -144,7 +147,7 @@ a DL model.
 
 Additional simulation images were later captured as `data\training_images2`.
 
-### Real images <a name="realImages></a>
+### Real images <a name="realImages"></a>
 
 All the real images were obtained from Udacity .bag files.
 
@@ -162,9 +165,9 @@ describes how to create a new `.launch` file and automatically capture images. F
 the file `just_traffic_light.bag` linked to on the project submission page of the
 classroom was used, which proved to have better-quality images.
 
-## Image classifier and results: Faster R-CNN <a name="fasterRCNN></a>
+## Image classifier and results: Faster R-CNN <a name="fasterRCNN"></a>
 
-### Tensorflow object detection API
+### Tensorflow object detection API<a name="fasterRCNNTensorflow"></a>
 One way to build a classifier is to use a powerfull API from Tensorflow on Object Detection. It has many pre-trained networks that can be fine tuned using custom datasets. There are several good tutorials that cover main steps and were used by our team as references in this project:
   - by Daniel Stang: [link](https://medium.com/@WuStangDan/step-by-step-tensorflow-object-detection-api-tutorial-part-1-selecting-a-model-a02b6aabe39e)
   - by Vatsal Sodhal [link](https://becominghuman.ai/tensorflow-object-detection-api-tutorial-training-and-evaluating-custom-object-detector-ed2594afcf73)
@@ -172,7 +175,7 @@ One way to build a classifier is to use a powerfull API from Tensorflow on Objec
 
 As a pre-trained classifier, we chose the Faster R-CNN network ([link](https://arxiv.org/pdf/1504.08083.pdf)) that incorporates a ResNet 101 pretrained model. It provides a good balance between speed and detection accuracy for small objects on the image. In particular, we did not choose SSD (Singe Shot Detector) network as it resizes any input image to 300x300 pixels and, therefore, the accuracy of detecting small objects is reduced. The summary of main speed characteristics for different object detectors can be found [here](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md).
 
-### Model setup and training
+### Model setup and training <a name="fasterRCNNModelSetup"></a>
 Once the data was ready the following steps were taken to get classifier working:
   - Follow installation instructions for object detection api: [link](https://github.com/tensorflow/models/blob/d1173bc9714b5729b8c95d8e91e8647c66acebe6/object_detection/g3doc/installation.md)
   - Draw boxes and give a corresponding label (`red`, `yellow` or `green`) for each image in the dataset. We used [labelImg](https://github.com/tzutalin/labelImg) to do this.
@@ -198,16 +201,16 @@ Once the data was ready the following steps were taken to get classifier working
     --output_directory ./fine_tuned_model
     ```
 
-### Running instructions
+### Running instructions <a name="fasterRCNNInstructions"></a>
 
 - The flag `is_site` (inside `tl_classifier.py` line 16) is used for switching between two types of classifiers: one is based on simulator images and another is a real images classifier.
 - Once code is running the required model is automatically downloaded and configured. The user will see corresponding messages signifying that classifier was set up successfully. To run the code, GPU enabled machine is required.
 
-### Issues
+### Issues <a name="fasterRCNNIssues"></a>
 
 - Back compatibility with Tensorflow 1.3 as required by Udacity. The current version of object detection API is based on 1.9 tensorflow and not compatible with 1.3. Instead we used an older version from this [commit](https://github.com/tensorflow/models/tree/d1173bc9714b5729b8c95d8e91e8647c66acebe6).
 
-### Results
+### Results <a name="fasterRCNNResults"></a>
 
 The following picures demonstrate traffic lights classifier performance for two different classes of images:
 
@@ -236,7 +239,7 @@ The videos below show
   [![Real images](https://img.youtube.com/vi/I5Ab-Io5ETI/0.jpg)](https://youtu.be/I5Ab-Io5ETI)
 
 
-### Hardware
+### Hardware <a name="fasterRCNNHardware"></a>
 
 Tests were conducted using Nvidia GTX1070 8GB, i7-7700HQ.
 
