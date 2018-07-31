@@ -1,16 +1,16 @@
 [projectLogoImage]: data/SmartCarlaProjectLogo.png "1"
 
-# SmartCarla. System Integration (Capstone) Project Write-Up
+![Alt text][projectLogoImage]
 
-Self-Driving Car Engineer Nanodegree Program
+# SmartCarla. System Integration (Capstone) Project
+
+Udacity Self-Driving Car Engineer Nanodegree Program
 
 Version: 1.0
 
 Date: 03Aug2018
 
-![Alt text][projectLogoImage]
-
-## Team smart-carla
+## Team SmartCarla
 
 |      Name  |          Email |    Responsibilities |
 |:------------:|:------------:|:-----------:|
