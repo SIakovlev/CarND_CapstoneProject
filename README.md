@@ -4,11 +4,7 @@
 
 # SmartCarla. System Integration (Capstone) Project
 
-Udacity Self-Driving Car Engineer Nanodegree Program
-
-Version: 1.0
-
-Date: 03Aug2018
+Udacity Self-Driving Car Engineer Nanodegree Program   **|**  Version: 1.0   **|** Date: 03Aug2018
 
 ## Team SmartCarla
 
@@ -78,13 +74,11 @@ time out the ROS launch overall. For the VGG case, you can execute
 
 ## Waypoint processing
 
+Updated "wayoint_follower" pure_pursuit_core.h params **displacement_threshold**, **relative_angle_threshold** to **0.1** and **1.0** respectively, to enable fine grained check in PurePursuit::verifyFollowing() for the waypoints. This helps in fixing car's wandering around the waypoints, when zoomed in. Thus, smooth following of waypoints.
+
 ## Drive-by-wire controls
 
-### Steering
-
-"wayoint_follower" pure_pursuit_core.h params updated to enable more fine grained check in **verifyFollowing()** to fix cars wandering around the waypoints.
-
-### Braking and acceleration
+Subscribes to **'/current_velocity'**, **'/twist_cmd'** and **'/vehicle/dbw_enabled.'** Checks if dbw_enabled is True and then publishes throttle, brake and steer values using **PID** controller, for the simulator.
 
 ## Training image capture
 
