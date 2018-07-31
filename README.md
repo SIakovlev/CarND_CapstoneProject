@@ -276,7 +276,7 @@ it was not pursued further.
 
 This short video shows the VGG classifier successfully running the car in simulation:
 
-  [![Simulator](writeup_files/pictures/vgg_classifier_simulator.jpg](writeup_files/videos/vgg_classifier_simulator.mp4)
+  [![Simulator](writeup_files/pictures/vgg_classifier_simulator.jpg)](writeup_files/videos/vgg_classifier_simulator.mp4)
 
 
 ## Other sections I've forgotten about
