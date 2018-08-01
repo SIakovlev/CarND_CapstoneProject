@@ -19,7 +19,7 @@ Date: 01 Aug 2018 </pre>
 4. [Required set-up](#setup)
 5. [Drive-by-wire controls](#dbwControls)
    1. [Steering](#dbwSteering)
-   2. [Break and Throttle](#dbwBrakeThrottle) 
+   2. [Brake and Throttle](#dbwBrakeThrottle) 
 6. [Waypoint processing](#waypointProcessing)
 7. [Training image capture](#trainingImageCapture)
    1. [Simulation images](#simulationImages)
@@ -143,7 +143,7 @@ self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel,
 ....
 ```
 
-### Break and Throttle <a name="dbwBrakeThrottle"></a>
+### Brake and Throttle <a name="dbwBrakeThrottle"></a>
 
 **Brake** values are published in torque units (N*m). The brake value can be computed using the desired acceleration, weight of the vehicle, and wheel radius, depending on the cases mentioned below.
 
