@@ -51,7 +51,7 @@ This is the repository of **Smart Carla team** for the final project of the Udac
 
 ![Alt text][ROS_GraphImage]
 
-The goal of the project was to get **Udacity's self-driving car** to drive around a test track while avoiding obstacles and stopping at traffic lights.
+The goal of the project was to get **Udacity's self-driving car** to drive around a test track and stop at traffic lights.
 
 The starting code has been taken from Udacity's github repository [here](https://github.com/udacity/CarND-Capstone).
 
