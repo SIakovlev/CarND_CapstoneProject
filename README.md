@@ -303,8 +303,8 @@ As a pre-trained classifier, we chose the Faster R-CNN network ([link](https://a
 Once the data was ready the following steps were taken to get classifier working:
   - Follow installation instructions for object detection api: [link](https://github.com/tensorflow/models/blob/d1173bc9714b5729b8c95d8e91e8647c66acebe6/object_detection/g3doc/installation.md)
   - Draw boxes and give a corresponding label (`red`, `yellow` or `green`) for each image in the dataset. We used [labelImg](https://github.com/tzutalin/labelImg) to do this.
-  - Create `.pbtxt` file with labels data.
-  - Create `.record` file. To do this we adopted code from the original [`create_pascal_tf_record.py`](https://github.com/tensorflow/models/blob/d1173bc9714b5729b8c95d8e91e8647c66acebe6/object_detection/create_pascal_tf_record.py). The modified version of the script can be found here: [tf_record_udacity.py](link)
+  - Create `.pbtxt` file with labels data. [Link](https://github.com/SIakovlev/CarND_CapstoneProject/blob/master/training/faster_rcnn/udacity_label_map.pbtxt) to our `.pbtxt` file.
+  - Create `.record` file. To do this we adopted code from the original [`create_pascal_tf_record.py`](https://github.com/tensorflow/models/blob/d1173bc9714b5729b8c95d8e91e8647c66acebe6/object_detection/create_pascal_tf_record.py). The modified version of the script can be found here: [tf_record_udacity.py](https://github.com/SIakovlev/CarND_CapstoneProject/blob/master/training/faster_rcnn/tf_record_udacity.py).
     Usage example:
     ```bash
     python tf_record_udacity.py \
@@ -312,7 +312,7 @@ Once the data was ready the following steps were taken to get classifier working
           --output_path=/home/user/udacity_data.record \ # output .record file path
           --label_map_path=/home/user/data/label_map.pbtxt # label .pbtxt file path
     ```
-  - Configure the model parameters, trainig and validation setting using corresponding `.config` file. 
+  - Configure the model parameters, trainig and validation setting using corresponding `.config` file, i.e. [faster_rcnn_resnet101_udacity.config](https://github.com/SIakovlev/CarND_CapstoneProject/blob/master/training/faster_rcnn/faster_rcnn_resnet101_udacity.config)
   - Run `train.py` script, specify model configuration file and output directory. Usage example:
     ```bash
     python train.py --logtostderr --train_dir=./models/train --pipeline_config_path=faster_rcnn_resnet101_udacity.config
