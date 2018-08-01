@@ -9,7 +9,7 @@ Udacity Self-Driving Car Engineer Nanodegree Program
 
 Version: 1.0   
 
-Date: 03Aug2018 </pre>
+Date: 01 Aug 2018 </pre>
 
 # Table of contents
 
