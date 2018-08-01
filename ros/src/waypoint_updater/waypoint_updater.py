@@ -98,7 +98,7 @@ class WaypointUpdater(object):
             p = Waypoint()
             p.pose = wp.pose
 
-            stop_idx = max(self.stopline_wp_idx - closest_idx - 2, 0) # to make sure that car front stops before the stopline
+            stop_idx = max(self.stopline_wp_idx - closest_idx - 3, 0) # to make sure that car front stops before the stopline
             dist = self.distance(waypoints, i, stop_idx)
 
             vel = np.sqrt(2 * abs(self.decel_limit) * dist)
