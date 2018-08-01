@@ -9,7 +9,7 @@ Udacity Self-Driving Car Engineer Nanodegree Program
 
 Version: 1.0   
 
-Date: 03Aug2018 </pre>
+Date: 01 Aug 2018 </pre>
 
 # Table of contents
 
@@ -40,7 +40,7 @@ Date: 03Aug2018 </pre>
 |:------------:|:------------:|:-----------:|
 | Sergey Iakovlev | siakovlev@studnet.unimelb.edu.au |  Team lead/Faster R-CNN classifier |
 | Tatsuya Hatanaka | tatsuya.hatanaka@gmail.com | Data preparation, Smooth braking |
-| Swapan Shridhar  | available365.24.7@gmail.com  | Twist Controller, car wobbling issues, logo |
+| Swapan Shridhar  | shridhar.swapan@gmail.com | Twist Controller, car wobbling issues, logo |
 | Anthony T Tran   | iamtran@hotmail.com          | Collecting Images for training Classifier/Testing                                                  |
 | Charlie Wartnaby | charlie.wartnaby@idiada.com | Auto simulation training image capture/VGG classifier |
 
@@ -51,7 +51,7 @@ This is the repository of **Smart Carla team** for the final project of the Udac
 
 ![Alt text][ROS_GraphImage]
 
-The goal of the project was to get **Udacity's self-driving car** to drive around a test track while avoiding obstacles and stopping at traffic lights.
+The goal of the project was to get **Udacity's self-driving car** to drive around a test track and stop at traffic lights.
 
 The starting code has been taken from Udacity's github repository [here](https://github.com/udacity/CarND-Capstone).
 
@@ -303,7 +303,7 @@ As a pre-trained classifier, we chose the Faster R-CNN network ([link](https://a
 Once the data was ready the following steps were taken to get classifier working:
   - Follow installation instructions for object detection api: [link](https://github.com/tensorflow/models/blob/d1173bc9714b5729b8c95d8e91e8647c66acebe6/object_detection/g3doc/installation.md)
   - Draw boxes and give a corresponding label (`red`, `yellow` or `green`) for each image in the dataset. We used [labelImg](https://github.com/tzutalin/labelImg) to do this.
-  - Create `.pbtxt` file with labels data. See [](link)
+  - Create `.pbtxt` file with labels data.
   - Create `.record` file. To do this we adopted code from the original [`create_pascal_tf_record.py`](https://github.com/tensorflow/models/blob/d1173bc9714b5729b8c95d8e91e8647c66acebe6/object_detection/create_pascal_tf_record.py). The modified version of the script can be found here: [tf_record_udacity.py](link)
     Usage example:
     ```bash
@@ -312,7 +312,7 @@ Once the data was ready the following steps were taken to get classifier working
           --output_path=/home/user/udacity_data.record \ # output .record file path
           --label_map_path=/home/user/data/label_map.pbtxt # label .pbtxt file path
     ```
-  - Configure the model parameters, trainig and validation setting using corresponding `.config` file. See `faster_rcnn_resnet101_udacity.config` for details.
+  - Configure the model parameters, trainig and validation setting using corresponding `.config` file. 
   - Run `train.py` script, specify model configuration file and output directory. Usage example:
     ```bash
     python train.py --logtostderr --train_dir=./models/train --pipeline_config_path=faster_rcnn_resnet101_udacity.config
