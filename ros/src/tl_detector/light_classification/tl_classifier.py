@@ -7,6 +7,7 @@ from styx_msgs.msg import TrafficLight
 import tensorflow as tf
 import numpy as np
 import scipy
+from PIL import Image
 
 # Only required for VGG classifier:
 sys.path.insert(0,"../../../training")
@@ -37,13 +38,13 @@ class TLClassifier(object):
         if self.is_site:    
             FILENAME = 'faster_rcnn_real.pb'
             # Dropbox link for downloading (backup if web location is down)
-            #DOWNLOAD_URL='https://www.dropbox.com/s/e3acw9s1wtvzk3n/faster_rcnn_real.pb?dl=1'
-            DOWNLOAD_URL='http://www.wartnaby.org/smart_carla/faster_rcnn_real.pb'
+            DOWNLOAD_URL='https://www.dropbox.com/s/xswxwsrojqi3z54/faster_rcnn_real.pb?dl=1'
+            #DOWNLOAD_URL='http://www.wartnaby.org/smart_carla/faster_rcnn_real.pb'
         else:
             FILENAME = 'faster_rcnn_sim.pb'
             # Dropbox link for downloading (backup if web location is down)
-            #DOWNLOAD_URL='https://www.dropbox.com/s/wc4bky8v7roya0q/faster_rcnn_sim.pb?dl=1'
-            DOWNLOAD_URL='http://www.wartnaby.org/smart_carla/faster_rcnn_sim.pb'
+            DOWNLOAD_URL='https://www.dropbox.com/s/z90tivpw0cz9r8c/faster_rcnn_sim.pb?dl=1'
+            #DOWNLOAD_URL='http://www.wartnaby.org/smart_carla/faster_rcnn_sim.pb'
 
         # full path to the model file
         fullfilename = os.path.join(MODEL_DIR_NAME, FILENAME)
@@ -111,9 +112,14 @@ class TLClassifier(object):
         """
         
         # Bounding Box Detection.
+        tic = time.time()
         with self.detection_graph.as_default():
             # BGR to RGB conversion
-            img = image[:, :, ::-1]
+            image = image[:, :, ::-1]
+
+            img = Image.fromarray(image.astype('uint8'), 'RGB')
+            size = 640, 480
+            img.thumbnail(size, Image.ANTIALIAS)
             # Expand dimension since the model expects image to have shape [1, None, None, 3].
             img_expanded = np.expand_dims(img, axis=0)  
             # run classifier
@@ -122,6 +128,10 @@ class TLClassifier(object):
                 feed_dict={self.image_tensor: img_expanded})
             # find the top score for a given image frame
             top_score = np.amax(np.squeeze(scores))
+            
+            elapsed_time = time.time() - tic
+            sys.stderr.write("Debug: Time spent on classification=%.2f\n" % (elapsed_time))
+
             # figure out traffic light class based on the top score
             if top_score > DETECTION_THRESHOLD:
                 tl_state = int(np.squeeze(classes)[0])
