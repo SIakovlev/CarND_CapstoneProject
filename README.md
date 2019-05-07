@@ -38,7 +38,7 @@ Date: 01 Aug 2018 </pre>
 
 |      Name  |          Email |    Responsibilities |
 |:------------:|:------------:|:-----------:|
-| Sergey Iakovlev | siakovlev@studnet.unimelb.edu.au |  Team lead/Faster R-CNN classifier |
+| Sergey Iakovlev | siakovlev@student.unimelb.edu.au |  Team lead/Faster R-CNN classifier |
 | Tatsuya Hatanaka | tatsuya.hatanaka@gmail.com | Data preparation, Smooth braking |
 | Swapan Shridhar  | shridhar.swapan@gmail.com | Twist Controller, car wobbling issues, logo |
 | Anthony T Tran   | iamtran@hotmail.com          | Collecting Images for training Classifier/Testing                                                  |
